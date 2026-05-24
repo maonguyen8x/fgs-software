@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: fgs-software-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: fgs
+      POSTGRES_PASSWORD: fgs
+      POSTGRES_DB: fgs_software
+    volumes:
+      - fgs_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fgs -d fgs_software"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  fgs_postgres_data:

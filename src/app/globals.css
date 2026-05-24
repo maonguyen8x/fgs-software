@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+  --color-primary-950: #172554;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-jp: var(--font-noto-jp), var(--font-inter), sans-serif;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #1e293b;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --surface-elevated: #ffffff;
+  --border: #e2e8f0;
+  --muted: #64748b;
+  --heading: #0f172a;
+  --primary-text: #1d4ed8;
+}
+
+.dark {
+  --background: #020617;
+  --foreground: #e2e8f0;
+  --surface: #0f172a;
+  --surface-muted: #1e293b;
+  --surface-elevated: #1e293b;
+  --border: #334155;
+  --muted: #94a3b8;
+  --heading: #f8fafc;
+  --primary-text: #93c5fd;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply antialiased;
+  }
+  main {
+    background-color: var(--background);
+  }
+}
+
+@layer components {
+  .bg-theme {
+    background-color: var(--background);
+  }
+  .bg-surface {
+    background-color: var(--surface);
+  }
+  .bg-surface-muted {
+    background-color: var(--surface-muted);
+  }
+  .bg-surface-elevated {
+    background-color: var(--surface-elevated);
+  }
+  .text-theme {
+    color: var(--foreground);
+  }
+  .text-muted-theme {
+    color: var(--muted);
+  }
+  .text-heading {
+    color: var(--heading);
+  }
+  .text-primary-theme {
+    color: var(--primary-text);
+  }
+  .border-theme {
+    border-color: var(--border);
+  }
+
+  .page-hero {
+    background: linear-gradient(135deg, var(--surface-muted) 0%, var(--background) 55%, var(--surface-muted) 100%);
+  }
+  .page-title {
+    color: var(--heading);
+  }
+  .page-subtitle {
+    color: var(--muted);
+  }
+
+  .content-block {
+    @apply rounded-2xl border p-5 shadow-sm transition-all duration-300 ease-out md:p-6;
+    background-color: var(--surface);
+    border-color: var(--border);
+  }
+
+  .content-block:hover {
+    @apply -translate-y-0.5 shadow-lg shadow-primary-600/10;
+    background-color: color-mix(in srgb, var(--color-primary-50) 88%, var(--surface));
+    border-color: var(--color-primary-200);
+  }
+
+  .dark .content-block:hover {
+    background-color: color-mix(in srgb, var(--color-primary-950) 55%, var(--surface));
+    border-color: var(--color-primary-800);
+  }
+
+  .content-card {
+    @apply rounded-2xl border shadow-sm transition-all duration-300 ease-out;
+    background-color: var(--surface);
+    border-color: var(--border);
+  }
+
+  .content-card:hover {
+    @apply -translate-y-1 shadow-xl shadow-primary-600/15;
+    background-color: color-mix(in srgb, var(--color-primary-50) 90%, var(--surface));
+    border-color: var(--color-primary-300);
+  }
+
+  .dark .content-card:hover {
+    background-color: color-mix(in srgb, var(--color-primary-950) 50%, var(--surface));
+    border-color: var(--color-primary-700);
+  }
+
+  .content-card:hover .text-heading,
+  .content-card:hover .text-muted-theme {
+    @apply transition-colors duration-300;
+  }
+
+  .content-card:hover h3,
+  .content-card:hover p {
+    color: inherit;
+  }
+
+  .content-prose {
+    @apply text-sm leading-relaxed md:text-base;
+    color: var(--muted);
+  }
+
+  .content-prose-tight {
+    @apply space-y-2 text-sm leading-snug md:text-[15px] md:leading-relaxed;
+    color: var(--muted);
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent;
+  }
+  .dark .text-gradient {
+    @apply from-primary-300 to-primary-200;
+  }
+  .section-padding {
+    @apply px-4 py-8 md:px-8 md:py-10;
+  }
+  .section-padding-compact {
+    @apply px-4 py-6 md:px-8 md:py-8;
+  }
+  .page-section {
+    @apply px-4 py-6 md:px-8 md:py-8;
+  }
+  .container-narrow {
+    @apply mx-auto max-w-6xl;
+  }
+  .page-grid {
+    @apply grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-3;
+  }
+  .page-grid-team {
+    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+  .animate-in-view {
+    animation: fade-up 0.5s ease-out both;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,322 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "about": "会社概要",
+    "services": "サービス",
+    "team": "チーム",
+    "works": "製品",
+    "blog": "ブログ",
+    "contact": "お問い合わせ"
+  },
+  "hero": {
+    "cta_contact": "お問い合わせ",
+    "cta_works": "実績を見る"
+  },
+  "home": {
+    "services_title": "サービス",
+    "services_subtitle": "ビジネスに合わせたエンドツーエンドのソフトウェア開発",
+    "why_title": "FGS Softwareが選ばれる理由",
+    "why_subtitle": "日本市場向けプロジェクトの信頼できるパートナー",
+    "team_title": "チーム紹介",
+    "team_subtitle": "品質提供に専念する経験豊富なエンジニア",
+    "works_title": "注目の実績",
+    "works_subtitle": "お客様に提供した実際のソリューション",
+    "testimonials_title": "お客様の声",
+    "partners_title": "クライアント＆パートナー",
+    "partners_subtitle": "日本および海外のチームに信頼されています",
+    "cta_title": "プロジェクトを始めませんか？",
+    "cta_subtitle": "ビジネスの成長をどう支援できるかご相談ください",
+    "cta_button": "今すぐお問い合わせ",
+    "view_all": "すべて見る"
+  },
+  "about": {
+    "title": "会社概要",
+    "subtitle": "高品質なソフトウェアで信頼を築く",
+    "mission": "ミッション",
+    "vision": "ビジョン",
+    "values_title": "コアバリュー",
+    "timeline_title": "沿革",
+    "branches_title": "拠点",
+    "founders_title": "創業チーム",
+    "map_title": "所在地",
+    "maps_link": "Google Mapsで開く — {city}",
+    "why_japan_title": "日本のお客様に選ばれる理由"
+  },
+  "services": {
+    "title": "サービス・技術力",
+    "subtitle": "包括的なITアウトソーシングソリューション",
+    "tech_title": "技術スタック",
+    "tech_subtitle": "習得している最新のツールとフレームワーク",
+    "contact_cta": "プロジェクトを相談する"
+  },
+  "team": {
+    "title": "チーム",
+    "subtitle": "プロジェクトに参加する準備ができた優秀なエンジニア",
+    "years": "年の経験"
+  },
+  "works": {
+    "title": "制作実績",
+    "subtitle": "お届けした誇りあるプロジェクト",
+    "filter_all": "すべて",
+    "filter_web": "Web",
+    "filter_mobile": "モバイル",
+    "filter_api": "API",
+    "filter_other": "その他",
+    "view_details": "詳細を見る",
+    "challenge": "課題",
+    "solution": "解決策",
+    "result": "結果",
+    "duration": "期間",
+    "demo": "デモ",
+    "github": "ソースコード"
+  },
+  "blog": {
+    "title": "ブログ",
+    "subtitle": "技術的な洞察と会社の最新情報",
+    "read_more": "続きを読む"
+  },
+  "contact": {
+    "title": "お問い合わせ",
+    "subtitle": "プロジェクトについてお聞かせください — 1〜2営業日以内にご返信します",
+    "name": "お名前",
+    "email": "メールアドレス",
+    "company": "会社名",
+    "phone": "電話番号",
+    "project_type": "プロジェクト種別",
+    "budget": "予算目安",
+    "message": "プロジェクトの詳細",
+    "submit": "送信する",
+    "sending": "送信中...",
+    "success": "メッセージが正常に送信されました！",
+    "error": "エラーが発生しました。もう一度お試しください。",
+    "info_title": "連絡先情報",
+    "form_title": "メッセージを送る",
+    "hours": "営業時間",
+    "project_types": {
+      "web": "Webアプリケーション",
+      "mobile": "モバイルアプリ",
+      "api": "API・連携",
+      "consulting": "コンサルティング",
+      "other": "その他"
+    },
+    "budgets": {
+      "under5k": "$5,000未満",
+      "5k15k": "$5,000〜$15,000",
+      "15k50k": "$15,000〜$50,000",
+      "over50k": "$50,000以上",
+      "undecided": "未定"
+    },
+    "validation": {
+      "name_required": "お名前を入力してください",
+      "name_min": "お名前は2文字以上で入力してください",
+      "email_required": "メールアドレスを入力してください",
+      "email_invalid": "有効なメールアドレスを入力してください",
+      "message_required": "プロジェクトの詳細を入力してください",
+      "message_min": "プロジェクトの詳細は20文字以上で入力してください",
+      "form_invalid": "必須項目を正しく入力してください"
+    }
+  },
+  "language": {
+    "switch": "言語を変更",
+    "en": "英語",
+    "ja": "日本語",
+    "vi": "ベトナム語"
+  },
+  "footer": {
+    "tagline": "ベトナムの信頼できるITアウトソーシングパートナー",
+    "rights": "All rights reserved."
+  },
+  "errors": {
+    "not_found_title": "ページが見つかりません",
+    "not_found_description": "お探しのページは存在しないか、移動した可能性があります。",
+    "server_title": "問題が発生しました",
+    "server_description": "サーバーで予期しないエラーが発生しました。しばらくしてから再度お試しください。",
+    "server_hint": "問題が続く場合は、お問い合わせページからご連絡ください。",
+    "server_status_label": "サーバーエラー",
+    "error_ref": "参照コード",
+    "status_404": "ページが見つかりません",
+    "status_500": "サーバーエラー",
+    "status_503": "サービス停止中",
+    "network_title": "接続エラー",
+    "network_description": "サーバーに接続できません。ネットワークを確認してください。",
+    "bad_request_title": "無効なリクエスト",
+    "bad_request_description": "送信データが正しくないか、不足しています。",
+    "unauthorized_title": "認証が必要です",
+    "unauthorized_description": "このリソースにアクセスするにはログインが必要です。",
+    "retry": "再試行",
+    "back_home": "ホームに戻る"
+  },
+  "theme": {
+    "switch_to_dark": "ダークモードに切り替え",
+    "switch_to_light": "ライトモードに切り替え"
+  },
+  "admin": {
+    "login": {
+      "title": "FGS Admin",
+      "subtitle": "管理者専用",
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "remember_me": "ログイン状態を保持",
+      "remember_password": "メールとパスワードを記憶",
+      "forgot_password": "パスワードをお忘れですか？",
+      "sign_in": "ログイン",
+      "signing_in": "ログイン中...",
+      "back_to_sign_in": "ログインに戻る"
+    },
+    "login_success": {
+      "title": "ログインに成功しました",
+      "subtitle": "FGS管理画面へようこそ。"
+    },
+    "forgot": {
+      "title": "パスワードをお忘れですか",
+      "subtitle": "管理者メールを入力してください。アカウントがある場合、リセットリンクを送信します。",
+      "send": "リセットリンクを送信",
+      "sending": "送信中...",
+      "sent": "アカウントが存在する場合、リセットリンクを送信しました。受信トレイをご確認ください。"
+    },
+    "reset": {
+      "title": "新しいパスワード",
+      "new_password": "新しいパスワード",
+      "confirm_password": "パスワード確認",
+      "submit": "パスワードを更新",
+      "saving": "保存中...",
+      "done": "パスワードを更新しました。ログイン画面に移動します...",
+      "invalid_link": "リセットリンクが無効または期限切れです。"
+    },
+    "errors": {
+      "invalid_credentials": "メールアドレスまたはパスワードが正しくありません。",
+      "session_expired": "セッションの有効期限が切れました。再度ログインしてください。",
+      "network": "サーバーに接続できません。接続を確認して再度お試しください。",
+      "unknown": "ログインに失敗しました。再度お試しください。",
+      "email_invalid": "有効なメールアドレスを入力してください。",
+      "password_min": "パスワードは8文字以上にしてください。",
+      "password_mismatch": "パスワードが一致しません。",
+      "reset_invalid": "パスワードをリセットできません。リンクの期限が切れている可能性があります。",
+      "request_failed": "リクエストを処理できませんでした。再度お試しください。"
+    },
+    "settings": {
+      "logout": "ログアウト",
+      "form": {
+        "section_company": "会社・連絡先",
+        "section_social": "SNS・Analytics",
+        "section_seo": "SEO",
+        "section_hero": "ホーム Hero",
+        "section_chatbot": "AIチャットボット (Nova)",
+        "section_maps": "Google Maps（お問い合わせ）",
+        "company_name": "会社名",
+        "admin_email": "連絡先メール",
+        "admin_email_cc": "CCメール（任意）",
+        "address": "連絡先住所（サイト表示用）",
+        "phone": "電話",
+        "working_hours": "営業時間",
+        "linkedin_url": "LinkedIn URL",
+        "github_url": "GitHub URL",
+        "facebook_url": "Facebook URL",
+        "ga_id": "Google Analytics ID",
+        "meta_title": "デフォルト Meta Title",
+        "meta_description": "デフォルト Meta Description",
+        "hero_headline": "Hero Headline (EN)",
+        "hero_headline_ja": "Hero Headline (JA)",
+        "hero_headline_vi": "Hero Headline (VI)",
+        "hero_subheadline": "Hero Subheadline (EN)",
+        "hero_subheadline_ja": "Hero Subheadline (JA)",
+        "hero_subheadline_vi": "Hero Subheadline (VI)",
+        "chatbot_enabled": "チャットボット有効 (true/false)",
+        "chatbot_name": "チャットボット名 (EN)",
+        "chatbot_name_ja": "チャットボット名 (JA)",
+        "chatbot_name_vi": "チャットボット名 (VI)",
+        "save": "設定を保存",
+        "saving": "保存中...",
+        "save_success": "設定を保存しました",
+        "save_failed": "設定の保存に失敗しました"
+      },
+      "maps": {
+        "map_address": "Google Maps 住所",
+        "map_address_placeholder": "地図検索用の住所を入力...",
+        "map_address_hint": "候補が下に表示されます（OpenStreetMap）。選択するか「適用」で座標を設定。任意: .env に GOOGLE_MAPS_API_KEY で Google Places。",
+        "apply_address": "適用",
+        "maps_link": "Google Maps 共有リンク",
+        "maps_link_placeholder": "https://maps.app.goo.gl/... または https://www.google.com/maps/...",
+        "maps_link_hint": "Google Maps リンク（短縮URL可）を貼り付けて適用。",
+        "apply_link": "リンクを適用",
+        "apply_coordinates": "座標を適用",
+        "latitude": "緯度",
+        "longitude": "経度",
+        "preview": "地図プレビュー",
+        "searching": "検索中...",
+        "location_applied": "地図の位置を更新しました",
+        "errors": {
+          "place_failed": "場所の詳細を取得できませんでした。",
+          "resolve_failed": "Google Maps リンクを読み取れませんでした。",
+          "geocode_failed": "この住所の座標が見つかりませんでした。",
+          "invalid_coordinates": "有効な緯度・経度を入力してください。",
+          "network": "ネットワークエラー。もう一度お試しください。"
+        }
+      }
+    },
+    "founders": {
+      "name": "メンバー名",
+      "skills": "スキル",
+      "skills_placeholder": "例: React, Node.js, TypeScript",
+      "avatar": "プロフィール写真",
+      "order": "表示順",
+      "visible": "サイトに表示",
+      "sync_team": "チームページにも表示",
+      "save": "保存",
+      "saving": "保存中...",
+      "saved": "保存しました",
+      "locale_en": "英語",
+      "locale_ja": "日本語",
+      "locale_vi": "ベトナム語",
+      "errors": {
+        "save_failed": "保存に失敗しました。再度お試しください。",
+        "invalid_type": "画像形式が無効です。",
+        "file_too_large": "画像が大きすぎます（最大5MB）。",
+        "upload_failed": "アップロードに失敗しました。",
+        "no_file": "ファイルが選択されていません。"
+      },
+      "avatar_editor": {
+        "drop_hint": "画像をドラッグ＆ドロップ、またはクリックして選択",
+        "formats": "JPG, PNG, WebP, GIF — 最大5MB",
+        "crop_title": "写真を調整（ドラッグ・角でリサイズ）",
+        "cancel": "キャンセル",
+        "apply": "写真を適用",
+        "uploading": "アップロード中...",
+        "uploaded": "写真をアップロードしました",
+        "change_photo": "写真を変更"
+      }
+    }
+  },
+  "common": {
+    "learn_more": "詳しく見る",
+    "back": "戻る",
+    "loading": "読み込み中..."
+  },
+  "chatbot": {
+    "open": "チャットを開く",
+    "close": "閉じる",
+    "minimize": "最小化",
+    "subtitle": "AIアシスタント · {company}",
+    "welcome": "こんにちは！{company}のガイド {name} です。アウトソーシングサービス、実績、日本企業との協業についてお手伝いできます。本日はどのようなご用件でしょうか？",
+    "placeholder": "サービス、プロジェクト、協業についてお聞きください...",
+    "send": "送信",
+    "error": "接続に問題が発生しました。もう一度お試しいただくか、お問い合わせページをご利用ください。",
+    "error_network": "サーバーに接続できません。ネットワークを確認して再度お試しください。",
+    "error_server": "サーバーが一時的に利用できません。しばらくしてから再度お試しください。",
+    "error_invalid": "メッセージが無効です。入力内容をご確認ください。",
+    "error_disabled": "チャットボットは現在無効です。お問い合わせページをご利用ください。",
+    "human_handoff": "担当者に直接ご相談されますか？",
+    "quick": {
+      "services": "サービス一覧",
+      "pricing": "予算・料金",
+      "japan": "日本市場の実績",
+      "contact": "担当者へ連絡"
+    },
+    "prompts": {
+      "services": "FGS Softwareの開発サービスについて教えてください。",
+      "pricing": "アウトソーシングの料金体系について教えてください。",
+      "japan": "日本のお客様との協業実績を教えてください。",
+      "contact": "プロジェクトについて担当者と話したいです。"
+    }
+  }
+}

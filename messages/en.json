@@ -1,0 +1,322 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "team": "Team",
+    "works": "Products",
+    "blog": "Blog",
+    "contact": "Contact Us"
+  },
+  "hero": {
+    "cta_contact": "Get in Touch",
+    "cta_works": "View Our Work"
+  },
+  "home": {
+    "services_title": "Our Services",
+    "services_subtitle": "End-to-end software development tailored to your business",
+    "why_title": "Why Choose FGS Software",
+    "why_subtitle": "Your reliable partner for Japanese market projects",
+    "team_title": "Meet Our Team",
+    "team_subtitle": "Experienced engineers dedicated to quality delivery",
+    "works_title": "Featured Projects",
+    "works_subtitle": "Real solutions we have delivered for our clients",
+    "testimonials_title": "What Clients Say",
+    "partners_title": "Clients & Partners",
+    "partners_subtitle": "Trusted by teams across Japan and beyond",
+    "cta_title": "Ready to start your project?",
+    "cta_subtitle": "Let's discuss how we can help your business grow",
+    "cta_button": "Contact Us Today",
+    "view_all": "View All"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Building trust through quality software",
+    "mission": "Mission",
+    "vision": "Vision",
+    "values_title": "Core Values",
+    "timeline_title": "Company History",
+    "branches_title": "Branches",
+    "founders_title": "Founding Team",
+    "map_title": "Location",
+    "maps_link": "Open in Google Maps — {city}",
+    "why_japan_title": "Why Japanese Clients Choose Us"
+  },
+  "services": {
+    "title": "Services & Capabilities",
+    "subtitle": "Comprehensive IT outsourcing solutions",
+    "tech_title": "Technology Stack",
+    "tech_subtitle": "Modern tools and frameworks we master",
+    "contact_cta": "Discuss Your Project"
+  },
+  "team": {
+    "title": "Our Team",
+    "subtitle": "Talented engineers ready to join your project",
+    "years": "years experience"
+  },
+  "works": {
+    "title": "Portfolio",
+    "subtitle": "Projects we are proud to have delivered",
+    "filter_all": "All",
+    "filter_web": "Web",
+    "filter_mobile": "Mobile",
+    "filter_api": "API",
+    "filter_other": "Other",
+    "view_details": "View Details",
+    "challenge": "Challenge",
+    "solution": "Solution",
+    "result": "Result",
+    "duration": "Duration",
+    "demo": "Live Demo",
+    "github": "Source Code"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Technical insights and company updates",
+    "read_more": "Read More"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Tell us about your project — we respond within 1–2 business days",
+    "name": "Full Name",
+    "email": "Email Address",
+    "company": "Company Name",
+    "phone": "Phone Number",
+    "project_type": "Project Type",
+    "budget": "Estimated Budget",
+    "message": "Project Description",
+    "submit": "Send Message",
+    "sending": "Sending...",
+    "success": "Your message has been sent successfully!",
+    "error": "Something went wrong. Please try again.",
+    "info_title": "Contact Information",
+    "form_title": "Send us a message",
+    "hours": "Business Hours",
+    "project_types": {
+      "web": "Web Application",
+      "mobile": "Mobile App",
+      "api": "API / Integration",
+      "consulting": "Consulting",
+      "other": "Other"
+    },
+    "budgets": {
+      "under5k": "Under $5,000",
+      "5k15k": "$5,000 – $15,000",
+      "15k50k": "$15,000 – $50,000",
+      "over50k": "Over $50,000",
+      "undecided": "Not decided yet"
+    },
+    "validation": {
+      "name_required": "Please enter your full name",
+      "name_min": "Full name must be at least 2 characters",
+      "email_required": "Please enter your email address",
+      "email_invalid": "Please enter a valid email address",
+      "message_required": "Please enter your project description",
+      "message_min": "Project description must be at least 20 characters",
+      "form_invalid": "Please fill in all required fields correctly"
+    }
+  },
+  "language": {
+    "switch": "Change language",
+    "en": "English",
+    "ja": "Japanese",
+    "vi": "Vietnamese"
+  },
+  "footer": {
+    "tagline": "Your trusted IT outsourcing partner in Vietnam",
+    "rights": "All rights reserved."
+  },
+  "errors": {
+    "not_found_title": "Page not found",
+    "not_found_description": "The page you requested does not exist or has been moved.",
+    "server_title": "Something went wrong",
+    "server_description": "The server encountered an unexpected problem. Please try again in a few minutes.",
+    "server_hint": "If the issue continues, please contact us via the Contact page.",
+    "server_status_label": "Internal Server Error",
+    "error_ref": "Reference",
+    "status_404": "Not Found",
+    "status_500": "Internal Server Error",
+    "status_503": "Service Unavailable",
+    "network_title": "Connection error",
+    "network_description": "Could not reach the server. Check your network and try again.",
+    "bad_request_title": "Invalid request",
+    "bad_request_description": "The submitted data is invalid or incomplete.",
+    "unauthorized_title": "Unauthorized",
+    "unauthorized_description": "You must sign in to access this resource.",
+    "retry": "Try again",
+    "back_home": "Back to home"
+  },
+  "theme": {
+    "switch_to_dark": "Switch to dark mode",
+    "switch_to_light": "Switch to light mode"
+  },
+  "admin": {
+    "login": {
+      "title": "FGS Admin",
+      "subtitle": "Authorized personnel only",
+      "email": "Email",
+      "password": "Password",
+      "remember_me": "Remember me",
+      "remember_password": "Remember email & password",
+      "forgot_password": "Forgot password?",
+      "sign_in": "Sign In",
+      "signing_in": "Signing in...",
+      "back_to_sign_in": "Back to sign in"
+    },
+    "login_success": {
+      "title": "Signed in successfully",
+      "subtitle": "Welcome back to the FGS admin panel."
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "subtitle": "Enter your admin email. We will send a reset link if the account exists.",
+      "send": "Send reset link",
+      "sending": "Sending...",
+      "sent": "If an account exists for this email, a reset link has been sent. Check your inbox."
+    },
+    "reset": {
+      "title": "Set new password",
+      "new_password": "New password",
+      "confirm_password": "Confirm password",
+      "submit": "Update password",
+      "saving": "Saving...",
+      "done": "Password updated. Redirecting to sign in...",
+      "invalid_link": "Invalid or missing reset link."
+    },
+    "errors": {
+      "invalid_credentials": "Email or password is incorrect.",
+      "session_expired": "Your session has expired. Please sign in again.",
+      "network": "Unable to reach the server. Check your connection and try again.",
+      "unknown": "Sign-in failed. Please try again.",
+      "email_invalid": "Please enter a valid email address.",
+      "password_min": "Password must be at least 8 characters.",
+      "password_mismatch": "Passwords do not match.",
+      "reset_invalid": "Unable to reset password. The link may have expired.",
+      "request_failed": "Unable to process request. Please try again."
+    },
+    "settings": {
+      "logout": "Log out",
+      "form": {
+        "section_company": "Company & Contact",
+        "section_social": "Social & Analytics",
+        "section_seo": "SEO",
+        "section_hero": "Homepage Hero",
+        "section_chatbot": "AI Chatbot (Nova)",
+        "section_maps": "Google Maps (Contact page)",
+        "company_name": "Company Name",
+        "admin_email": "Contact Email",
+        "admin_email_cc": "CC Email (optional)",
+        "address": "Contact address (display text)",
+        "phone": "Phone",
+        "working_hours": "Working Hours",
+        "linkedin_url": "LinkedIn URL",
+        "github_url": "GitHub URL",
+        "facebook_url": "Facebook URL",
+        "ga_id": "Google Analytics ID",
+        "meta_title": "Default Meta Title",
+        "meta_description": "Default Meta Description",
+        "hero_headline": "Hero Headline (EN)",
+        "hero_headline_ja": "Hero Headline (JA)",
+        "hero_headline_vi": "Hero Headline (VI)",
+        "hero_subheadline": "Hero Subheadline (EN)",
+        "hero_subheadline_ja": "Hero Subheadline (JA)",
+        "hero_subheadline_vi": "Hero Subheadline (VI)",
+        "chatbot_enabled": "Chatbot Enabled (true/false)",
+        "chatbot_name": "Chatbot Name (EN)",
+        "chatbot_name_ja": "Chatbot Name (JA)",
+        "chatbot_name_vi": "Chatbot Name (VI)",
+        "save": "Save Settings",
+        "saving": "Saving...",
+        "save_success": "Settings saved",
+        "save_failed": "Failed to save settings"
+      },
+      "maps": {
+        "map_address": "Google Maps address",
+        "map_address_placeholder": "Type an address for map search...",
+        "map_address_hint": "Suggestions appear below (OpenStreetMap). Select one or click Apply to set map coordinates. Optional: add GOOGLE_MAPS_API_KEY in .env for Google Places.",
+        "apply_address": "Apply",
+        "maps_link": "Google Maps share link",
+        "maps_link_placeholder": "https://maps.app.goo.gl/... or https://www.google.com/maps/...",
+        "maps_link_hint": "Paste a Google Maps link (short links supported). Coordinates update after you apply.",
+        "apply_link": "Apply link",
+        "apply_coordinates": "Apply coordinates",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "preview": "Map preview",
+        "searching": "Searching...",
+        "location_applied": "Map location updated",
+        "errors": {
+          "place_failed": "Could not load place details. Try another suggestion.",
+          "resolve_failed": "Could not read this Google Maps link. Check the URL and try again.",
+          "geocode_failed": "Could not find coordinates for this address.",
+          "invalid_coordinates": "Enter valid latitude and longitude.",
+          "network": "Network error. Please try again."
+        }
+      }
+    },
+    "founders": {
+      "name": "Member name",
+      "skills": "Skills",
+      "skills_placeholder": "e.g. React, Node.js, TypeScript",
+      "avatar": "Profile photo",
+      "order": "Display order",
+      "visible": "Visible on website",
+      "sync_team": "Also show on Team page",
+      "save": "Save",
+      "saving": "Saving...",
+      "saved": "Saved successfully",
+      "locale_en": "English",
+      "locale_ja": "Japanese",
+      "locale_vi": "Vietnamese",
+      "errors": {
+        "save_failed": "Failed to save. Please try again.",
+        "invalid_type": "Invalid image type.",
+        "file_too_large": "Image is too large (max 5MB).",
+        "upload_failed": "Upload failed. Please try again.",
+        "no_file": "No file selected."
+      },
+      "avatar_editor": {
+        "drop_hint": "Drag & drop image here, or click to browse",
+        "formats": "JPG, PNG, WebP, GIF — max 5MB",
+        "crop_title": "Adjust photo (drag image, resize corners)",
+        "cancel": "Cancel",
+        "apply": "Apply photo",
+        "uploading": "Uploading...",
+        "uploaded": "Photo uploaded",
+        "change_photo": "Change photo"
+      }
+    }
+  },
+  "common": {
+    "learn_more": "Learn More",
+    "back": "Back",
+    "loading": "Loading..."
+  },
+  "chatbot": {
+    "open": "Open chat assistant",
+    "close": "Close chat",
+    "minimize": "Minimize",
+    "subtitle": "AI Assistant · {company}",
+    "welcome": "Hello! I'm {name}, your guide to {company}. I can help you explore our outsourcing services, portfolio, and how we partner with Japanese businesses. How may I assist you today?",
+    "placeholder": "Ask about services, projects, or collaboration...",
+    "send": "Send message",
+    "error": "I'm having trouble connecting right now. Please try again or use our Contact page.",
+    "error_network": "Cannot reach the server. Check your connection and try again.",
+    "error_server": "The server is temporarily unavailable. Please try again later.",
+    "error_invalid": "Your message is invalid. Please check your input.",
+    "error_disabled": "Chatbot is currently disabled. Please use our Contact page.",
+    "human_handoff": "Prefer to talk to our team directly?",
+    "quick": {
+      "services": "Our Services",
+      "pricing": "Budget & Pricing",
+      "japan": "Japan Expertise",
+      "contact": "Contact Team"
+    },
+    "prompts": {
+      "services": "What software development services does FGS Software offer?",
+      "pricing": "How does pricing work for outsourcing projects?",
+      "japan": "What experience do you have with Japanese clients?",
+      "contact": "I'd like to speak with your team about a project."
+    }
+  }
+}

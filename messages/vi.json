@@ -1,0 +1,322 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "services": "Dịch vụ",
+    "team": "Đội ngũ",
+    "works": "Sản phẩm",
+    "blog": "Blog",
+    "contact": "Liên hệ"
+  },
+  "hero": {
+    "cta_contact": "Liên hệ ngay",
+    "cta_works": "Xem dự án"
+  },
+  "home": {
+    "services_title": "Dịch vụ của chúng tôi",
+    "services_subtitle": "Phát triển phần mềm trọn gói phù hợp doanh nghiệp của bạn",
+    "why_title": "Tại sao chọn FGS Software",
+    "why_subtitle": "Đối tác đáng tin cậy cho dự án thị trường Nhật Bản",
+    "team_title": "Đội ngũ của chúng tôi",
+    "team_subtitle": "Kỹ sư giàu kinh nghiệm cam kết chất lượng",
+    "works_title": "Dự án tiêu biểu",
+    "works_subtitle": "Giải pháp thực tế đã giao cho khách hàng",
+    "testimonials_title": "Khách hàng nói gì",
+    "partners_title": "Khách hàng & Đối tác",
+    "partners_subtitle": "Được tin tưởng bởi các đội ngũ tại Nhật Bản và quốc tế",
+    "cta_title": "Sẵn sàng bắt đầu dự án?",
+    "cta_subtitle": "Hãy trao đổi cách chúng tôi giúp doanh nghiệp bạn phát triển",
+    "cta_button": "Liên hệ hôm nay",
+    "view_all": "Xem tất cả"
+  },
+  "about": {
+    "title": "Giới thiệu",
+    "subtitle": "Xây dựng niềm tin qua phần mềm chất lượng",
+    "mission": "Sứ mệnh",
+    "vision": "Tầm nhìn",
+    "values_title": "Giá trị cốt lõi",
+    "timeline_title": "Lịch sử hình thành",
+    "branches_title": "Chi nhánh",
+    "founders_title": "Đội ngũ sáng lập",
+    "map_title": "Vị trí",
+    "maps_link": "Mở Google Maps — {city}",
+    "why_japan_title": "Vì sao khách hàng Nhật chọn chúng tôi"
+  },
+  "services": {
+    "title": "Dịch vụ & Năng lực",
+    "subtitle": "Giải pháp outsourcing IT toàn diện",
+    "tech_title": "Công nghệ sử dụng",
+    "tech_subtitle": "Công cụ và framework hiện đại chúng tôi thành thạo",
+    "contact_cta": "Thảo luận dự án"
+  },
+  "team": {
+    "title": "Đội ngũ",
+    "subtitle": "Kỹ sư tài năng sẵn sàng tham gia dự án của bạn",
+    "years": "năm kinh nghiệm"
+  },
+  "works": {
+    "title": "Portfolio",
+    "subtitle": "Các dự án chúng tôi tự hào đã hoàn thành",
+    "filter_all": "Tất cả",
+    "filter_web": "Web",
+    "filter_mobile": "Mobile",
+    "filter_api": "API",
+    "filter_other": "Khác",
+    "view_details": "Xem chi tiết",
+    "challenge": "Thách thức",
+    "solution": "Giải pháp",
+    "result": "Kết quả",
+    "duration": "Thời gian",
+    "demo": "Demo",
+    "github": "Mã nguồn"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Chia sẻ kỹ thuật và tin tức công ty",
+    "read_more": "Đọc thêm"
+  },
+  "contact": {
+    "title": "Liên hệ",
+    "subtitle": "Mô tả dự án của bạn — chúng tôi phản hồi trong 1–2 ngày làm việc",
+    "name": "Họ và tên",
+    "email": "Email",
+    "company": "Tên công ty",
+    "phone": "Số điện thoại",
+    "project_type": "Loại dự án",
+    "budget": "Ngân sách dự kiến",
+    "message": "Mô tả yêu cầu",
+    "submit": "Gửi tin nhắn",
+    "sending": "Đang gửi...",
+    "success": "Tin nhắn đã được gửi thành công!",
+    "error": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "info_title": "Thông tin liên hệ",
+    "form_title": "Gửi tin nhắn cho chúng tôi",
+    "hours": "Giờ làm việc",
+    "project_types": {
+      "web": "Web Application",
+      "mobile": "Mobile App",
+      "api": "API / Tích hợp",
+      "consulting": "Tư vấn",
+      "other": "Khác"
+    },
+    "budgets": {
+      "under5k": "Dưới $5,000",
+      "5k15k": "$5,000 – $15,000",
+      "15k50k": "$15,000 – $50,000",
+      "over50k": "Trên $50,000",
+      "undecided": "Chưa xác định"
+    },
+    "validation": {
+      "name_required": "Vui lòng nhập họ và tên",
+      "name_min": "Họ và tên phải có ít nhất 2 ký tự",
+      "email_required": "Vui lòng nhập địa chỉ email",
+      "email_invalid": "Vui lòng nhập địa chỉ email hợp lệ",
+      "message_required": "Vui lòng nhập mô tả yêu cầu",
+      "message_min": "Mô tả yêu cầu phải có ít nhất 20 ký tự",
+      "form_invalid": "Vui lòng điền đầy đủ các trường bắt buộc"
+    }
+  },
+  "language": {
+    "switch": "Đổi ngôn ngữ",
+    "en": "Tiếng Anh",
+    "ja": "Tiếng Nhật",
+    "vi": "Tiếng Việt"
+  },
+  "footer": {
+    "tagline": "Đối tác Outsourcing IT đáng tin cậy tại Việt Nam",
+    "rights": "Bảo lưu mọi quyền."
+  },
+  "errors": {
+    "not_found_title": "Không tìm thấy trang",
+    "not_found_description": "Trang bạn truy cập không tồn tại hoặc đã được di chuyển.",
+    "server_title": "Hệ thống đang gặp sự cố",
+    "server_description": "Máy chủ gặp lỗi không mong muốn. Vui lòng thử lại sau vài phút.",
+    "server_hint": "Nếu lỗi vẫn tiếp diễn, vui lòng liên hệ qua trang Liên hệ.",
+    "server_status_label": "Lỗi máy chủ",
+    "error_ref": "Mã tham chiếu",
+    "status_404": "Không tìm thấy",
+    "status_500": "Lỗi máy chủ",
+    "status_503": "Dịch vụ tạm ngưng",
+    "network_title": "Lỗi kết nối",
+    "network_description": "Không thể kết nối máy chủ. Kiểm tra mạng và thử lại.",
+    "bad_request_title": "Yêu cầu không hợp lệ",
+    "bad_request_description": "Dữ liệu gửi lên không đúng định dạng hoặc thiếu thông tin.",
+    "unauthorized_title": "Chưa được phép",
+    "unauthorized_description": "Bạn cần đăng nhập để truy cập nội dung này.",
+    "retry": "Thử lại",
+    "back_home": "Về trang chủ"
+  },
+  "theme": {
+    "switch_to_dark": "Chuyển sang chế độ tối",
+    "switch_to_light": "Chuyển sang chế độ sáng"
+  },
+  "admin": {
+    "login": {
+      "title": "FGS Admin",
+      "subtitle": "Chỉ dành cho quản trị viên",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "remember_me": "Ghi nhớ đăng nhập",
+      "remember_password": "Ghi nhớ mật khẩu",
+      "forgot_password": "Quên mật khẩu?",
+      "sign_in": "Đăng nhập",
+      "signing_in": "Đang đăng nhập...",
+      "back_to_sign_in": "Quay lại đăng nhập"
+    },
+    "login_success": {
+      "title": "Đăng nhập thành công",
+      "subtitle": "Chào mừng trở lại bảng quản trị FGS."
+    },
+    "forgot": {
+      "title": "Quên mật khẩu",
+      "subtitle": "Nhập email admin. Chúng tôi sẽ gửi link đặt lại nếu tài khoản tồn tại.",
+      "send": "Gửi link đặt lại",
+      "sending": "Đang gửi...",
+      "sent": "Nếu tài khoản tồn tại, link đặt lại đã được gửi. Vui lòng kiểm tra hộp thư."
+    },
+    "reset": {
+      "title": "Đặt mật khẩu mới",
+      "new_password": "Mật khẩu mới",
+      "confirm_password": "Xác nhận mật khẩu",
+      "submit": "Cập nhật mật khẩu",
+      "saving": "Đang lưu...",
+      "done": "Đã cập nhật mật khẩu. Đang chuyển về trang đăng nhập...",
+      "invalid_link": "Link đặt lại không hợp lệ hoặc đã hết hạn."
+    },
+    "errors": {
+      "invalid_credentials": "Email hoặc mật khẩu không đúng.",
+      "session_expired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+      "network": "Không thể kết nối máy chủ. Kiểm tra kết nối và thử lại.",
+      "unknown": "Đăng nhập thất bại. Vui lòng thử lại.",
+      "email_invalid": "Vui lòng nhập email hợp lệ.",
+      "password_min": "Mật khẩu phải có ít nhất 8 ký tự.",
+      "password_mismatch": "Mật khẩu xác nhận không khớp.",
+      "reset_invalid": "Không thể đặt lại mật khẩu. Link có thể đã hết hạn.",
+      "request_failed": "Không thể xử lý yêu cầu. Vui lòng thử lại."
+    },
+    "settings": {
+      "logout": "Đăng xuất",
+      "form": {
+        "section_company": "Công ty & Liên hệ",
+        "section_social": "Mạng xã hội & Analytics",
+        "section_seo": "SEO",
+        "section_hero": "Hero trang chủ",
+        "section_chatbot": "Chatbot AI (Nova)",
+        "section_maps": "Google Maps (trang Liên hệ)",
+        "company_name": "Tên công ty",
+        "admin_email": "Email liên hệ",
+        "admin_email_cc": "Email CC (tùy chọn)",
+        "address": "Địa chỉ liên hệ (hiển thị trên web)",
+        "phone": "Điện thoại",
+        "working_hours": "Giờ làm việc",
+        "linkedin_url": "LinkedIn URL",
+        "github_url": "GitHub URL",
+        "facebook_url": "Facebook URL",
+        "ga_id": "Google Analytics ID",
+        "meta_title": "Meta Title mặc định",
+        "meta_description": "Meta Description mặc định",
+        "hero_headline": "Hero Headline (EN)",
+        "hero_headline_ja": "Hero Headline (JA)",
+        "hero_headline_vi": "Hero Headline (VI)",
+        "hero_subheadline": "Hero Subheadline (EN)",
+        "hero_subheadline_ja": "Hero Subheadline (JA)",
+        "hero_subheadline_vi": "Hero Subheadline (VI)",
+        "chatbot_enabled": "Bật chatbot (true/false)",
+        "chatbot_name": "Tên chatbot (EN)",
+        "chatbot_name_ja": "Tên chatbot (JA)",
+        "chatbot_name_vi": "Tên chatbot (VI)",
+        "save": "Lưu cài đặt",
+        "saving": "Đang lưu...",
+        "save_success": "Đã lưu cài đặt",
+        "save_failed": "Lưu cài đặt thất bại"
+      },
+      "maps": {
+        "map_address": "Địa chỉ Google Maps",
+        "map_address_placeholder": "Nhập địa chỉ để tìm trên bản đồ...",
+        "map_address_hint": "Gợi ý hiển thị bên dưới (OpenStreetMap). Chọn một mục hoặc bấm Áp dụng để đặt tọa độ. Tùy chọn: thêm GOOGLE_MAPS_API_KEY trong .env để dùng Google Places.",
+        "apply_address": "Áp dụng",
+        "maps_link": "Link chia sẻ Google Maps",
+        "maps_link_placeholder": "https://maps.app.goo.gl/... hoặc https://www.google.com/maps/...",
+        "maps_link_hint": "Dán link Google Maps (hỗ trợ link rút). Tọa độ cập nhật sau khi áp dụng link.",
+        "apply_link": "Áp dụng link",
+        "apply_coordinates": "Áp dụng tọa độ",
+        "latitude": "Vĩ độ",
+        "longitude": "Kinh độ",
+        "preview": "Xem trước bản đồ",
+        "searching": "Đang tìm...",
+        "location_applied": "Đã cập nhật vị trí bản đồ",
+        "errors": {
+          "place_failed": "Không tải được địa điểm. Hãy chọn gợi ý khác.",
+          "resolve_failed": "Không đọc được link Google Maps. Kiểm tra URL và thử lại.",
+          "geocode_failed": "Không tìm được tọa độ cho địa chỉ này.",
+          "invalid_coordinates": "Vui lòng nhập vĩ độ và kinh độ hợp lệ.",
+          "network": "Lỗi mạng. Vui lòng thử lại."
+        }
+      }
+    },
+    "founders": {
+      "name": "Tên thành viên",
+      "skills": "Kỹ năng",
+      "skills_placeholder": "VD: React, Node.js, TypeScript",
+      "avatar": "Ảnh đại diện",
+      "order": "Thứ tự hiển thị",
+      "visible": "Hiển thị trên website",
+      "sync_team": "Hiển thị thêm tại trang Đội ngũ",
+      "save": "Lưu",
+      "saving": "Đang lưu...",
+      "saved": "Đã lưu thành công",
+      "locale_en": "Tiếng Anh",
+      "locale_ja": "Tiếng Nhật",
+      "locale_vi": "Tiếng Việt",
+      "errors": {
+        "save_failed": "Lưu thất bại. Vui lòng thử lại.",
+        "invalid_type": "Định dạng ảnh không hợp lệ.",
+        "file_too_large": "Ảnh quá lớn (tối đa 5MB).",
+        "upload_failed": "Tải ảnh thất bại.",
+        "no_file": "Chưa chọn file."
+      },
+      "avatar_editor": {
+        "drop_hint": "Kéo thả ảnh vào đây hoặc bấm để chọn",
+        "formats": "JPG, PNG, WebP, GIF — tối đa 5MB",
+        "crop_title": "Chỉnh ảnh (kéo ảnh, kéo góc để đổi kích thước)",
+        "cancel": "Hủy",
+        "apply": "Áp dụng ảnh",
+        "uploading": "Đang tải lên...",
+        "uploaded": "Đã tải ảnh lên",
+        "change_photo": "Đổi ảnh"
+      }
+    }
+  },
+  "common": {
+    "learn_more": "Tìm hiểu thêm",
+    "back": "Quay lại",
+    "loading": "Đang tải..."
+  },
+  "chatbot": {
+    "open": "Mở trợ lý chat",
+    "close": "Đóng",
+    "minimize": "Thu nhỏ",
+    "subtitle": "Trợ lý AI · {company}",
+    "welcome": "Xin chào! Tôi là {name}, hướng dẫn viên của {company}. Tôi có thể giúp bạn tìm hiểu dịch vụ outsourcing, dự án và hợp tác với doanh nghiệp Nhật Bản. Tôi có thể hỗ trợ gì hôm nay?",
+    "placeholder": "Hỏi về dịch vụ, dự án hoặc hợp tác...",
+    "send": "Gửi",
+    "error": "Đang gặp sự cố kết nối. Vui lòng thử lại hoặc dùng trang Liên hệ.",
+    "error_network": "Không thể kết nối máy chủ. Kiểm tra mạng và thử lại.",
+    "error_server": "Máy chủ tạm thời không phản hồi. Vui lòng thử lại sau.",
+    "error_invalid": "Tin nhắn không hợp lệ. Vui lòng kiểm tra nội dung nhập.",
+    "error_disabled": "Chatbot đang tắt. Vui lòng dùng trang Liên hệ.",
+    "human_handoff": "Muốn trao đổi trực tiếp với đội ngũ?",
+    "quick": {
+      "services": "Dịch vụ",
+      "pricing": "Ngân sách",
+      "japan": "Kinh nghiệm Nhật Bản",
+      "contact": "Liên hệ team"
+    },
+    "prompts": {
+      "services": "FGS Software cung cấp những dịch vụ phát triển phần mềm nào?",
+      "pricing": "Mô hình báo giá outsourcing như thế nào?",
+      "japan": "Công ty có kinh nghiệm với khách hàng Nhật Bản không?",
+      "contact": "Tôi muốn trao đổi với team về một dự án."
+    }
+  }
+}

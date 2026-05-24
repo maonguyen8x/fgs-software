@@ -1,0 +1,300 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+model TeamMember {
+  id         String   @id @default(cuid())
+  name       String
+  role       String
+  roleJa     String?
+  roleVi     String?
+  bio        String?
+  bioJa      String?
+  bioVi      String?
+  avatar     String?
+  experience Int?
+  skills     String[]
+  linkedin   String?
+  github     String?
+  order      Int      @default(0)
+  isVisible  Boolean  @default(true)
+  featured   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Service {
+  id            String   @id @default(cuid())
+  icon          String
+  title         String
+  titleJa       String?
+  titleVi       String?
+  description   String
+  descriptionJa String?
+  descriptionVi String?
+  techStack     String[]
+  order         Int      @default(0)
+  isVisible     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Work {
+  id            String   @id @default(cuid())
+  title         String
+  titleJa       String?
+  titleVi       String?
+  slug          String   @unique
+  summary       String
+  summaryJa     String?
+  summaryVi     String?
+  description   String
+  descriptionJa String?
+  descriptionVi String?
+  thumbnail     String?
+  gallery       String[]
+  techStack     String[]
+  category      String
+  duration      String?
+  demoUrl       String?
+  githubUrl     String?
+  order         Int      @default(0)
+  isVisible     Boolean  @default(true)
+  featured      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  title       String
+  titleJa     String?
+  titleVi     String?
+  slug        String    @unique
+  summary     String
+  summaryJa   String?
+  summaryVi   String?
+  content     String
+  contentJa   String?
+  contentVi   String?
+  thumbnail   String?
+  tags        String[]
+  status      String    @default("draft")
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  company     String?
+  phone       String?
+  projectType String?
+  budget      String?
+  message     String
+  status      String   @default("unread")
+  createdAt   DateTime @default(now())
+}
+
+model Setting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
+
+model Stat {
+  id        String   @id @default(cuid())
+  label     String
+  labelJa   String?
+  labelVi   String?
+  value     String
+  suffix    String?
+  order     Int      @default(0)
+  isVisible Boolean  @default(true)
+}
+
+model WhyChooseUs {
+  id            String  @id @default(cuid())
+  icon          String
+  title         String
+  titleJa       String?
+  titleVi       String?
+  description   String
+  descriptionJa String?
+  descriptionVi String?
+  order         Int     @default(0)
+  isVisible     Boolean @default(true)
+}
+
+model Testimonial {
+  id            String  @id @default(cuid())
+  quote         String
+  quoteJa       String?
+  quoteVi       String?
+  author        String
+  company       String?
+  companyJa     String?
+  companyVi     String?
+  order         Int     @default(0)
+  isVisible     Boolean @default(true)
+}
+
+model TechStack {
+  id        String  @id @default(cuid())
+  name      String
+  category  String
+  logoUrl   String?
+  order     Int     @default(0)
+  isVisible Boolean @default(true)
+}
+
+model AboutContent {
+  id              String  @id @default(cuid())
+  section         String  @unique
+  title           String?
+  titleJa         String?
+  titleVi         String?
+  content         String
+  contentJa       String?
+  contentVi       String?
+  updatedAt       DateTime @updatedAt
+}
+
+model Founder {
+  id            String   @id @default(cuid())
+  name          String
+  role          String
+  roleJa        String?
+  roleVi        String?
+  slogan        String?
+  sloganJa      String?
+  sloganVi      String?
+  bio           String?
+  bioJa         String?
+  bioVi         String?
+  skills        String[] @default([])
+  avatar        String?
+  teamMemberId  String?  @unique
+  order         Int      @default(0)
+  isVisible     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model TimelineMilestone {
+  id            String  @id @default(cuid())
+  milestoneDate String
+  title         String
+  titleJa       String?
+  titleVi       String?
+  description   String?
+  descriptionJa String?
+  descriptionVi String?
+  order         Int     @default(0)
+  isVisible     Boolean @default(true)
+}
+
+model CoreValue {
+  id            String  @id @default(cuid())
+  icon          String
+  title         String
+  titleJa       String?
+  titleVi       String?
+  description   String
+  descriptionJa String?
+  descriptionVi String?
+  order         Int     @default(0)
+  isVisible     Boolean @default(true)
+}
+
+model CompanyBranch {
+  id              String  @id @default(cuid())
+  name            String
+  nameJa          String?
+  nameVi          String?
+  city            String
+  cityJa          String?
+  cityVi          String?
+  address         String
+  addressJa       String?
+  addressVi       String?
+  latitude        Float
+  longitude       Float
+  isHeadquarters  Boolean @default(false)
+  order           Int     @default(0)
+  isVisible       Boolean @default(true)
+}
+
+model ChatSession {
+  id        String        @id @default(cuid())
+  sessionId String        @unique
+  locale    String        @default("en")
+  visitorName String?
+  email     String?
+  company   String?
+  status    String        @default("active")
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  messages  ChatMessage[]
+}
+
+model ChatMessage {
+  id        String      @id @default(cuid())
+  sessionId String
+  session   ChatSession @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade)
+  role      String
+  content   String
+  createdAt DateTime    @default(now())
+
+  @@index([sessionId])
+}
+
+model Partner {
+  id         String  @id @default(cuid())
+  name       String
+  nameJa     String?
+  nameVi     String?
+  logoUrl    String?
+  websiteUrl String?
+  order      Int     @default(0)
+  isVisible  Boolean @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model AiProvider {
+  id           String  @id @default(cuid())
+  providerType String
+  displayName  String
+  apiKey       String?
+  model        String
+  isEnabled    Boolean @default(true)
+  order        Int     @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
