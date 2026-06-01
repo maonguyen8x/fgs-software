@@ -15,13 +15,17 @@ const schema = z.object({
 export async function GET() {
   const { error } = await requireAdminSession();
   if (error) return error;
-  const rows = await prisma.aiProvider.findMany({ orderBy: { order: "asc" } });
-  return NextResponse.json(
-    rows.map((r) => ({
+  const [rows, activeSetting] = await Promise.all([
+    prisma.aiProvider.findMany({ orderBy: { order: "asc" } }),
+    prisma.setting.findUnique({ where: { key: "ai_provider" } }),
+  ]);
+  return NextResponse.json({
+    activeProvider: activeSetting?.value?.trim() || process.env.AI_PROVIDER?.toLowerCase() || "auto",
+    providers: rows.map((r) => ({
       ...r,
       apiKey: r.apiKey ? "••••••••" : null,
-    }))
-  );
+    })),
+  });
 }
 
 export async function POST(request: Request) {

@@ -1,9 +1,13 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { ContentBlock } from "@/components/ui/ContentBlock";
 import { GoogleMapEmbed } from "@/components/contact/GoogleMapEmbed";
 import { getCachedBranches } from "@/lib/cache/queries";
 import { getSettingsMapSafe } from "@/lib/settings-safe";
+import { fetchPageBlockMap } from "@/lib/cache/safe-page-blocks";
+import { getPageBlockSubtitle, getPageBlockTitle } from "@/lib/page-content";
+import type { Locale } from "@/i18n/routing";
 
 export const revalidate = 300;
 
@@ -15,8 +19,15 @@ export default async function ContactPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("contact");
-  const settings = await getSettingsMapSafe();
-  const branches = await getCachedBranches();
+  const loc = locale as Locale;
+  const [settings, branches, blocks] = await Promise.all([
+    getSettingsMapSafe(),
+    getCachedBranches(),
+    fetchPageBlockMap("contact"),
+  ]);
+  const headerTitle = getPageBlockTitle(blocks, "page_header", loc, t("title"));
+  const headerSubtitle = getPageBlockSubtitle(blocks, "page_header", loc, t("subtitle"));
+  const headerLead = headerSubtitle || headerTitle;
   const hq = branches.find((b) => b.isHeadquarters) ?? branches[0];
 
   const address =
@@ -30,13 +41,14 @@ export default async function ContactPage({
   const embedUrl = settings.google_maps_embed_url;
 
   return (
-    <div>
-      <section className="page-hero section-padding-compact">
-        <div className="container-narrow text-center">
-          <h1 className="page-title text-3xl font-bold md:text-4xl">{t("title")}</h1>
-          <p className="page-subtitle mt-3 text-base md:text-lg">{t("subtitle")}</p>
-        </div>
-      </section>
+    <div className="bg-linear-to-b from-amber-50/45 via-white to-rose-50/35">
+      <PageHeader
+        title={headerTitle}
+        subtitle={headerLead}
+        variant="contact"
+        promoteSubtitle
+        backgroundColor={settings.page_header_contact_bg}
+      />
 
       <section className="page-section">
         <div className="container-narrow grid gap-6 lg:grid-cols-2">

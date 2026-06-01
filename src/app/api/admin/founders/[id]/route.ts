@@ -39,26 +39,27 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       },
     });
 
-    if (data.syncToTeam !== false) {
+    const shouldSync = data.syncToTeam !== false;
+    if (shouldSync) {
       await syncFounderToTeam(founder, {
-        name: founder.name,
-        role: founder.role,
-        roleJa: founder.roleJa ?? undefined,
-        roleVi: founder.roleVi ?? undefined,
-        slogan: founder.slogan ?? undefined,
-        sloganJa: founder.sloganJa ?? undefined,
-        sloganVi: founder.sloganVi ?? undefined,
-        bio: founder.bio ?? undefined,
-        bioJa: founder.bioJa ?? undefined,
-        bioVi: founder.bioVi ?? undefined,
-        avatar: founder.avatar ?? undefined,
-        skills: founder.skills,
-        order: founder.order,
-        isVisible: founder.isVisible,
+        name: data.name ?? founder.name,
+        role: data.role ?? founder.role,
+        roleJa: data.roleJa ?? founder.roleJa ?? undefined,
+        roleVi: data.roleVi ?? founder.roleVi ?? undefined,
+        slogan: data.slogan ?? founder.slogan ?? undefined,
+        sloganJa: data.sloganJa ?? founder.sloganJa ?? undefined,
+        sloganVi: data.sloganVi ?? founder.sloganVi ?? undefined,
+        bio: data.bio ?? founder.bio ?? undefined,
+        bioJa: data.bioJa ?? founder.bioJa ?? undefined,
+        bioVi: data.bioVi ?? founder.bioVi ?? undefined,
+        avatar: data.avatar ?? founder.avatar ?? undefined,
+        skills: data.skills ?? founder.skills,
+        order: data.order ?? founder.order,
+        isVisible: data.isVisible ?? founder.isVisible,
       });
     }
 
-    afterAdminMutation(CACHE_TAGS.founders);
+    afterAdminMutation(CACHE_TAGS.founders, ...(shouldSync ? [CACHE_TAGS.team] : []));
     const updated = await prisma.founder.findUnique({ where: { id } });
     return NextResponse.json(updated ?? founder);
   } catch (e) {

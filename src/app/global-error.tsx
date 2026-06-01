@@ -2,6 +2,7 @@
 
 import "./globals.css";
 import { LocalizedErrorPage } from "@/components/errors/LocalizedErrorPage";
+import { logger } from "@/lib/logger";
 
 export default function RootGlobalError({
   error,
@@ -10,7 +11,10 @@ export default function RootGlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  console.error(error);
+  logger.error("Global error boundary", {
+    message: error.message,
+    digest: error.digest,
+  });
   return (
     <html lang="vi" suppressHydrationWarning>
       <body className="bg-theme font-sans antialiased">

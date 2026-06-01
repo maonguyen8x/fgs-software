@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LocaleTabs } from "./LocaleTabs";
-import { toast } from "sonner";
+import { ImageUploadField } from "./ImageUploadField";
+import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 
 interface WorkFormProps {
   initial?: {
@@ -92,10 +93,10 @@ export function WorkForm({ initial }: WorkFormProps) {
     });
     setLoading(false);
     if (!res.ok) {
-      toast.error("Failed to save work");
+      showAdminErrorToast("Failed to save work");
       return;
     }
-    toast.success("Work saved");
+    showAdminSuccessToast("Work saved");
     router.push("/admin/works");
     router.refresh();
   };
@@ -130,9 +131,13 @@ export function WorkForm({ initial }: WorkFormProps) {
           <Label>Tech stack (comma-separated)</Label>
           <Input className="mt-1" value={form.techStack} onChange={(e) => update("techStack", e.target.value)} />
         </div>
-        <div>
-          <Label>Thumbnail URL</Label>
-          <Input className="mt-1" value={form.thumbnail} onChange={(e) => update("thumbnail", e.target.value)} />
+        <div className="md:col-span-2">
+          <ImageUploadField
+            label="Product thumbnail"
+            hint="Shown on Portfolio / Sản phẩm pages"
+            value={form.thumbnail}
+            onChange={(url) => update("thumbnail", url)}
+          />
         </div>
         <div>
           <Label>Demo URL</Label>

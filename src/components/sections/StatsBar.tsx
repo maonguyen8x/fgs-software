@@ -53,7 +53,7 @@ export function StatsBar({ stats, locale }: StatsBarProps) {
         {stats.map((stat, i) => (
           <motion.div
             key={stat.id}
-            initial={{ opacity: 0, y: 16 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}

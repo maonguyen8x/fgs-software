@@ -2,6 +2,7 @@ import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/db";
 import { CACHE_TAGS } from "./tags";
 import { withRedisCache } from "./redis-store";
+import { fetchVisibleActivities } from "./activities-query";
 
 const REVALIDATE_SECONDS = 300;
 
@@ -107,6 +108,12 @@ export const getCachedTimeline = unstable_cache(
     }),
   ["timeline-list"],
   { revalidate: REVALIDATE_SECONDS, tags: [CACHE_TAGS.timeline] }
+);
+
+export const getCachedActivities = unstable_cache(
+  async () => fetchVisibleActivities(),
+  ["activities-list"],
+  { revalidate: REVALIDATE_SECONDS, tags: [CACHE_TAGS.activities] }
 );
 
 export const getCachedCoreValues = unstable_cache(

@@ -50,24 +50,29 @@ export function GoogleMapsAddressField({ values, onChange }: MapValuesProps) {
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fetchSeqRef = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const mapAddress = values[MAP_SETTING_KEYS.mapAddress] ?? "";
 
   const fetchSuggestions = useCallback(async (query: string) => {
-    if (query.trim().length < 3) {
+    const trimmed = query.trim();
+    if (trimmed.length < 3) {
       setSuggestions([]);
       return;
     }
+    const seq = ++fetchSeqRef.current;
     setLoadingSuggestions(true);
     try {
-      const res = await fetch(`/api/admin/maps/autocomplete?input=${encodeURIComponent(query)}`);
+      const res = await fetch(`/api/admin/maps/autocomplete?input=${encodeURIComponent(trimmed)}`);
       const data = await res.json();
+      if (seq !== fetchSeqRef.current) return;
       setSuggestions(data.suggestions ?? []);
     } catch {
+      if (seq !== fetchSeqRef.current) return;
       setSuggestions([]);
     } finally {
-      setLoadingSuggestions(false);
+      if (seq === fetchSeqRef.current) setLoadingSuggestions(false);
     }
   }, []);
 
@@ -139,6 +144,9 @@ export function GoogleMapsAddressField({ values, onChange }: MapValuesProps) {
   const handleChange = (value: string) => {
     onChange({ [MAP_SETTING_KEYS.mapAddress]: value });
     setShowSuggestions(true);
+    if (value.trim().length < 3) {
+      setSuggestions([]);
+    }
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       void fetchSuggestions(value);

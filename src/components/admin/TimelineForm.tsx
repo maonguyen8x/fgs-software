@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { RequiredLabel } from "@/components/ui/RequiredLabel";
 import { Label } from "@/components/ui/label";
 import { LocaleTabs } from "./LocaleTabs";
+import { ImageUrlsField } from "./ImageUrlsField";
 import { toast } from "sonner";
 
 interface TimelineFormProps {
@@ -19,6 +20,8 @@ interface TimelineFormProps {
     description?: string | null;
     descriptionJa?: string | null;
     descriptionVi?: string | null;
+    memberCount?: number;
+    images?: string[];
     order: number;
     isVisible: boolean;
   };
@@ -35,6 +38,8 @@ export function TimelineForm({ initial }: TimelineFormProps) {
     description: initial?.description ?? "",
     descriptionJa: initial?.descriptionJa ?? "",
     descriptionVi: initial?.descriptionVi ?? "",
+    memberCount: initial?.memberCount?.toString() ?? "0",
+    images: initial?.images ?? [],
     order: initial?.order?.toString() ?? "0",
     isVisible: initial?.isVisible ?? true,
   });
@@ -52,6 +57,8 @@ export function TimelineForm({ initial }: TimelineFormProps) {
       description: form.description || undefined,
       descriptionJa: form.descriptionJa || undefined,
       descriptionVi: form.descriptionVi || undefined,
+      memberCount: parseInt(form.memberCount, 10) || 0,
+      images: form.images,
       order: parseInt(form.order, 10) || 0,
       isVisible: form.isVisible,
     };
@@ -88,8 +95,39 @@ export function TimelineForm({ initial }: TimelineFormProps) {
           required
         />
       </div>
-      <LocaleTabs prefix="title" labels={tabLabels} values={form} onChange={update} required />
-      <LocaleTabs prefix="description" labels={tabLabels} values={form} onChange={update} multiline />
+      <LocaleTabs
+        prefix="title"
+        labels={tabLabels}
+        values={{ title: form.title, titleJa: form.titleJa, titleVi: form.titleVi }}
+        onChange={update}
+        required
+      />
+      <LocaleTabs
+        prefix="description"
+        labels={tabLabels}
+        values={{
+          description: form.description,
+          descriptionJa: form.descriptionJa,
+          descriptionVi: form.descriptionVi,
+        }}
+        onChange={update}
+        multiline
+      />
+      <div>
+        <Label>Team members at this milestone</Label>
+        <Input
+          type="number"
+          min={0}
+          className="mt-1 w-32"
+          value={form.memberCount}
+          onChange={(e) => update("memberCount", e.target.value)}
+        />
+      </div>
+      <ImageUrlsField
+        label="Milestone images"
+        urls={form.images}
+        onChange={(images) => setForm((f) => ({ ...f, images }))}
+      />
       <div>
         <Label>Order</Label>
         <Input type="number" className="mt-1 w-32" value={form.order} onChange={(e) => update("order", e.target.value)} />

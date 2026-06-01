@@ -3,17 +3,17 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
-  --color-primary-950: #172554;
+  --color-primary-50: var(--theme-primary-50, #eff6ff);
+  --color-primary-100: var(--theme-primary-100, #dbeafe);
+  --color-primary-200: var(--theme-primary-200, #bfdbfe);
+  --color-primary-300: var(--theme-primary-300, #93c5fd);
+  --color-primary-400: var(--theme-primary-400, #60a5fa);
+  --color-primary-500: var(--theme-primary-500, #3b82f6);
+  --color-primary-600: var(--theme-primary-600, #2563eb);
+  --color-primary-700: var(--theme-primary-700, #1d4ed8);
+  --color-primary-800: var(--theme-primary-800, #1e40af);
+  --color-primary-900: var(--theme-primary-900, #1e3a8a);
+  --color-primary-950: var(--theme-primary-950, #172554);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-jp: var(--font-noto-jp), var(--font-inter), sans-serif;
@@ -95,11 +95,59 @@
   .page-hero {
     background: linear-gradient(135deg, var(--surface-muted) 0%, var(--background) 55%, var(--surface-muted) 100%);
   }
+
+  .home-hero {
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-primary-50) 70%, var(--background)) 0%,
+      var(--background) 45%,
+      color-mix(in srgb, var(--color-primary-100) 35%, var(--background)) 100%
+    );
+  }
+
+  .dark .home-hero {
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-primary-950) 80%, var(--background)) 0%,
+      var(--background) 50%,
+      #020617 100%
+    );
+  }
+
+  .home-hero-visual-card {
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .home-section {
+    position: relative;
+  }
+
+  .home-section-muted {
+    background: linear-gradient(
+      180deg,
+      var(--surface-muted) 0%,
+      color-mix(in srgb, var(--color-primary-50) 25%, var(--surface-muted)) 100%
+    );
+  }
+
+  .dark .home-section-muted {
+    background: linear-gradient(180deg, var(--surface-muted) 0%, #0f172a 100%);
+  }
   .page-title {
     color: var(--heading);
   }
   .page-subtitle {
     color: var(--muted);
+  }
+
+  .surface-block {
+    @apply rounded-xl border border-slate-200/90 p-5 shadow-sm transition-shadow duration-300 md:rounded-2xl md:p-6;
+    background-color: var(--surface);
+  }
+
+  .dark .surface-block {
+    @apply border-slate-700/80;
   }
 
   .content-block {
@@ -195,5 +243,37 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes map-marker-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0.7;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.35);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.35);
+    opacity: 0;
+  }
+}
+
+.map-marker-pulse {
+  animation: map-marker-pulse 2s ease-out infinite;
+}
+
+.map-marker-pulse-delay {
+  animation-delay: 0.65s;
+}
+
+@keyframes timeline-line-draw {
+  from {
+    stroke-dashoffset: 1200;
+  }
+  to {
+    stroke-dashoffset: 0;
   }
 }

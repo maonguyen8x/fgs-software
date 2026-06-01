@@ -1,69 +1,68 @@
 # Nova Chatbot — AI Setup Guide
 
-## Why answers feel generic
+Nova uses **real large language models** (Google Gemini 2.0 Flash or OpenAI). Answers are generated from live company data in the database — there is **no hardcoded Q&A** in application code.
 
-Without an AI API key, Nova uses a **rule-based fallback** (keyword matching + company knowledge snippets). It cannot truly understand free-form questions like *"Bạn là ai? bạn có thể tư vấn gì?"* the way a large language model can.
+Without a valid API key, Nova returns `AI_UNAVAILABLE` and directs users to the Contact page.
 
-For accurate, flexible answers you should enable **OpenAI** or **Google Gemini**.
+## Recommended: Gemini 2.0 Flash (free tier)
 
-## Recommended approach
-
-| Layer | Purpose |
-|--------|---------|
-| **PostgreSQL** | Services, works, settings, team — source of truth |
-| **System prompt + RAG context** | Inject live company data into each AI request (`buildCompanyKnowledge`) |
-| **OpenAI or Gemini** | Natural language understanding and replies in the site locale |
-| **Next.js `unstable_cache` + Redis** | Fast reads; optional `REDIS_URL` for multi-instance deployments |
-
-### OpenAI (recommended default)
-
-1. Create an API key at [platform.openai.com](https://platform.openai.com).
+1. Create an API key at [Google AI Studio](https://aistudio.google.com/apikey)
 2. Add to `.env`:
+
+```env
+GOOGLE_AI_API_KEY=your-key-here
+GEMINI_MODEL=gemini-2.0-flash
+AI_PROVIDER=auto
+```
+
+## OpenAI (optional)
 
 ```env
 OPENAI_API_KEY=sk-...
 OPENAI_MODEL=gpt-4o-mini
-AI_PROVIDER=openai
 ```
 
-Cost-effective models: `gpt-4o-mini`, `gpt-4.1-mini`.
+Requires billing/quota on your OpenAI account.
 
-### Google Gemini (alternative)
+## Architecture
 
-1. Create an API key in [Google AI Studio](https://aistudio.google.com/apikey).
-2. Add to `.env`:
-
-```env
-GOOGLE_AI_API_KEY=...
-GEMINI_MODEL=gemini-2.0-flash
-AI_PROVIDER=gemini
-```
-
-If both keys exist and `AI_PROVIDER` is unset, **OpenAI is preferred**, then Gemini, then fallback.
+| Layer | Purpose |
+|--------|---------|
+| **PostgreSQL** | Services, works, settings, team — source of truth |
+| **System prompt + context** | Inject live company data into each AI request (`buildCompanyKnowledge`) |
+| **Gemini / OpenAI / Anthropic** | Natural language understanding and replies in the site locale |
+| **Next.js cache + Redis** | Fast reads; optional `REDIS_URL` |
 
 ## Provider priority
 
 ```
-AI_PROVIDER=openai  → OpenAI only (if key present)
-AI_PROVIDER=gemini  → Gemini only (if key present)
-(unset)             → OpenAI → Gemini → fallback
+AI_PROVIDER=auto    → Gemini → OpenAI → Anthropic (recommended)
+AI_PROVIDER=gemini  → Gemini first, then others if Gemini fails
+AI_PROVIDER=openai  → OpenAI first, then others if OpenAI fails
 ```
 
-## Improving answer quality
+## Admin setup
 
-1. Keep **admin content** up to date (services, works, settings) — the AI only knows what is in the knowledge base.
-2. Use a capable model for complex sales questions (`gpt-4o` or `gemini-2.0-flash`).
-3. Do **not** hardcode Q&A in code; extend the database and let `buildCompanyKnowledge` include new sections.
+1. **Admin → Settings → AI Providers**
+2. Click **Import from .env**
+3. Use **Test connection**
 
-## Redis (optional)
+## Verify locally
 
-```env
-REDIS_URL=redis://localhost:6379
+```bash
+npx tsx scripts/test-nova-ai.ts
+node scripts/test-nova-chat.mjs   # requires dev server on :3000
 ```
 
-Caches frequent reads for 5 minutes and clears on admin save. Works without Redis (Next.js cache only).
+## Troubleshooting
+
+| Symptom | Fix |
+|--------|-----|
+| `AI_UNAVAILABLE` | Add `GOOGLE_AI_API_KEY` or fix OpenAI billing |
+| OpenAI `insufficient_quota` | Use Gemini free tier or top up OpenAI |
+| Wrong/generic answers | Update admin content; re-import .env keys |
 
 ## Security
 
-- Never expose API keys to the browser; chat runs server-side via `/api/chat`.
-- Keys stay in `.env` only (not committed).
+- API keys stay server-side (`.env` / admin DB only)
+- Chat runs via `/api/chat` — never expose keys to the browser

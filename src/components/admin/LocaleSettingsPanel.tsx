@@ -2,25 +2,22 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LocaleTabs } from "./LocaleTabs";
-import { toast } from "sonner";
+import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 import { Save, Globe } from "lucide-react";
 
-const LOCALES = [
-  { code: "en", flag: "🇺🇸", label: "English" },
-  { code: "ja", flag: "🇯🇵", label: "日本語" },
-  { code: "vi", flag: "🇻🇳", label: "Tiếng Việt" },
-] as const;
+const LOCALE_CODES = ["en", "ja", "vi"] as const;
 
 interface LocaleSettingsPanelProps {
   settings: Record<string, string>;
 }
 
 export function LocaleSettingsPanel({ settings: initial }: LocaleSettingsPanelProps) {
+  const t = useTranslations("admin.settings.locale_panel");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -33,6 +30,12 @@ export function LocaleSettingsPanel({ settings: initial }: LocaleSettingsPanelPr
   });
 
   const update = (field: string, value: string) => setForm((f) => ({ ...f, [field]: value }));
+
+  const localeMeta: Record<(typeof LOCALE_CODES)[number], { flag: string; label: string }> = {
+    en: { flag: "🇺🇸", label: t("lang_en") },
+    ja: { flag: "🇯🇵", label: t("lang_ja") },
+    vi: { flag: "🇻🇳", label: t("lang_vi") },
+  };
 
   const handleSave = async () => {
     setLoading(true);
@@ -53,63 +56,60 @@ export function LocaleSettingsPanel({ settings: initial }: LocaleSettingsPanelPr
     });
     setLoading(false);
     if (!res.ok) {
-      toast.error("Failed to save");
+      showAdminErrorToast(t("save_failed"));
       return;
     }
-    toast.success("Language settings saved");
+    showAdminSuccessToast(t("save_success"));
     router.refresh();
   };
 
+  const tabLabels = { en: t("lang_en"), ja: t("lang_ja"), vi: t("lang_vi") };
+
   return (
-    <div className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-sm">
+    <div>
       <div className="mb-6 flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-100 text-primary-700">
           <Globe className="h-5 w-5" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-primary-800">Multilingual (EN / JA / VI)</h2>
-          <p className="text-sm text-slate-500">Enable locales and edit shared site taglines per language.</p>
+          <h2 className="text-lg font-semibold text-primary-800">{t("title")}</h2>
+          <p className="text-sm text-slate-500">{t("subtitle")}</p>
         </div>
       </div>
 
       <div className="mb-6 grid gap-4 md:grid-cols-3">
-        {LOCALES.map((loc) => (
-          <div key={loc.code} className="rounded-xl border border-slate-200/80 p-4">
-            <p className="mb-3 text-sm font-semibold">
-              {loc.flag} {loc.label}
-            </p>
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={form[`locale_enabled_${loc.code}` as keyof typeof form] !== "false"}
-                onChange={(e) =>
-                  update(`locale_enabled_${loc.code}`, e.target.checked ? "true" : "false")
-                }
-              />
-              Visible on website
-            </label>
-            <p className="mt-3 text-xs text-slate-500">
-              Content CRUD: use Team, Services, Works, Blog, About sections in the sidebar.
-            </p>
-          </div>
-        ))}
+        {LOCALE_CODES.map((code) => {
+          const loc = localeMeta[code];
+          return (
+            <div key={code} className="rounded-xl border border-slate-200/80 p-4">
+              <p className="mb-3 text-sm font-semibold">
+                {loc.flag} {loc.label}
+              </p>
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={form[`locale_enabled_${code}` as keyof typeof form] !== "false"}
+                  onChange={(e) =>
+                    update(`locale_enabled_${code}`, e.target.checked ? "true" : "false")
+                  }
+                />
+                {t("visible_on_site")}
+              </label>
+              <p className="mt-3 text-xs text-slate-500">{t("crud_hint")}</p>
+            </div>
+          );
+        })}
       </div>
 
-      <LocaleTabs
-        prefix="site_tagline"
-        labels={{ en: "English", ja: "日本語", vi: "Tiếng Việt" }}
-        values={form}
-        onChange={update}
-        multiline
-      />
+      <LocaleTabs prefix="site_tagline" labels={tabLabels} values={form} onChange={update} multiline />
 
       <div className="mt-6 flex flex-wrap gap-2">
         <Button type="button" onClick={handleSave} disabled={loading} className="cursor-pointer gap-1">
           <Save className="h-4 w-4" />
-          Save languages
+          {loading ? t("saving") : t("save")}
         </Button>
         <Button asChild variant="outline" size="sm" className="cursor-pointer">
-          <Link href="/admin/services">Manage services translations</Link>
+          <Link href="/admin/services">{t("manage_services")}</Link>
         </Button>
       </div>
     </div>

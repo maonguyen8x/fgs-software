@@ -33,7 +33,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <ThemeScript />
       </head>
-      <body className={`${inter.variable} ${notoJp.variable} bg-theme font-sans text-theme antialiased`}>
+      <body
+        suppressHydrationWarning
+        className={`${inter.variable} ${notoJp.variable} bg-theme font-sans text-theme antialiased`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

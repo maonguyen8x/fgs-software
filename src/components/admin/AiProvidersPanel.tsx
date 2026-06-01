@@ -2,11 +2,23 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { AdminSelect } from "@/components/admin/AdminSelect";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
-import { Download, Plus, Save, Sparkles, Trash2 } from "lucide-react";
+import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
+import {
+  ArrowDownToLine,
+  ArrowUpFromLine,
+  CheckCircle2,
+  Download,
+  Plus,
+  Save,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface AiProviderRow {
   id: string;
@@ -25,30 +37,77 @@ const PROVIDER_TYPES = [
 ];
 
 export function AiProvidersPanel() {
+  const t = useTranslations("admin.settings.ai_providers");
   const router = useRouter();
   const [providers, setProviders] = useState<AiProviderRow[]>([]);
+  const [activeProvider, setActiveProvider] = useState<string>("auto");
   const [loading, setLoading] = useState(false);
 
   const load = useCallback(async () => {
     const res = await fetch("/api/admin/ai-providers");
-    if (res.ok) setProviders(await res.json());
+    if (!res.ok) return;
+    const data = (await res.json()) as {
+      providers?: AiProviderRow[];
+      activeProvider?: string;
+    };
+    if (Array.isArray(data)) {
+      setProviders(data);
+      return;
+    }
+    setProviders(data.providers ?? []);
+    setActiveProvider(data.activeProvider ?? "auto");
   }, []);
 
   useEffect(() => {
     void load();
   }, [load]);
 
-  const handleImportEnv = async () => {
+  const handleSyncFromEnv = async () => {
     setLoading(true);
-    const res = await fetch("/api/admin/ai-providers/import-env", { method: "POST" });
+    const [providersRes, settingsRes] = await Promise.all([
+      fetch("/api/admin/ai-providers/import-env", { method: "POST" }),
+      fetch("/api/admin/settings/import-env", { method: "POST" }),
+    ]);
+    setLoading(false);
+    const providersData = await providersRes.json();
+    const settingsData = await settingsRes.json();
+    if (!providersRes.ok && !settingsRes.ok) {
+      showAdminErrorToast(providersData.error ?? settingsData.error ?? t("sync_from_failed"));
+      return;
+    }
+    const parts = [providersData.message, settingsData.message].filter(Boolean);
+    showAdminSuccessToast(parts.join(" ") || t("sync_from_success"));
+    await load();
+    router.refresh();
+  };
+
+  const handleSyncToEnv = async () => {
+    setLoading(true);
+    const res = await fetch("/api/admin/ai-providers/sync-to-env", { method: "POST" });
     setLoading(false);
     const data = await res.json();
     if (!res.ok) {
-      toast.error(data.error ?? "Import failed");
+      showAdminErrorToast(data.error ?? data.message ?? t("sync_to_failed"));
       return;
     }
-    toast.success(data.message ?? "Imported from .env");
-    await load();
+    showAdminSuccessToast(data.message ?? t("sync_to_success"));
+  };
+
+  const activateForNova = async (providerType: string) => {
+    setLoading(true);
+    const res = await fetch("/api/admin/ai-providers/activate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ providerType }),
+    });
+    setLoading(false);
+    const data = await res.json();
+    if (!res.ok) {
+      showAdminErrorToast(data.error ?? t("activate_failed"));
+      return;
+    }
+    setActiveProvider(data.activeProvider ?? providerType);
+    showAdminSuccessToast(t("activate_success", { name: providerType }));
     router.refresh();
   };
 
@@ -69,10 +128,10 @@ export function AiProvidersPanel() {
       body: JSON.stringify(payload),
     });
     if (!res.ok) {
-      toast.error("Save failed");
+      showAdminErrorToast(t("save_failed"));
       return;
     }
-    toast.success("Provider saved");
+    showAdminSuccessToast(t("save_success"));
     await load();
   };
 
@@ -81,9 +140,9 @@ export function AiProvidersPanel() {
       setProviders((list) => list.filter((p) => p.id !== id));
       return;
     }
-    if (!confirm("Delete this AI provider?")) return;
+    if (!confirm(t("delete_confirm"))) return;
     await fetch(`/api/admin/ai-providers/${id}`, { method: "DELETE" });
-    toast.success("Deleted");
+    showAdminSuccessToast(t("delete_success"));
     await load();
   };
 
@@ -93,7 +152,7 @@ export function AiProvidersPanel() {
       {
         id: `new-${Date.now()}`,
         providerType: "openai",
-        displayName: "New Provider",
+        displayName: t("new_provider_name"),
         model: "gpt-4o-mini",
         isEnabled: true,
         order: list.length,
@@ -102,118 +161,174 @@ export function AiProvidersPanel() {
   };
 
   return (
-    <div className="rounded-xl border border-primary-100 bg-gradient-to-br from-white to-primary-50/30 p-6 shadow-sm">
+    <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600 text-white">
             <Sparkles className="h-5 w-5" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-primary-800">AI Providers</h2>
-            <p className="text-sm text-slate-500">OpenAI, Gemini, Claude — sync from .env or edit here.</p>
+            <h2 className="text-lg font-semibold text-primary-800">{t("title")}</h2>
+            <p className="text-sm text-slate-500">{t("subtitle")}</p>
+            {activeProvider && activeProvider !== "auto" && (
+              <p className="mt-1 text-xs font-medium text-primary-600">
+                {t("active_label")}: {activeProvider.toUpperCase()}
+              </p>
+            )}
           </div>
         </div>
-        <div className="flex gap-2">
-          <Button type="button" variant="outline" size="sm" className="cursor-pointer" onClick={handleImportEnv} disabled={loading}>
-            <Download className="mr-1 h-4 w-4" />
-            Import from .env
+        <div className="flex flex-wrap gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="cursor-pointer"
+            onClick={() => void handleSyncFromEnv()}
+            disabled={loading}
+          >
+            <ArrowDownToLine className="mr-1 h-4 w-4" />
+            {t("sync_from_env")}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="cursor-pointer"
+            onClick={() => void handleSyncToEnv()}
+            disabled={loading}
+          >
+            <ArrowUpFromLine className="mr-1 h-4 w-4" />
+            {t("sync_to_env")}
           </Button>
           <Button type="button" size="sm" className="cursor-pointer" onClick={addProvider}>
             <Plus className="mr-1 h-4 w-4" />
-            Add provider
+            {t("add_provider")}
           </Button>
         </div>
       </div>
 
       <div className="space-y-4">
-        {providers.map((p, idx) => (
-          <div key={p.id} className="rounded-xl border border-slate-200/80 bg-white p-4">
-            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-              <div>
-                <Label>Type</Label>
-                <select
-                  className="mt-1 w-full rounded-lg border px-2 py-2 text-sm"
-                  value={p.providerType}
-                  onChange={(e) => {
-                    const next = [...providers];
-                    next[idx] = { ...p, providerType: e.target.value };
-                    setProviders(next);
-                  }}
-                >
-                  {PROVIDER_TYPES.map((t) => (
-                    <option key={t.value} value={t.value}>
-                      {t.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <Label>Display name</Label>
-                <Input
-                  className="mt-1"
-                  value={p.displayName}
-                  onChange={(e) => {
-                    const next = [...providers];
-                    next[idx] = { ...p, displayName: e.target.value };
-                    setProviders(next);
-                  }}
-                />
-              </div>
-              <div>
-                <Label>Model</Label>
-                <Input
-                  className="mt-1"
-                  value={p.model}
-                  onChange={(e) => {
-                    const next = [...providers];
-                    next[idx] = { ...p, model: e.target.value };
-                    setProviders(next);
-                  }}
-                />
-              </div>
-              <div className="md:col-span-2">
-                <Label>API Key</Label>
-                <Input
-                  type="password"
-                  className="mt-1 font-mono text-sm"
-                  placeholder="Leave blank to keep existing"
-                  value={p.apiKey ?? ""}
-                  onChange={(e) => {
-                    const next = [...providers];
-                    next[idx] = { ...p, apiKey: e.target.value };
-                    setProviders(next);
-                  }}
-                />
-              </div>
-              <div className="flex items-end gap-4">
-                <label className="flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    checked={p.isEnabled}
+        {providers.map((p, idx) => {
+          const isActive = activeProvider === p.providerType;
+          return (
+            <div
+              key={p.id}
+              className={cn(
+                "rounded-xl border bg-white p-4 transition-shadow",
+                isActive
+                  ? "border-primary-400 ring-2 ring-primary-100 shadow-md"
+                  : "border-slate-200/80"
+              )}
+            >
+              {isActive && (
+                <span className="mb-3 inline-flex items-center gap-1 rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-semibold text-primary-700">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  {t("active_nova")}
+                </span>
+              )}
+              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+                <div>
+                  <Label>{t("type")}</Label>
+                  <AdminSelect
+                    value={p.providerType}
                     onChange={(e) => {
                       const next = [...providers];
-                      next[idx] = { ...p, isEnabled: e.target.checked };
+                      next[idx] = { ...p, providerType: e.target.value };
+                      setProviders(next);
+                    }}
+                  >
+                    {PROVIDER_TYPES.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </AdminSelect>
+                </div>
+                <div>
+                  <Label>{t("display_name")}</Label>
+                  <Input
+                    className="mt-1"
+                    value={p.displayName}
+                    onChange={(e) => {
+                      const next = [...providers];
+                      next[idx] = { ...p, displayName: e.target.value };
                       setProviders(next);
                     }}
                   />
-                  Enabled
-                </label>
+                </div>
+                <div>
+                  <Label>{t("model")}</Label>
+                  <Input
+                    className="mt-1"
+                    value={p.model}
+                    onChange={(e) => {
+                      const next = [...providers];
+                      next[idx] = { ...p, model: e.target.value };
+                      setProviders(next);
+                    }}
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Label>{t("api_key")}</Label>
+                  <Input
+                    type="password"
+                    className="mt-1 font-mono text-sm"
+                    placeholder={t("api_key_placeholder")}
+                    value={p.apiKey ?? ""}
+                    onChange={(e) => {
+                      const next = [...providers];
+                      next[idx] = { ...p, apiKey: e.target.value };
+                      setProviders(next);
+                    }}
+                  />
+                </div>
+                <div className="flex items-end gap-4">
+                  <label className="flex items-center gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={p.isEnabled}
+                      onChange={(e) => {
+                        const next = [...providers];
+                        next[idx] = { ...p, isEnabled: e.target.checked };
+                        setProviders(next);
+                      }}
+                    />
+                    {t("enabled")}
+                  </label>
+                </div>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={isActive ? "secondary" : "default"}
+                  className="cursor-pointer"
+                  disabled={loading || !p.isEnabled}
+                  onClick={() => void activateForNova(p.providerType)}
+                >
+                  <CheckCircle2 className="mr-1 h-3 w-3" />
+                  {isActive ? t("active_nova") : t("activate_nova")}
+                </Button>
+                <Button type="button" size="sm" className="cursor-pointer" onClick={() => void saveProvider(p)}>
+                  <Save className="mr-1 h-3 w-3" />
+                  {t("save")}
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  className="cursor-pointer text-red-600"
+                  onClick={() => void deleteProvider(p.id)}
+                >
+                  <Trash2 className="mr-1 h-3 w-3" />
+                  {t("delete")}
+                </Button>
               </div>
             </div>
-            <div className="mt-3 flex gap-2">
-              <Button type="button" size="sm" className="cursor-pointer" onClick={() => saveProvider(p)}>
-                <Save className="mr-1 h-3 w-3" />
-                Save
-              </Button>
-              <Button type="button" size="sm" variant="outline" className="cursor-pointer text-red-600" onClick={() => deleteProvider(p.id)}>
-                <Trash2 className="mr-1 h-3 w-3" />
-                Delete
-              </Button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
         {providers.length === 0 && (
-          <p className="text-sm text-slate-500">No providers yet. Click Import from .env or Add provider.</p>
+          <p className="text-sm text-slate-500">{t("empty")}</p>
         )}
       </div>
     </div>

@@ -13,6 +13,8 @@ const schema = z.object({
   description: z.string().optional(),
   descriptionJa: z.string().optional(),
   descriptionVi: z.string().optional(),
+  memberCount: z.number().int().min(0).default(0),
+  images: z.array(z.string()).default([]),
   order: z.number().default(0),
   isVisible: z.boolean().default(true),
 });

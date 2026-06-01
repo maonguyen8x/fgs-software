@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { LocalizedErrorPage } from "@/components/errors/LocalizedErrorPage";
+import { logger } from "@/lib/logger";
 
 export default function GlobalError({
   error,
@@ -11,7 +12,10 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error(error);
+    logger.error("Route error boundary", {
+      message: error.message,
+      digest: error.digest,
+    });
   }, [error]);
 
   return <LocalizedErrorPage showRetry onRetry={reset} />;

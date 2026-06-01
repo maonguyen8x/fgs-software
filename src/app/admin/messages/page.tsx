@@ -1,14 +1,14 @@
 import { prisma } from "@/lib/db";
 import { Badge } from "@/components/ui/badge";
 import { MessageStatusButton } from "@/components/admin/MessageStatusButton";
+import { AdminPageShell } from "@/components/admin/AdminPageShell";
 import { format } from "date-fns";
 
 export default async function AdminMessagesPage() {
   const messages = await prisma.message.findMany({ orderBy: { createdAt: "desc" } });
 
   return (
-    <div className="p-8">
-      <h1 className="mb-6 text-2xl font-bold">Contact Messages</h1>
+    <AdminPageShell title="Contact Messages">
       <div className="space-y-4">
         {messages.map((msg) => (
           <div key={msg.id} className="rounded-lg border bg-white p-6">
@@ -33,6 +33,6 @@ export default async function AdminMessagesPage() {
         ))}
         {messages.length === 0 && <p className="text-slate-500">No messages yet.</p>}
       </div>
-    </div>
+    </AdminPageShell>
   );
 }

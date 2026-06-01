@@ -2,11 +2,13 @@ import type { Locale } from "@/i18n/routing";
 import { logger } from "@/lib/logger";
 import { buildCompanyKnowledge } from "./context";
 import { buildSystemPrompt } from "./prompt";
-import { generateFallbackReply } from "./providers/fallback";
 import { generateGeminiReply } from "./providers/gemini";
 import { generateOpenAIReply } from "./providers/openai";
 import { generateAnthropicReply } from "./providers/anthropic";
-import { resolveActiveAiProvider } from "@/lib/ai/resolve-provider";
+import {
+  resolveAiProviderCandidates,
+  type ResolvedAiProvider,
+} from "@/lib/ai/resolve-provider";
 
 export interface ChatTurn {
   role: "user" | "assistant";
@@ -19,7 +21,28 @@ interface GenerateReplyParams {
   assistantName: string;
 }
 
-export type AiProvider = "openai" | "gemini" | "anthropic" | "fallback";
+export type AiProvider = "openai" | "gemini" | "anthropic";
+
+export class AiChatUnavailableError extends Error {
+  constructor(message = "AI providers unavailable") {
+    super(message);
+    this.name = "AiChatUnavailableError";
+  }
+}
+
+async function callProvider(
+  provider: ResolvedAiProvider,
+  systemPrompt: string,
+  messages: ChatTurn[]
+): Promise<string> {
+  if (provider.type === "openai") {
+    return generateOpenAIReply(provider.apiKey, systemPrompt, messages, provider.model);
+  }
+  if (provider.type === "gemini") {
+    return generateGeminiReply(provider.apiKey, systemPrompt, messages, provider.model);
+  }
+  return generateAnthropicReply(provider.apiKey, systemPrompt, messages, provider.model);
+}
 
 export async function generateChatReply({
   locale,
@@ -30,26 +53,40 @@ export async function generateChatReply({
   const latestUser = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
   const systemPrompt = buildSystemPrompt(locale, knowledge, assistantName, latestUser);
 
-  const active = await resolveActiveAiProvider();
+  const candidates = await resolveAiProviderCandidates();
 
-  if (active) {
+  if (candidates.length === 0) {
+    logger.error(
+      "No AI provider configured. Set OPENAI_API_KEY or GOOGLE_AI_API_KEY in .env and activate in Admin → Settings → AI Providers."
+    );
+    throw new AiChatUnavailableError("No AI API key configured");
+  }
+
+  const errors: string[] = [];
+  for (const provider of candidates) {
     try {
-      if (active.type === "openai") {
-        return await generateOpenAIReply(active.apiKey, systemPrompt, messages, active.model);
-      }
-      if (active.type === "gemini") {
-        return await generateGeminiReply(active.apiKey, systemPrompt, messages, active.model);
-      }
-      return await generateAnthropicReply(active.apiKey, systemPrompt, messages, active.model);
+      logger.info("Chat using AI provider", {
+        type: provider.type,
+        model: provider.model,
+        source: provider.source,
+      });
+      return await callProvider(provider, systemPrompt, messages);
     } catch (error) {
-      logger.warn("AI provider failed, using fallback", { error: String(error), type: active.type });
+      const msg = String(error);
+      errors.push(`${provider.type}: ${msg}`);
+      logger.warn("AI provider failed, trying next", {
+        error: msg,
+        type: provider.type,
+        model: provider.model,
+      });
     }
   }
 
-  return generateFallbackReply(locale, messages, knowledge, assistantName);
+  logger.error("All AI providers failed", { errors });
+  throw new AiChatUnavailableError(errors.join("; "));
 }
 
-export async function getActiveAiProvider(): Promise<AiProvider> {
-  const active = await resolveActiveAiProvider();
-  return active?.type ?? "fallback";
+export async function getActiveAiProvider(): Promise<AiProvider | null> {
+  const candidates = await resolveAiProviderCandidates();
+  return candidates[0]?.type ?? null;
 }

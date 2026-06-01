@@ -16,6 +16,7 @@ import {
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { API_ROUTES } from "@/config/api-routes";
+import { useMounted } from "@/hooks/use-mounted";
 
 interface ChatMessage {
   id: string;
@@ -44,11 +45,10 @@ function TypingIndicator() {
   return (
     <div className="flex items-center gap-1 rounded-2xl rounded-bl-md bg-white/90 px-4 py-3 shadow-sm ring-1 ring-slate-200/80">
       {[0, 1, 2].map((i) => (
-        <motion.span
+        <span
           key={i}
-          className="h-2 w-2 rounded-full bg-primary-400"
-          animate={{ y: [0, -6, 0], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
+          className="h-2 w-2 animate-bounce rounded-full bg-primary-400"
+          style={{ animationDelay: `${i * 0.15}s`, animationDuration: "0.8s" }}
         />
       ))}
     </div>
@@ -59,7 +59,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "user";
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8, scale: 0.96 }}
+      initial={false}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       className={cn("flex gap-2.5", isUser ? "flex-row-reverse" : "flex-row")}
     >
@@ -92,6 +92,7 @@ export function ChatbotWidget({
 }: ChatbotWidgetProps) {
   const t = useTranslations("chatbot");
   const locale = useLocale();
+  const mounted = useMounted();
   const [open, setOpen] = useState(false);
   const [minimized, setMinimized] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -171,6 +172,8 @@ export function ChatbotWidget({
         const msg =
           code === "SERVICE_UNAVAILABLE"
             ? t("error_disabled")
+            : code === "AI_UNAVAILABLE"
+              ? t("error_ai")
             : code === "VALIDATION_ERROR" || res.status === 400
               ? t("error_invalid")
               : res.status >= 500
@@ -221,16 +224,16 @@ export function ChatbotWidget({
     <>
       {/* Launcher */}
       <AnimatePresence>
-        {!open && (
+        {mounted && !open && (
           <motion.button
             type="button"
-            initial={{ scale: 0, opacity: 0 }}
+            initial={false}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setOpen(true)}
-            className="fixed bottom-6 right-6 z-50 flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-gradient-to-br from-primary-500 via-primary-600 to-primary-800 text-white shadow-2xl shadow-primary-500/40 ring-4 ring-white/80"
+            className="fixed bottom-6 right-6 z-[200] flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-gradient-to-br from-primary-500 via-primary-600 to-primary-800 text-white shadow-2xl shadow-primary-500/40 ring-4 ring-white/80"
             aria-label={t("open")}
           >
             <span className="absolute inset-0 animate-ping rounded-full bg-primary-400/30" />
@@ -246,7 +249,7 @@ export function ChatbotWidget({
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 24, scale: 0.92 }}
+            initial={false}
             animate={{
               opacity: 1,
               y: 0,
@@ -256,7 +259,7 @@ export function ChatbotWidget({
             exit={{ opacity: 0, y: 24, scale: 0.92 }}
             transition={{ type: "spring", damping: 26, stiffness: 320 }}
             className={cn(
-              "fixed bottom-6 right-6 z-50 flex w-[min(100vw-2rem,400px)] flex-col overflow-hidden rounded-3xl shadow-2xl shadow-primary-900/20 ring-1 ring-white/20",
+              "fixed bottom-6 right-6 z-[200] flex w-[min(100vw-2rem,400px)] flex-col overflow-hidden rounded-3xl shadow-2xl shadow-primary-900/20 ring-1 ring-white/20",
               minimized ? "h-auto" : "h-[min(85vh,640px)]"
             )}
             style={{

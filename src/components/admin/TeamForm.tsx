@@ -7,7 +7,10 @@ import { Input } from "@/components/ui/input";
 import { RequiredLabel } from "@/components/ui/RequiredLabel";
 import { Label } from "@/components/ui/label";
 import { LocaleTabs } from "./LocaleTabs";
-import { toast } from "sonner";
+import { AvatarImageEditor } from "./AvatarImageEditor";
+import { SkillsTagInput } from "./SkillsTagInput";
+import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
+import { useTranslations } from "next-intl";
 
 interface TeamFormProps {
   initial?: {
@@ -31,8 +34,10 @@ interface TeamFormProps {
 }
 
 export function TeamForm({ initial }: TeamFormProps) {
+  const t = useTranslations("admin.team.form");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [skills, setSkills] = useState<string[]>(initial?.skills ?? []);
   const [form, setForm] = useState({
     name: initial?.name ?? "",
     role: initial?.role ?? "",
@@ -43,7 +48,6 @@ export function TeamForm({ initial }: TeamFormProps) {
     bioVi: initial?.bioVi ?? "",
     avatar: initial?.avatar ?? "",
     experience: initial?.experience?.toString() ?? "",
-    skills: initial?.skills?.join(", ") ?? "",
     linkedin: initial?.linkedin ?? "",
     github: initial?.github ?? "",
     order: initial?.order?.toString() ?? "0",
@@ -66,7 +70,7 @@ export function TeamForm({ initial }: TeamFormProps) {
       bioVi: form.bioVi || undefined,
       avatar: form.avatar || undefined,
       experience: form.experience ? parseInt(form.experience, 10) : undefined,
-      skills: form.skills.split(",").map((s) => s.trim()).filter(Boolean),
+      skills,
       linkedin: form.linkedin || undefined,
       github: form.github || undefined,
       order: parseInt(form.order, 10) || 0,
@@ -84,10 +88,10 @@ export function TeamForm({ initial }: TeamFormProps) {
     });
     setLoading(false);
     if (!res.ok) {
-      toast.error("Failed to save");
+      showAdminErrorToast(t("save_failed"));
       return;
     }
-    toast.success("Saved successfully");
+    showAdminSuccessToast(t("save_success"));
     router.push("/admin/team");
     router.refresh();
   };
@@ -112,19 +116,25 @@ export function TeamForm({ initial }: TeamFormProps) {
         onChange={update}
         multiline
       />
-      <div className="grid gap-4 md:grid-cols-2">
-        <div>
-          <Label>Avatar URL</Label>
-          <Input className="mt-1" value={form.avatar} onChange={(e) => update("avatar", e.target.value)} />
-        </div>
-        <div>
-          <Label>Years of Experience</Label>
-          <Input type="number" className="mt-1" value={form.experience} onChange={(e) => update("experience", e.target.value)} />
+      <div>
+        <Label>{t("avatar")}</Label>
+        <div className="mt-2">
+          <AvatarImageEditor value={form.avatar} onChange={(url) => update("avatar", url)} />
         </div>
       </div>
       <div>
-        <Label>Skills (comma-separated)</Label>
-        <Input className="mt-1" value={form.skills} onChange={(e) => update("skills", e.target.value)} />
+        <Label>{t("experience")}</Label>
+        <Input type="number" className="mt-1 w-40" value={form.experience} onChange={(e) => update("experience", e.target.value)} />
+      </div>
+      <div>
+        <Label>{t("skills")}</Label>
+        <SkillsTagInput
+          className="mt-1"
+          value={skills}
+          onChange={setSkills}
+          placeholder={t("skills_placeholder")}
+          hint={t("skills_hint")}
+        />
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         <div>
@@ -150,7 +160,9 @@ export function TeamForm({ initial }: TeamFormProps) {
           Featured on Home
         </label>
       </div>
-      <Button type="submit" disabled={loading}>{loading ? "Saving..." : "Save"}</Button>
+      <Button type="submit" disabled={loading} className="cursor-pointer">
+        {loading ? t("saving") : t("save")}
+      </Button>
     </form>
   );
 }

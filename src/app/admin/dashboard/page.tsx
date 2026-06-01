@@ -1,40 +1,30 @@
-import { prisma } from "@/lib/db";
+import { getTranslations } from "next-intl/server";
+import { getDashboardAnalytics } from "@/lib/analytics/dashboard-stats";
+import { AdminDashboardCharts } from "@/components/admin/AdminDashboardCharts";
+import { AdminPageShell } from "@/components/admin/AdminPageShell";
 
 export const dynamic = "force-dynamic";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function AdminDashboardPage() {
-  const [teamCount, serviceCount, workCount, messageCount, unreadCount] = await Promise.all([
-    prisma.teamMember.count(),
-    prisma.service.count(),
-    prisma.work.count(),
-    prisma.message.count(),
-    prisma.message.count({ where: { status: "unread" } }),
-  ]);
-
-  const stats = [
-    { label: "Team Members", value: teamCount },
-    { label: "Services", value: serviceCount },
-    { label: "Portfolio Works", value: workCount },
-    { label: "Messages", value: messageCount },
-    { label: "Unread Messages", value: unreadCount },
-  ];
+  const t = await getTranslations("admin.dashboard");
+  const data = await getDashboardAnalytics();
 
   return (
-    <div className="p-8">
-      <h1 className="mb-8 text-2xl font-bold text-slate-900">Dashboard</h1>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {stats.map((stat) => (
-          <Card key={stat.label}>
-            <CardHeader>
-              <CardTitle className="text-sm font-medium text-slate-500">{stat.label}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold text-primary-600">{stat.value}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
+    <AdminPageShell title={t("title")} description={t("subtitle")} unboxed>
+      <AdminDashboardCharts
+        data={data}
+        labels={{
+          visitors: t("visitors_total"),
+          thisMonth: t("visitors_month"),
+          unique: t("visitors_unique"),
+          messages: t("messages"),
+          partners: t("partners"),
+          team: t("team"),
+          monthlyChart: t("chart_monthly"),
+          countryChart: t("chart_countries"),
+          visits: t("visits"),
+        }}
+      />
+    </AdminPageShell>
   );
 }

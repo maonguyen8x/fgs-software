@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { Upload, ZoomIn, ZoomOut, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 
 interface AvatarImageEditorProps {
   value?: string | null;
@@ -13,7 +13,8 @@ interface AvatarImageEditorProps {
 }
 
 const OUTPUT_SIZE = 512;
-const CROP_SIZE = 280;
+const CROP_SIZE = 320;
+const PREVIEW_BOX = 360;
 
 function inferMimeFromName(name: string): string {
   const lower = name.toLowerCase();
@@ -98,7 +99,7 @@ export function AvatarImageEditor({ value, onChange }: AvatarImageEditorProps) {
     (file: File) => {
       const mime = file.type || inferMimeFromName(file.name);
       if (!mime.startsWith("image/")) {
-        toast.error(te("invalid_type"));
+        showAdminErrorToast(te("invalid_type"));
         return;
       }
 
@@ -167,18 +168,18 @@ export function AvatarImageEditor({ value, onChange }: AvatarImageEditorProps) {
       const data = await res.json();
       if (!res.ok) {
         const code = data.code as string | undefined;
-        if (code === "INVALID_TYPE") toast.error(te("invalid_type"));
-        else if (code === "FILE_TOO_LARGE") toast.error(te("file_too_large"));
-        else toast.error(te("upload_failed"));
+        if (code === "INVALID_TYPE") showAdminErrorToast(te("invalid_type"));
+        else if (code === "FILE_TOO_LARGE") showAdminErrorToast(te("file_too_large"));
+        else showAdminErrorToast(te("upload_failed"));
         return;
       }
 
       setPreview(`${data.url}?v=${Date.now()}`);
       onChange(data.url);
       clearSource();
-      toast.success(t("uploaded"));
+      showAdminSuccessToast(t("uploaded"));
     } catch {
-      toast.error(te("upload_failed"));
+      showAdminErrorToast(te("upload_failed"));
     } finally {
       setUploading(false);
     }
@@ -192,7 +193,11 @@ export function AvatarImageEditor({ value, onChange }: AvatarImageEditorProps) {
         <div className="flex flex-wrap items-start gap-4">
           <div className="relative inline-block">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={preview} alt="" className="h-28 w-28 rounded-2xl border border-theme object-cover" />
+            <img
+              src={preview}
+              alt=""
+              className="h-36 w-36 rounded-2xl border border-theme bg-slate-50 object-contain p-1 dark:bg-slate-900"
+            />
             <button
               type="button"
               className="absolute -right-2 -top-2 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-red-500 text-white shadow"
@@ -234,9 +239,17 @@ export function AvatarImageEditor({ value, onChange }: AvatarImageEditorProps) {
 
       {source && (
         <div className="rounded-xl border border-theme bg-surface-muted p-4">
+          <p className="mb-2 text-sm font-medium text-heading">{t("preview_full")}</p>
+          <div
+            className="mx-auto mb-4 flex items-center justify-center overflow-hidden rounded-xl border border-dashed border-slate-300 bg-slate-100 dark:border-slate-600 dark:bg-slate-950"
+            style={{ width: PREVIEW_BOX, height: PREVIEW_BOX }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={source} alt="" className="max-h-full max-w-full object-contain" />
+          </div>
           <p className="mb-3 text-sm font-medium text-heading">{t("crop_title")}</p>
           <div
-            className="relative mx-auto cursor-grab overflow-hidden rounded-xl bg-slate-900 active:cursor-grabbing"
+            className="relative mx-auto cursor-grab overflow-hidden rounded-xl bg-slate-800 active:cursor-grabbing"
             style={{ width: CROP_SIZE, height: CROP_SIZE }}
             onMouseDown={(event) => {
               setDragging(true);
@@ -258,10 +271,11 @@ export function AvatarImageEditor({ value, onChange }: AvatarImageEditorProps) {
               alt=""
               draggable={false}
               onLoad={(event) => {
-                setImageSize({
-                  width: event.currentTarget.naturalWidth,
-                  height: event.currentTarget.naturalHeight,
-                });
+                const { naturalWidth, naturalHeight } = event.currentTarget;
+                setImageSize({ width: naturalWidth, height: naturalHeight });
+                const fitScale = Math.min(CROP_SIZE / naturalWidth, CROP_SIZE / naturalHeight);
+                setScale(fitScale);
+                setOffset({ x: 0, y: 0 });
               }}
               className="pointer-events-none absolute left-1/2 top-1/2 max-w-none select-none"
               style={{

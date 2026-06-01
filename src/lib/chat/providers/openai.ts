@@ -27,8 +27,15 @@ export async function generateOpenAIReply(
 
   if (!response.ok) {
     const err = await response.text();
-    logger.error("OpenAI API error", { err });
-    throw new Error("OpenAI service unavailable");
+    logger.error("OpenAI API error", { status: response.status, err: err.slice(0, 500) });
+    let detail = `HTTP ${response.status}`;
+    try {
+      const parsed = JSON.parse(err) as { error?: { message?: string; code?: string } };
+      if (parsed.error?.message) detail = parsed.error.message;
+    } catch {
+      /* ignore */
+    }
+    throw new Error(`OpenAI: ${detail}`);
   }
 
   const data = (await response.json()) as {

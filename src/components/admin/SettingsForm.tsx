@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 import { GoogleMapsAddressField, GoogleMapsLinkSettings } from "@/components/admin/MapLocationSettings";
+import { BlueRadioGroup } from "@/components/ui/BlueRadio";
 
 const fields = [
   { key: "company_name", labelKey: "company_name" },
@@ -29,10 +30,16 @@ const fields = [
   { key: "hero_subheadline", labelKey: "hero_subheadline" },
   { key: "hero_subheadline_ja", labelKey: "hero_subheadline_ja" },
   { key: "hero_subheadline_vi", labelKey: "hero_subheadline_vi" },
+  { key: "hero_typewriter_enabled", labelKey: "hero_typewriter_enabled" },
   { key: "chatbot_enabled", labelKey: "chatbot_enabled" },
   { key: "chatbot_name", labelKey: "chatbot_name" },
   { key: "chatbot_name_ja", labelKey: "chatbot_name_ja" },
   { key: "chatbot_name_vi", labelKey: "chatbot_name_vi" },
+  { key: "page_header_about_bg", labelKey: "page_header_about_bg" },
+  { key: "page_header_services_bg", labelKey: "page_header_services_bg" },
+  { key: "page_header_team_bg", labelKey: "page_header_team_bg" },
+  { key: "page_header_works_bg", labelKey: "page_header_works_bg" },
+  { key: "page_header_contact_bg", labelKey: "page_header_contact_bg" },
 ] as const;
 
 const sections = [
@@ -53,12 +60,24 @@ const sections = [
       "hero_subheadline",
       "hero_subheadline_ja",
       "hero_subheadline_vi",
+      "hero_typewriter_enabled",
     ],
   },
   {
     id: "chatbot",
     titleKey: "section_chatbot",
     keys: ["chatbot_enabled", "chatbot_name", "chatbot_name_ja", "chatbot_name_vi"],
+  },
+  {
+    id: "pageHeaderColors",
+    titleKey: "section_page_header_colors",
+    keys: [
+      "page_header_about_bg",
+      "page_header_services_bg",
+      "page_header_team_bg",
+      "page_header_works_bg",
+      "page_header_contact_bg",
+    ],
   },
   { id: "maps", titleKey: "section_maps", keys: [] },
 ] as const;
@@ -116,6 +135,73 @@ export function SettingsForm({ settings }: { settings: Record<string, string> })
                 .map((field) => {
                   const { key, labelKey } = field;
                   const isTextarea = "textarea" in field && field.textarea;
+
+                  if (key === "chatbot_enabled") {
+                    const enabled = (values.chatbot_enabled ?? "true").toLowerCase() === "true";
+                    return (
+                      <div key={key}>
+                        <Label>{t(labelKey)}</Label>
+                        <div className="mt-2">
+                          <BlueRadioGroup
+                            name="chatbot_enabled"
+                            value={enabled ? "true" : "false"}
+                            options={[
+                              { value: "true", label: t("chatbot_on") },
+                              { value: "false", label: t("chatbot_off") },
+                            ]}
+                            onChange={(v) => patchValues({ chatbot_enabled: v })}
+                          />
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  if (key === "hero_typewriter_enabled") {
+                    const enabled = (values.hero_typewriter_enabled ?? "true").toLowerCase() === "true";
+                    return (
+                      <div key={key}>
+                        <Label>{t(labelKey)}</Label>
+                        <div className="mt-2">
+                          <BlueRadioGroup
+                            name="hero_typewriter_enabled"
+                            value={enabled ? "true" : "false"}
+                            options={[
+                              { value: "true", label: t("typewriter_on") },
+                              { value: "false", label: t("typewriter_off") },
+                            ]}
+                            onChange={(v) => patchValues({ hero_typewriter_enabled: v })}
+                          />
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  if (key.startsWith("page_header_") && key.endsWith("_bg")) {
+                    const current = values[key] ?? "";
+                    const colorValue = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(current)
+                      ? current
+                      : "#e2e8f0";
+                    return (
+                      <div key={key}>
+                        <Label>{t(labelKey)}</Label>
+                        <div className="mt-2 flex items-center gap-3">
+                          <Input
+                            type="color"
+                            className="h-10 w-16 cursor-pointer p-1"
+                            value={colorValue}
+                            onChange={(e) => patchValues({ [key]: e.target.value })}
+                          />
+                          <Input
+                            className="mt-0"
+                            value={current}
+                            placeholder="#e0f2fe"
+                            onChange={(e) => patchValues({ [key]: e.target.value })}
+                          />
+                        </div>
+                      </div>
+                    );
+                  }
+
                   return (
                     <div key={key}>
                       <Label>{t(labelKey)}</Label>

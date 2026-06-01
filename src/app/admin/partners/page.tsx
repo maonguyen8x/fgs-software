@@ -3,27 +3,25 @@ import { prisma } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
-import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { AdminPageShell } from "@/components/admin/AdminPageShell";
 
 export default async function AdminPartnersPage() {
   const partners = await prisma.partner.findMany({ orderBy: { order: "asc" } });
 
   return (
-    <div className="p-8">
-      <AdminPageHeader
-        title="Clients & Partners"
-        description="Manage logos and names shown on the homepage"
-        backHref="/admin/dashboard"
-      />
-      <div className="mb-6 flex justify-end">
+    <AdminPageShell
+      title="Clients & Partners"
+      description="Manage logos and names shown on the homepage"
+      actions={
         <Button asChild className="cursor-pointer">
           <Link href="/admin/partners/new">
             <Plus className="mr-2 h-4 w-4" />
             Add Partner
           </Link>
         </Button>
-      </div>
-      <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
+      }
+    >
+      <div className="overflow-hidden rounded-xl border border-slate-100">
         <table className="w-full text-sm">
           <thead className="bg-slate-50">
             <tr>
@@ -62,6 +60,6 @@ export default async function AdminPartnersPage() {
           </tbody>
         </table>
       </div>
-    </div>
+    </AdminPageShell>
   );
 }

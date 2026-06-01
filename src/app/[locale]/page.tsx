@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Link from "next/link";
-import { HeroSection } from "@/components/sections/HeroSection";
+import { HomeHeroSection } from "@/components/home/HomeHeroSection";
+import { HomeSectionHeading } from "@/components/home/HomeSectionHeading";
 import { StatsBar } from "@/components/sections/StatsBar";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
@@ -8,6 +9,8 @@ import { TeamGrid } from "@/components/sections/TeamGrid";
 import { WorksGrid } from "@/components/sections/WorksGrid";
 import { CtaBanner } from "@/components/sections/CtaBanner";
 import { fetchHomePageData } from "@/lib/cache/safe-home-data";
+import { fetchPageBlockMap } from "@/lib/cache/safe-page-blocks";
+import { getPageBlockSubtitle, getPageBlockTitle } from "@/lib/page-content";
 import { PartnersSection } from "@/components/sections/PartnersSection";
 import { getSettingValue, getLocalizedField } from "@/lib/i18n-content";
 import type { Locale } from "@/i18n/routing";
@@ -22,26 +25,47 @@ export default async function HomePage({
   setRequestLocale(locale);
   const t = await getTranslations("home");
   const loc = locale as Locale;
-  const { settings, stats, allServices, whyItems, allTeam, allWorks, testimonials, partners } =
-    await fetchHomePageData();
+  const [{ settings, stats, allServices, whyItems, allTeam, allWorks, testimonials, partners }, blocks] =
+    await Promise.all([fetchHomePageData(), fetchPageBlockMap("home")]);
   const services = allServices.slice(0, 4);
   const team = allTeam.slice(0, 4);
   const works = allWorks.filter((w) => w.featured).slice(0, 3);
+  const legacyTaglines = new Set([
+    "Đối tác Outsourcing IT đáng tin cậy tại Việt Nam",
+    "Your trusted IT outsourcing partner in Vietnam",
+    "ベトナムの信頼できるITアウトソーシングパートナー",
+  ]);
 
+  const th = await getTranslations("hero");
   const headline = getSettingValue(settings, "hero_headline", loc);
-  const subheadline = getSettingValue(settings, "hero_subheadline", loc);
+  const subheadlineRaw =
+    getSettingValue(settings, "hero_subheadline", loc) ||
+    getSettingValue(settings, "site_tagline", loc) ||
+    th("tagline");
+  const subheadline = legacyTaglines.has(subheadlineRaw)
+    ? th("tagline")
+    : subheadlineRaw;
+  const typewriterTarget: "headline" | "subheadline" = legacyTaglines.has(headline)
+    ? "headline"
+    : "subheadline";
+  const typewriterEnabled = (settings.hero_typewriter_enabled ?? "true") !== "false";
 
   return (
-    <>
-      <HeroSection headline={headline} subheadline={subheadline} />
+    <div className="bg-theme">
+      <HomeHeroSection
+        headline={headline}
+        subheadline={subheadline}
+        typewriterEnabled={typewriterEnabled}
+        typewriterTarget={typewriterTarget}
+      />
       {stats.length > 0 && <StatsBar stats={stats} locale={loc} />}
 
-      <section className="section-padding">
+      <section className="home-section section-padding">
         <div className="container-narrow">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold text-heading">{t("services_title")}</h2>
-            <p className="mt-2 text-muted-theme">{t("services_subtitle")}</p>
-          </div>
+          <HomeSectionHeading
+            title={getPageBlockTitle(blocks, "services_section", loc, t("services_title"))}
+            subtitle={getPageBlockSubtitle(blocks, "services_section", loc, t("services_subtitle"))}
+          />
           <ServicesGrid
             services={services}
             locale={loc}
@@ -56,41 +80,48 @@ export default async function HomePage({
         </div>
       </section>
 
-      <section className="section-padding bg-surface-muted">
+      <section className="home-section home-section-muted section-padding">
         <div className="container-narrow">
-          <div className="mb-10 text-center">
-            <h2 className="text-3xl font-bold text-heading">{t("why_title")}</h2>
-            <p className="mt-2 text-muted-theme">{t("why_subtitle")}</p>
-          </div>
+          <HomeSectionHeading
+            title={getPageBlockTitle(blocks, "why_section", loc, t("why_title"))}
+            subtitle={getPageBlockSubtitle(blocks, "why_section", loc, t("why_subtitle"))}
+          />
           <WhyChooseUs items={whyItems} locale={loc} />
         </div>
       </section>
 
       {team.length > 0 && (
-        <section className="section-padding">
+        <section className="home-section section-padding">
           <div className="container-narrow">
-            <div className="mb-12 flex items-end justify-between">
-              <div>
-                <h2 className="text-3xl font-bold text-heading">{t("team_title")}</h2>
-                <p className="mt-2 text-muted-theme">{t("team_subtitle")}</p>
-              </div>
+            <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <HomeSectionHeading
+                align="left"
+                title={getPageBlockTitle(blocks, "team_section", loc, t("team_title"))}
+                subtitle={getPageBlockSubtitle(blocks, "team_section", loc, t("team_subtitle"))}
+              />
               <Button asChild variant="ghost">
                 <Link href={`/${locale}/team`}>{t("view_all")} →</Link>
               </Button>
             </div>
-            <TeamGrid members={team} locale={loc} yearsLabel={(await getTranslations("team"))("years")} />
+            <TeamGrid
+              members={team}
+              locale={loc}
+              yearsLabel={(await getTranslations("team"))("years")}
+              detailCloseLabel={(await getTranslations("team"))("detail_close")}
+            />
           </div>
         </section>
       )}
 
       {works.length > 0 && (
-        <section className="section-padding bg-surface-muted">
+        <section className="home-section home-section-muted section-padding">
           <div className="container-narrow">
-            <div className="mb-10 flex items-end justify-between">
-              <div>
-                <h2 className="text-3xl font-bold text-heading">{t("works_title")}</h2>
-                <p className="mt-2 text-muted-theme">{t("works_subtitle")}</p>
-              </div>
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <HomeSectionHeading
+                align="left"
+                title={getPageBlockTitle(blocks, "works_section", loc, t("works_title"))}
+                subtitle={getPageBlockSubtitle(blocks, "works_section", loc, t("works_subtitle"))}
+              />
               <Button asChild variant="ghost">
                 <Link href={`/${locale}/works`}>{t("view_all")} →</Link>
               </Button>
@@ -101,9 +132,11 @@ export default async function HomePage({
       )}
 
       {testimonials.length > 0 && (
-        <section className="section-padding">
+        <section className="home-section section-padding">
           <div className="container-narrow">
-            <h2 className="mb-8 text-center text-3xl font-bold text-heading">{t("testimonials_title")}</h2>
+            <HomeSectionHeading
+              title={getPageBlockTitle(blocks, "testimonials_section", loc, t("testimonials_title"))}
+            />
             <div className="grid gap-4 md:grid-cols-3 md:gap-5">
               {testimonials.map((item) => (
                 <blockquote key={item.id} className="content-block">
@@ -120,18 +153,18 @@ export default async function HomePage({
       )}
 
       <PartnersSection
-        title={t("partners_title")}
-        subtitle={t("partners_subtitle")}
+        title={getPageBlockTitle(blocks, "partners_section", loc, t("partners_title"))}
+        subtitle={getPageBlockSubtitle(blocks, "partners_section", loc, t("partners_subtitle"))}
         partners={partners}
         locale={loc}
       />
 
       <CtaBanner
-        title={t("cta_title")}
-        subtitle={t("cta_subtitle")}
+        title={getPageBlockTitle(blocks, "cta_section", loc, t("cta_title"))}
+        subtitle={getPageBlockSubtitle(blocks, "cta_section", loc, t("cta_subtitle"))}
         buttonLabel={t("cta_button")}
         href={`/${locale}/contact`}
       />
-    </>
+    </div>
   );
 }

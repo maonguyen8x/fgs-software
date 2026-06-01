@@ -5,6 +5,8 @@ import { getAdminLoginSecret } from "@/config/admin";
 import { authOptions } from "@/lib/auth";
 import { AdminLoginForm } from "@/components/admin/AdminLoginForm";
 import { AdminIntlShell } from "@/components/admin/AdminIntlShell";
+import { AdminSessionProvider } from "@/components/providers/AdminSessionProvider";
+import { Toaster } from "sonner";
 
 export default async function SecretAdminLoginPage({
   params,
@@ -25,9 +27,12 @@ export default async function SecretAdminLoginPage({
 
   return (
     <AdminIntlShell>
-      <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
-        <AdminLoginForm />
-      </Suspense>
+      <AdminSessionProvider>
+        <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+          <AdminLoginForm />
+        </Suspense>
+        <Toaster position="top-right" richColors={false} closeButton />
+      </AdminSessionProvider>
     </AdminIntlShell>
   );
 }

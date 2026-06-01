@@ -28,6 +28,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
+          image: user.avatar ?? undefined,
           rememberMe: credentials.rememberMe === "true",
         };
       },
@@ -44,18 +45,28 @@ export const authOptions: NextAuthOptions = {
     signIn: "/admin/login",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session: updateSession }) {
       if (user) {
         const remember = Boolean((user as { rememberMe?: boolean }).rememberMe);
         token.rememberMe = remember;
         const maxAge = remember ? SESSION_REMEMBER_SECONDS : SESSION_SHORT_SECONDS;
         token.exp = Math.floor(Date.now() / 1000) + maxAge;
+        token.name = user.name;
+        if (user.image) token.picture = user.image as string;
+      }
+      if (trigger === "update" && updateSession) {
+        if (updateSession.name) token.name = updateSession.name as string;
+        if (updateSession.image !== undefined) {
+          token.picture = (updateSession.image as string | null) ?? undefined;
+        }
       }
       return token;
     },
     async session({ session, token }) {
-      if (session.user && token.sub) {
-        session.user.id = token.sub;
+      if (session.user) {
+        if (token.sub) session.user.id = token.sub;
+        if (typeof token.name === "string") session.user.name = token.name;
+        if (typeof token.picture === "string") session.user.image = token.picture;
       }
       return session;
     },

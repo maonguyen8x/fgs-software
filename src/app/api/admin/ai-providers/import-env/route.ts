@@ -15,7 +15,7 @@ const ENV_PROVIDERS = [
     displayName: "Google Gemini",
     envKey: "GOOGLE_AI_API_KEY",
     modelEnv: "GEMINI_MODEL",
-    defaultModel: "gemini-2.0-flash",
+    defaultModel: "gemini-2.5-flash",
   },
   {
     providerType: "anthropic",
@@ -32,7 +32,13 @@ export async function POST() {
 
   let imported = 0;
   for (const [index, spec] of ENV_PROVIDERS.entries()) {
-    const apiKey = process.env[spec.envKey]?.trim();
+    const { readEnvApiKey } = await import("@/lib/ai/env-keys");
+    const apiKey =
+      spec.providerType === "openai"
+        ? readEnvApiKey("openai")
+        : spec.providerType === "gemini"
+          ? readEnvApiKey("gemini")
+          : readEnvApiKey("anthropic");
     if (!apiKey) continue;
 
     const model = process.env[spec.modelEnv]?.trim() || spec.defaultModel;

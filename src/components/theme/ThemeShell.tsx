@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { THEME_STORAGE_KEY } from "@/config/theme";
+import { applyBrandThemeToDocument } from "@/lib/theme/brand-theme";
 import { useTheme } from "./ThemeProvider";
 
 interface ThemeShellProps {
@@ -21,10 +22,7 @@ export function ThemeShell({ children, settings }: ThemeShellProps) {
   }, [mounted, settings.theme_default, setTheme]);
 
   useEffect(() => {
-    const color = settings.theme_primary_color;
-    const radius = settings.theme_radius;
-    if (color) document.documentElement.style.setProperty("--brand-primary", color);
-    if (radius) document.documentElement.style.setProperty("--brand-radius", radius);
+    applyBrandThemeToDocument(settings.theme_primary_color, settings.theme_radius);
   }, [settings.theme_primary_color, settings.theme_radius]);
 
   return <>{children}</>;

@@ -1,11 +1,13 @@
 import { toast } from "sonner";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { createElement } from "react";
+import { notifyAdminRefresh } from "@/lib/admin/notify-admin-refresh";
 
 const TOAST_POSITION = "top-right" as const;
 const TOAST_DURATION_MS = 4500;
 
 export function showAdminSuccessToast(title: string, subtitle?: string): void {
+  notifyAdminRefresh();
   toast.custom(
     () =>
       createElement(

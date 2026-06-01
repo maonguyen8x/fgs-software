@@ -16,6 +16,7 @@ import {
   ADMIN_LOGIN_SUCCESS_FLAG,
   ADMIN_SESSION_REMEMBER_KEY,
 } from "@/config/admin-auth";
+import { showAdminSuccessToast } from "@/lib/admin-toast";
 
 type AdminErrorKey =
   | "invalid_credentials"
@@ -34,10 +35,11 @@ interface StoredCredentials {
 
 export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }: AdminLoginFormProps) {
   const t = useTranslations("admin.login");
+  const tSuccess = useTranslations("admin.login_success");
   const te = useTranslations("admin.errors");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/admin/settings";
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/en";
   const errorCode = searchParams.get("error") as AdminErrorKey | null;
 
   const [email, setEmail] = useState("");
@@ -102,6 +104,7 @@ export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }
       persistRemember(rememberMe, { email: email.trim(), password });
 
       sessionStorage.setItem(ADMIN_LOGIN_SUCCESS_FLAG, "1");
+      showAdminSuccessToast(tSuccess("title"), tSuccess("subtitle"));
 
       const target = new URL(callbackUrl, window.location.origin);
       target.searchParams.set("login", "success");

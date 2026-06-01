@@ -2,6 +2,7 @@ import {
   buildMapEmbedUrl,
   fetchPlaceDetails,
   fetchPlaceSuggestions,
+  geocodeAddress,
   isGoogleMapsApiConfigured,
   type MapLocationResult,
 } from "./google-maps-api";
@@ -30,25 +31,32 @@ export async function searchLocationSuggestions(input: string): Promise<Location
   const trimmed = input.trim();
   if (trimmed.length < 3) return [];
 
+  const results: LocationSuggestion[] = [];
+
   if (isGoogleMapsApiConfigured()) {
     const google = await fetchPlaceSuggestions(trimmed);
-    if (google.length > 0) {
-      return google.map((item) => ({
+    for (const item of google) {
+      results.push({
         id: item.placeId,
         description: item.description,
-        provider: "google" as const,
-      }));
+        provider: "google",
+      });
     }
   }
 
   const nominatim = await fetchNominatimSuggestions(trimmed);
-  return nominatim.map((item) => ({
-    id: item.id,
-    description: item.description,
-    latitude: item.latitude,
-    longitude: item.longitude,
-    provider: "nominatim" as const,
-  }));
+  for (const item of nominatim) {
+    if (results.some((r) => r.description === item.description)) continue;
+    results.push({
+      id: item.id,
+      description: item.description,
+      latitude: item.latitude,
+      longitude: item.longitude,
+      provider: "nominatim",
+    });
+  }
+
+  return results.slice(0, 8);
 }
 
 export async function resolveLocationSuggestion(suggestion: LocationSuggestion): Promise<MapLocationResult | null> {
@@ -109,6 +117,10 @@ export async function resolveGoogleMapsLink(inputUrl: string): Promise<MapLocati
   }
 
   if (!/^https?:\/\//i.test(trimmed)) {
+    if (isGoogleMapsApiConfigured()) {
+      const google = await geocodeAddress(trimmed);
+      if (google) return google;
+    }
     return geocodeNominatim(trimmed);
   }
 

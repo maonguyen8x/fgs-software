@@ -10,6 +10,7 @@ import { RequiredLabel } from "@/components/ui/RequiredLabel";
 import { BlueCheckbox } from "@/components/ui/BlueCheckbox";
 import { LocaleTabs } from "./LocaleTabs";
 import { AvatarImageEditor } from "./AvatarImageEditor";
+import { SkillsTagInput } from "./SkillsTagInput";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 
 interface FounderFormProps {
@@ -37,7 +38,7 @@ export function FounderForm({ initial }: FounderFormProps) {
   const te = useTranslations("admin.founders.errors");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [skillsInput, setSkillsInput] = useState((initial?.skills ?? []).join(", "));
+  const [skills, setSkills] = useState<string[]>(initial?.skills ?? []);
   const [form, setForm] = useState({
     name: initial?.name ?? "",
     role: initial?.role ?? "",
@@ -60,11 +61,6 @@ export function FounderForm({ initial }: FounderFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const skills = skillsInput
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-
     const payload = {
       name: form.name,
       role: form.role,
@@ -96,7 +92,7 @@ export function FounderForm({ initial }: FounderFormProps) {
       return;
     }
     showAdminSuccessToast(t("saved"));
-    router.push("/admin/founders");
+    router.push("/admin/team?tab=founders");
     router.refresh();
   };
 
@@ -115,11 +111,12 @@ export function FounderForm({ initial }: FounderFormProps) {
 
       <div>
         <Label>{t("skills")}</Label>
-        <Input
+        <SkillsTagInput
           className="mt-1"
-          value={skillsInput}
-          onChange={(e) => setSkillsInput(e.target.value)}
+          value={skills}
+          onChange={setSkills}
           placeholder={t("skills_placeholder")}
+          hint={t("skills_hint")}
         />
       </div>
 

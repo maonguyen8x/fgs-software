@@ -7,6 +7,7 @@ export const CACHE_TAGS = {
   about: "about",
   founders: "founders",
   timeline: "timeline",
+  activities: "activities",
   coreValues: "core-values",
   branches: "branches",
   whyChooseUs: "why-choose-us",
@@ -14,6 +15,7 @@ export const CACHE_TAGS = {
   techStack: "tech-stack",
   blog: "blog",
   partners: "partners",
+  pageBlocks: "page-blocks",
 } as const;
 
 export type CacheTag = (typeof CACHE_TAGS)[keyof typeof CACHE_TAGS];

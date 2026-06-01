@@ -12,7 +12,9 @@ model User {
   email     String   @unique
   password  String
   name      String
+  avatar    String?
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model PasswordResetToken {
@@ -173,6 +175,28 @@ model TechStack {
   isVisible Boolean @default(true)
 }
 
+model PageContentBlock {
+  id         String   @id @default(cuid())
+  page       String
+  key        String
+  title      String?
+  titleJa    String?
+  titleVi    String?
+  subtitle   String?
+  subtitleJa String?
+  subtitleVi String?
+  body       String?  @db.Text
+  bodyJa     String?  @db.Text
+  bodyVi     String?  @db.Text
+  order      Int      @default(0)
+  isVisible  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([page, key])
+  @@index([page, order])
+}
+
 model AboutContent {
   id              String  @id @default(cuid())
   section         String  @unique
@@ -207,7 +231,7 @@ model Founder {
 }
 
 model TimelineMilestone {
-  id            String  @id @default(cuid())
+  id            String   @id @default(cuid())
   milestoneDate String
   title         String
   titleJa       String?
@@ -215,8 +239,25 @@ model TimelineMilestone {
   description   String?
   descriptionJa String?
   descriptionVi String?
-  order         Int     @default(0)
-  isVisible     Boolean @default(true)
+  memberCount   Int      @default(0)
+  images        String[] @default([])
+  order         Int      @default(0)
+  isVisible     Boolean  @default(true)
+}
+
+model CompanyActivity {
+  id            String   @id @default(cuid())
+  title         String
+  titleJa       String?
+  titleVi       String?
+  description   String?
+  descriptionJa String?
+  descriptionVi String?
+  images        String[] @default([])
+  order         Int      @default(0)
+  isVisible     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model CoreValue {
@@ -297,4 +338,19 @@ model AiProvider {
   order        Int     @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model SiteVisit {
+  id          String   @id @default(cuid())
+  path        String?
+  country     String   @default("Unknown")
+  countryCode String   @default("XX")
+  monthKey    String
+  sessionKey  String
+  createdAt   DateTime @default(now())
+
+  @@index([monthKey])
+  @@index([countryCode])
+  @@index([createdAt])
+  @@index([sessionKey, createdAt])
 }

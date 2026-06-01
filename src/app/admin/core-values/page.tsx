@@ -3,25 +3,25 @@ import { prisma } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
+import { AdminPageShell } from "@/components/admin/AdminPageShell";
 
 export default async function AdminCoreValuesPage() {
   const items = await prisma.coreValue.findMany({ orderBy: { order: "asc" } });
 
   return (
-    <div className="p-8">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Core Values</h1>
-          <p className="text-sm text-slate-500">Displayed on the About page</p>
-        </div>
+    <AdminPageShell
+      title="Core Values"
+      description="Displayed on the About page"
+      actions={
         <Button asChild className="cursor-pointer">
           <Link href="/admin/core-values/new">
             <Plus className="mr-2 h-4 w-4" />
             Add Value
           </Link>
         </Button>
-      </div>
-      <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
+      }
+    >
+      <div className="overflow-hidden rounded-xl border border-slate-100">
         <table className="w-full text-sm">
           <thead className="bg-slate-50">
             <tr>
@@ -51,6 +51,6 @@ export default async function AdminCoreValuesPage() {
           </tbody>
         </table>
       </div>
-    </div>
+    </AdminPageShell>
   );
 }

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { generateChatReply } from "@/lib/chat/ai";
+import { AiChatUnavailableError, generateChatReply } from "@/lib/chat/ai";
 import { getSettingsMap } from "@/lib/settings";
 import type { Locale } from "@/i18n/routing";
 import {
@@ -67,7 +67,20 @@ export async function POST(request: Request) {
         content: m.content,
       }));
 
-    const reply = await generateChatReply({ locale, messages: turns, assistantName });
+    let reply: string;
+    try {
+      reply = await generateChatReply({ locale, messages: turns, assistantName });
+    } catch (error) {
+      if (error instanceof AiChatUnavailableError) {
+        logger.error("Chat AI unavailable", { error: error.message });
+        return apiError(
+          "AI service is temporarily unavailable. Please try again or use the Contact page.",
+          503,
+          "AI_UNAVAILABLE"
+        );
+      }
+      throw error;
+    }
 
     await prisma.chatMessage.create({
       data: { sessionId: body.sessionId, role: "assistant", content: reply },

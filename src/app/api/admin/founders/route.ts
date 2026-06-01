@@ -36,7 +36,10 @@ export async function POST(request: Request) {
       await syncFounderToTeam(founder, data);
     }
 
-    afterAdminMutation(CACHE_TAGS.founders);
+    afterAdminMutation(
+      CACHE_TAGS.founders,
+      ...(data.syncToTeam ? [CACHE_TAGS.team] : [])
+    );
     const updated = await prisma.founder.findUnique({ where: { id: founder.id } });
     return NextResponse.json(updated ?? founder, { status: 201 });
   } catch (e) {

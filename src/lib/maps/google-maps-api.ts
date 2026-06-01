@@ -70,7 +70,9 @@ export async function fetchPlaceSuggestions(input: string): Promise<PlaceSuggest
   const params = new URLSearchParams({
     input: input.trim(),
     key: apiKey,
-    types: "geocode|establishment",
+    language: "vi",
+    components: "country:vn",
+    region: "vn",
   });
 
   const response = await fetch(
@@ -101,7 +103,8 @@ export async function fetchPlaceDetails(placeId: string): Promise<MapLocationRes
   const params = new URLSearchParams({
     place_id: placeId,
     key: apiKey,
-    fields: "formatted_address,geometry,place_id",
+    fields: "formatted_address,name,address_components,geometry,place_id",
+    language: "vi",
   });
 
   const response = await fetch(
@@ -126,7 +129,7 @@ export async function fetchPlaceDetails(placeId: string): Promise<MapLocationRes
   const { lat, lng } = data.result.geometry.location;
   if (lat === undefined || lng === undefined) return null;
 
-  const address = data.result.formatted_address ?? "";
+  const address = formatAddressFromPlace(data.result) ?? data.result.formatted_address ?? "";
   return {
     address,
     latitude: lat,
@@ -169,6 +172,8 @@ export async function geocodeAddress(address: string): Promise<MapLocationResult
   const params = new URLSearchParams({
     address: address.trim(),
     key: apiKey,
+    language: "vi",
+    region: "vn",
   });
 
   const response = await fetch(
@@ -181,6 +186,7 @@ export async function geocodeAddress(address: string): Promise<MapLocationResult
     results?: Array<{
       formatted_address?: string;
       place_id?: string;
+      address_components?: Array<{ long_name: string; short_name: string; types: string[] }>;
       geometry?: { location?: { lat?: number; lng?: number } };
     }>;
   };
@@ -192,7 +198,11 @@ export async function geocodeAddress(address: string): Promise<MapLocationResult
   const lng = result.geometry?.location?.lng;
   if (lat === undefined || lng === undefined) return null;
 
-  const formatted = result.formatted_address ?? address.trim();
+  const formatted =
+    formatAddressFromPlace({
+      formatted_address: result.formatted_address,
+      address_components: result.address_components,
+    }) ?? result.formatted_address ?? address.trim();
   return {
     address: formatted,
     latitude: lat,
@@ -204,4 +214,23 @@ export async function geocodeAddress(address: string): Promise<MapLocationResult
 
 export function isGoogleMapsApiConfigured(): boolean {
   return Boolean(getApiKey());
+}
+
+function formatAddressFromPlace(result: {
+  formatted_address?: string;
+  name?: string;
+  address_components?: Array<{ long_name: string; short_name: string; types: string[] }>;
+}): string | null {
+  const components = result.address_components ?? [];
+  const streetNumber = components.find((c) => c.types.includes("street_number"))?.long_name;
+  const route = components.find((c) => c.types.includes("route"))?.long_name;
+  const locality =
+    components.find((c) => c.types.includes("locality"))?.long_name ??
+    components.find((c) => c.types.includes("administrative_area_level_1"))?.long_name;
+  const country = components.find((c) => c.types.includes("country"))?.long_name;
+
+  const street = [streetNumber, route].filter(Boolean).join(" ").trim();
+  const parts = [street || result.name, locality, country].filter(Boolean);
+  if (parts.length > 0) return parts.join(", ");
+  return result.formatted_address ?? null;
 }

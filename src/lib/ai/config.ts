@@ -1,5 +1,8 @@
 import { getSettingsMap } from "@/lib/settings";
 import { AI_SETTING_KEYS } from "./setting-keys";
+import { readEnvApiKey, readEnvModel } from "./env-keys";
+import { normalizeGeminiModel, DEFAULT_GEMINI_MODEL } from "@/lib/chat/providers/gemini";
+import { isUsableApiKey } from "./api-key";
 
 export { AI_SETTING_KEYS };
 
@@ -17,21 +20,32 @@ export async function getAiRuntimeConfig(): Promise<AiRuntimeConfig> {
 
   const dbOpenai = settings.openai_api_key?.trim();
   const dbGemini = settings.google_ai_api_key?.trim();
-  const envOpenai = process.env.OPENAI_API_KEY?.trim();
-  const envGemini = process.env.GOOGLE_AI_API_KEY?.trim();
+  const envOpenai = readEnvApiKey("openai");
+  const envGemini = readEnvApiKey("gemini");
 
-  const openaiApiKey = dbOpenai || envOpenai || null;
-  const googleAiApiKey = dbGemini || envGemini || null;
+  const openaiApiKey =
+    (isUsableApiKey(dbOpenai) ? dbOpenai : null) || envOpenai || null;
+  const googleAiApiKey =
+    (isUsableApiKey(dbGemini) ? dbGemini : null) || envGemini || null;
 
   const hasDb = Boolean(dbOpenai || dbGemini || settings.ai_provider);
   const hasEnv = Boolean(envOpenai || envGemini || process.env.AI_PROVIDER);
 
+  const openaiModel =
+    settings.openai_model?.trim() || readEnvModel(["OPENAI_MODEL"], "gpt-4o-mini");
+  const rawGeminiModel =
+    settings.gemini_model?.trim() || readEnvModel(["GEMINI_MODEL"], DEFAULT_GEMINI_MODEL);
+  const geminiModel = normalizeGeminiModel(rawGeminiModel);
+
   return {
-    provider: settings.ai_provider?.trim() || process.env.AI_PROVIDER?.toLowerCase() || "auto",
+    provider:
+      settings.ai_provider?.trim() ||
+      readEnvModel(["AI_PROVIDER"], "auto").toLowerCase() ||
+      "auto",
     openaiApiKey,
-    openaiModel: settings.openai_model?.trim() || process.env.OPENAI_MODEL || "gpt-4o-mini",
+    openaiModel,
     googleAiApiKey,
-    geminiModel: settings.gemini_model?.trim() || process.env.GEMINI_MODEL || "gemini-2.0-flash",
+    geminiModel,
     source: hasDb && hasEnv ? "mixed" : hasDb ? "database" : "environment",
   };
 }

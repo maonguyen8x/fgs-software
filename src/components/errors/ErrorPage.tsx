@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { AlertTriangle, Home, RefreshCw, ServerCrash, WifiOff } from "lucide-react";
+import { AlertTriangle, Home, RefreshCw, ServerCrash, Sparkles, WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export interface ErrorPageProps {
@@ -34,48 +34,66 @@ export function ErrorPage({
 }: ErrorPageProps) {
   const Icon =
     variant === "network" ? WifiOff : variant === "server" ? ServerCrash : AlertTriangle;
+  const accentClass =
+    variant === "network"
+      ? "from-cyan-500 to-sky-700"
+      : variant === "server"
+        ? "from-indigo-500 to-primary-700"
+        : "from-amber-500 to-orange-700";
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.35 }}
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/60 to-primary-100/40 px-4 py-16 dark:from-slate-950 dark:via-slate-900 dark:to-primary-950/30"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-linear-to-br from-slate-50 via-blue-50/70 to-primary-100/45 px-4 py-16 dark:from-slate-950 dark:via-slate-900 dark:to-primary-950/35"
     >
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute -left-32 top-0 h-96 w-96 rounded-full bg-primary-400/25 blur-3xl"
-        animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.65, 0.4] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute -left-36 -top-20 h-112 w-md rounded-full bg-primary-400/25 blur-3xl"
+        animate={{ scale: [1, 1.12, 1], opacity: [0.35, 0.6, 0.35] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-primary-600/20 blur-3xl"
-        animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.55, 0.3] }}
-        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+        className="pointer-events-none absolute -right-28 -bottom-16 h-120 w-120 rounded-full bg-indigo-500/20 blur-3xl"
+        animate={{ scale: [1, 1.18, 1], opacity: [0.28, 0.52, 0.28] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.18]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 20% 20%, rgba(59,130,246,0.25) 0, transparent 36%), radial-gradient(circle at 78% 82%, rgba(99,102,241,0.25) 0, transparent 38%)",
+        }}
       />
 
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: "easeOut" }}
-        className="relative z-10 w-full max-w-xl"
+        className="relative z-10 w-full max-w-2xl"
       >
         <motion.div
           initial={{ scale: 0.94, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 240, damping: 22, delay: 0.08 }}
-          className="overflow-hidden rounded-3xl border border-white/80 bg-white/90 shadow-2xl shadow-primary-900/15 backdrop-blur-xl dark:border-slate-700/70 dark:bg-slate-900/90"
+          className="overflow-hidden rounded-4xl border border-white/80 bg-white/92 shadow-2xl shadow-primary-900/20 backdrop-blur-xl dark:border-slate-700/70 dark:bg-slate-900/92"
         >
           <motion.div
             aria-hidden
-            className="h-1.5 bg-gradient-to-r from-primary-400 via-primary-600 to-primary-400"
+            className="h-1.5 bg-linear-to-r from-primary-400 via-primary-600 to-primary-400"
             animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
             transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
             style={{ backgroundSize: "200% 200%" }}
           />
 
           <div className="px-8 py-10 text-center md:px-12 md:py-12">
+            <div className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-primary-200/80 bg-primary-50/90 px-4 py-1.5 text-xs font-semibold text-primary-700 dark:border-primary-800 dark:bg-primary-950/60 dark:text-primary-200">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>{statusCode ? `Status ${statusCode}` : "Status"}</span>
+            </div>
             {(statusCode || statusLabel) && (
               <motion.div
                 initial={{ opacity: 0, y: -8 }}
@@ -93,7 +111,7 @@ export function ErrorPage({
               initial={{ rotate: -10, scale: 0.88 }}
               animate={{ rotate: 0, scale: 1 }}
               transition={{ type: "spring", stiffness: 180, damping: 14, delay: 0.2 }}
-              className="mx-auto mb-7 flex h-28 w-28 items-center justify-center rounded-[1.75rem] bg-gradient-to-br from-primary-500 to-primary-700 text-white shadow-xl shadow-primary-600/35 ring-4 ring-primary-100/90 dark:ring-primary-900/60"
+              className={`mx-auto mb-7 flex h-28 w-28 items-center justify-center rounded-[1.75rem] bg-linear-to-br ${accentClass} text-white shadow-xl shadow-primary-600/35 ring-4 ring-primary-100/90 dark:ring-primary-900/60`}
             >
               <Icon className="h-12 w-12" strokeWidth={1.6} />
             </motion.div>

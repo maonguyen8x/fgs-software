@@ -2,25 +2,25 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { AdminPageShell } from "@/components/admin/AdminPageShell";
 
 export default async function AdminTimelinePage() {
   const items = await prisma.timelineMilestone.findMany({ orderBy: { order: "asc" } });
 
   return (
-    <div className="p-8">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Company Timeline</h1>
-          <p className="text-sm text-slate-500">Milestones shown on the About page (format: YYYY-MM)</p>
-        </div>
+    <AdminPageShell
+      title="Company Timeline"
+      description="Milestones shown on the About page (format: YYYY-MM)"
+      actions={
         <Button asChild className="cursor-pointer">
           <Link href="/admin/timeline/new">
             <Plus className="mr-2 h-4 w-4" />
             Add Milestone
           </Link>
         </Button>
-      </div>
-      <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
+      }
+    >
+      <div className="overflow-hidden rounded-xl border border-slate-100">
         <table className="w-full text-sm">
           <thead className="bg-slate-50">
             <tr>
@@ -44,6 +44,6 @@ export default async function AdminTimelinePage() {
           </tbody>
         </table>
       </div>
-    </div>
+    </AdminPageShell>
   );
 }

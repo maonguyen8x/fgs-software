@@ -2,19 +2,21 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { AdminPageShell } from "@/components/admin/AdminPageShell";
 
 export default async function AdminServicesPage() {
   const services = await prisma.service.findMany({ orderBy: { order: "asc" } });
 
   return (
-    <div className="p-8">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Services</h1>
+    <AdminPageShell
+      title="Services"
+      actions={
         <Button asChild>
           <Link href="/admin/services/new">Add Service</Link>
         </Button>
-      </div>
-      <div className="overflow-hidden rounded-lg border bg-white">
+      }
+    >
+      <div className="overflow-hidden rounded-xl border border-slate-100">
         <table className="w-full text-sm">
           <thead className="bg-slate-50">
             <tr>
@@ -44,6 +46,6 @@ export default async function AdminServicesPage() {
           </tbody>
         </table>
       </div>
-    </div>
+    </AdminPageShell>
   );
 }

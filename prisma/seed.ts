@@ -34,10 +34,14 @@ async function main() {
     { key: "working_hours", value: "Mon–Fri 9:00–18:00 (ICT)" },
     { key: "hero_headline", value: "Your Trusted IT Outsourcing Partner in Vietnam" },
     { key: "hero_headline_ja", value: "ベトナムの信頼できるITアウトソーシングパートナー" },
-    { key: "hero_headline_vi", value: "Đối tác Outsourcing IT đáng tin cậy tại Việt Nam" },
-    { key: "hero_subheadline", value: "We build high-quality software for Japanese businesses" },
-    { key: "hero_subheadline_ja", value: "日本企業向けに高品質なソフトウェアを開発します" },
-    { key: "hero_subheadline_vi", value: "Chúng tôi phát triển phần mềm chất lượng cao cho doanh nghiệp Nhật Bản" },
+    { key: "hero_headline_vi", value: "FGS Software" },
+    { key: "hero_subheadline", value: "We help businesses develop products and optimize operations through technology" },
+    { key: "hero_subheadline_ja", value: "テクノロジーで企業のプロダクト成長と業務の最適化を支援します" },
+    { key: "hero_subheadline_vi", value: "Chúng tôi giúp doanh nghiệp phát triển sản phẩm và tối ưu vận hành bằng công nghệ" },
+    { key: "hero_typewriter_enabled", value: "true" },
+    { key: "site_tagline", value: "We help businesses develop products and optimize operations through technology" },
+    { key: "site_tagline_ja", value: "テクノロジーで企業のプロダクト成長と業務の最適化を支援します" },
+    { key: "site_tagline_vi", value: "Chúng tôi giúp doanh nghiệp phát triển sản phẩm và tối ưu vận hành bằng công nghệ" },
     { key: "chatbot_enabled", value: "true" },
     { key: "chatbot_name", value: "Nova" },
     { key: "chatbot_name_ja", value: "ノヴァ" },
@@ -289,92 +293,56 @@ async function main() {
     });
   }
 
-  const timelineCount = await prisma.timelineMilestone.count();
-  if (timelineCount === 0) {
-    await prisma.timelineMilestone.createMany({
-      data: [
-        {
-          milestoneDate: "2026-05",
-          title: "Company Founded — Da Nang HQ",
-          titleJa: "会社設立 — ダナン本社",
-          titleVi: "Thành lập công ty — Trụ sở Đà Nẵng",
-          description:
-            "FGS Software officially established with headquarters in Da Nang, Vietnam, beginning our mission to serve Japanese and global clients.",
-          descriptionJa: "ベトナム・ダナンに本社を置き、FGS Software を設立。日本およびグローバル向けサービスを開始。",
-          descriptionVi:
-            "FGS Software chính thức thành lập với trụ sở tại Đà Nẵng, bắt đầu sứ mệnh phục vụ khách hàng Nhật Bản và quốc tế.",
-          order: 1,
-        },
-        {
-          milestoneDate: "2026-08",
-          title: "First Japanese Client Projects",
-          titleJa: "初の日本企業プロジェクト",
-          titleVi: "Dự án khách hàng Nhật đầu tiên",
-          description: "Delivered first outsourcing projects for Japanese enterprises with dedicated engineering teams.",
-          descriptionJa: "専任エンジニアチームで初の日本企業向けアウトソーシングプロジェクトを納品。",
-          descriptionVi: "Hoàn thành các dự án outsourcing đầu tiên cho doanh nghiệp Nhật Bản với team kỹ sư chuyên trách.",
-          order: 2,
-        },
-        {
-          milestoneDate: "2026-11",
-          title: "Expanded Service Portfolio",
-          titleJa: "サービス拡充",
-          titleVi: "Mở rộng danh mục dịch vụ",
-          description: "Added web, mobile, API integration, and AI-assisted solutions to our core offerings.",
-          descriptionJa: "Web・モバイル・API連携・AI支援ソリューションをコアサービスに追加。",
-          descriptionVi: "Bổ sung web, mobile, tích hợp API và giải pháp hỗ trợ AI vào dịch vụ cốt lõi.",
-          order: 3,
-        },
-        {
-          milestoneDate: "2027-03",
-          title: "Regional Partnership Growth",
-          titleJa: "地域パートナー拡大",
-          titleVi: "Mở rộng đối tác khu vực",
-          description: "Built strategic partnerships across APAC to scale delivery capacity and client success.",
-          descriptionJa: "APAC地域で戦略的パートナーシップを構築し、提供体制を強化。",
-          descriptionVi: "Thiết lập quan hệ đối tác chiến lược tại APAC để mở rộng năng lực triển khai.",
-          order: 4,
-        },
-      ],
-    });
-  } else {
-    const extraMilestones = [
-      {
-        milestoneDate: "2026-08",
-        title: "First Japanese Client Projects",
-        titleJa: "初の日本企業プロジェクト",
-        titleVi: "Dự án khách hàng Nhật đầu tiên",
-        description: "Delivered first outsourcing projects for Japanese enterprises with dedicated engineering teams.",
-        descriptionJa: "専任エンジニアチームで初の日本企業向けアウトソーシングプロジェクトを納品。",
-        descriptionVi: "Hoàn thành các dự án outsourcing đầu tiên cho doanh nghiệp Nhật Bản với team kỹ sư chuyên trách.",
-        order: 2,
-      },
-      {
-        milestoneDate: "2026-11",
-        title: "Expanded Service Portfolio",
-        titleJa: "サービス拡充",
-        titleVi: "Mở rộng danh mục dịch vụ",
-        description: "Added web, mobile, API integration, and AI-assisted solutions to our core offerings.",
-        descriptionJa: "Web・モバイル・API連携・AI支援ソリューションをコアサービスに追加。",
-        descriptionVi: "Bổ sung web, mobile, tích hợp API và giải pháp hỗ trợ AI vào dịch vụ cốt lõi.",
-        order: 3,
-      },
-      {
-        milestoneDate: "2027-03",
-        title: "Regional Partnership Growth",
-        titleJa: "地域パートナー拡大",
-        titleVi: "Mở rộng đối tác khu vực",
-        description: "Built strategic partnerships across APAC to scale delivery capacity and client success.",
-        descriptionJa: "APAC地域で戦略的パートナーシップを構築し、提供体制を強化。",
-        descriptionVi: "Thiết lập quan hệ đối tác chiến lược tại APAC để mở rộng năng lực triển khai.",
-        order: 4,
-      },
-    ];
-    for (const m of extraMilestones) {
-      const exists = await prisma.timelineMilestone.findFirst({
-        where: { milestoneDate: m.milestoneDate },
-      });
-      if (!exists) await prisma.timelineMilestone.create({ data: m });
+  const timelineMilestones = [
+    {
+      milestoneDate: "2026-05",
+      title: "Company Founded — Da Nang HQ",
+      titleJa: "会社設立 — ダナン本社",
+      titleVi: "Thành lập công ty — Trụ sở Đà Nẵng",
+      description:
+        "FGS Software officially established with headquarters in Da Nang, Vietnam, beginning our mission to serve Japanese and global clients.",
+      descriptionJa: "ベトナム・ダナンに本社を置き、FGS Software を設立。日本およびグローバル向けサービスを開始。",
+      descriptionVi:
+        "FGS Software chính thức thành lập với trụ sở tại Đà Nẵng, bắt đầu sứ mệnh phục vụ khách hàng Nhật Bản và quốc tế.",
+      memberCount: 5,
+      images: [],
+      order: 1,
+    },
+    {
+      milestoneDate: "2026-06",
+      title: "Partnership Agreement with ABC Company",
+      titleJa: "ABC社とのパートナーシップ締結",
+      titleVi: "Ký kết đối tác với công ty ABC",
+      description:
+        "Signed a strategic partnership with ABC Company to expand delivery capacity and client success.",
+      descriptionJa: "ABC社と戦略的パートナーシップを締結し、提供体制と顧客成功を強化。",
+      descriptionVi:
+        "Ký kết đối tác chiến lược với công ty ABC nhằm mở rộng năng lực triển khai và mang lại giá trị cho khách hàng.",
+      memberCount: 0,
+      images: [],
+      order: 2,
+    },
+    {
+      milestoneDate: "2026-12",
+      title: "",
+      titleJa: "",
+      titleVi: "",
+      description: "",
+      descriptionJa: "",
+      descriptionVi: "",
+      memberCount: 0,
+      images: [],
+      order: 3,
+    },
+  ];
+
+  await prisma.timelineMilestone.deleteMany({ where: { order: { gt: 3 } } });
+  for (const m of timelineMilestones) {
+    const existing = await prisma.timelineMilestone.findFirst({ where: { order: m.order } });
+    if (existing) {
+      await prisma.timelineMilestone.update({ where: { id: existing.id }, data: m });
+    } else {
+      await prisma.timelineMilestone.create({ data: m });
     }
   }
 
@@ -476,7 +444,53 @@ async function main() {
     { key: "locale_enabled_en", value: "true" },
     { key: "locale_enabled_ja", value: "true" },
     { key: "locale_enabled_vi", value: "true" },
+    { key: "site_logo_url", value: "/logo.png" },
+    { key: "site_logo_url_backup", value: "/logo.png" },
+    { key: "site_logo_mode", value: "image" },
+    { key: "site_notice_enabled", value: "false" },
+    { key: "site_maintenance_mode", value: "false" },
+    { key: "site_notice_variant", value: "info" },
+    { key: "site_notice_title_vi", value: "" },
+    { key: "site_notice_title_en", value: "" },
+    { key: "site_notice_message_vi", value: "" },
+    { key: "site_notice_message_en", value: "" },
   ];
+
+  const pageBlocks = [
+    { page: "home", key: "services_section", title: "Our Services", titleVi: "Dịch vụ của chúng tôi", subtitle: "Full-stack development tailored to your business", subtitleVi: "Phát triển phần mềm trọn gói phù hợp doanh nghiệp của bạn", order: 1 },
+    { page: "home", key: "why_section", title: "Why Choose FGS Software", titleVi: "Tại sao chọn FGS Software", subtitle: "Your trusted partner for Japan-market projects", subtitleVi: "Đối tác đáng tin cậy cho dự án thị trường Nhật Bản", order: 2 },
+    { page: "home", key: "team_section", title: "Our Team", titleVi: "Đội ngũ của chúng tôi", subtitle: "Experienced engineers committed to quality", subtitleVi: "Kỹ sư giàu kinh nghiệm cam kết chất lượng", order: 3 },
+    { page: "home", key: "works_section", title: "Featured Works", titleVi: "Dự án tiêu biểu", subtitle: "Real solutions delivered to clients", subtitleVi: "Giải pháp thực tế đã giao cho khách hàng", order: 4 },
+    { page: "home", key: "testimonials_section", title: "What Clients Say", titleVi: "Khách hàng nói gì", order: 5 },
+    { page: "home", key: "partners_section", title: "Clients & Partners", titleVi: "Khách hàng & Đối tác", subtitle: "Trusted by teams in Japan and worldwide", subtitleVi: "Được tin tưởng bởi các đội ngũ tại Nhật Bản và quốc tế", order: 6 },
+    { page: "home", key: "cta_section", title: "Ready to start your project?", titleVi: "Sẵn sàng bắt đầu dự án?", subtitle: "Let's discuss how we can help your business grow", subtitleVi: "Hãy trao đổi cách chúng tôi giúp doanh nghiệp bạn phát triển", order: 7 },
+    { page: "about", key: "page_header", title: "About Us", titleVi: "Giới thiệu", subtitle: "Building trust through quality software", subtitleVi: "Xây dựng niềm tin qua phần mềm chất lượng", order: 1 },
+    { page: "about", key: "timeline_section", title: "Company History", titleVi: "Lịch sử hình thành", order: 2 },
+    { page: "about", key: "activities_section", title: "Company Activities", titleVi: "Hoạt động công ty", order: 3 },
+    { page: "about", key: "branches_section", title: "Branches", titleVi: "Chi nhánh", order: 4 },
+    { page: "services", key: "page_header", title: "Services & Capabilities", titleVi: "Dịch vụ & Năng lực", subtitle: "End-to-end IT outsourcing solutions", subtitleVi: "Giải pháp outsourcing IT toàn diện", order: 1 },
+    { page: "services", key: "tech_section", title: "Technologies We Use", titleVi: "Công nghệ sử dụng", subtitle: "Modern tools and frameworks we master", subtitleVi: "Công cụ và framework hiện đại chúng tôi thành thạo", order: 2 },
+    { page: "works", key: "page_header", title: "Portfolio", titleVi: "Portfolio", subtitle: "Projects we are proud to have delivered", subtitleVi: "Các dự án chúng tôi tự hào đã hoàn thành", order: 1 },
+    { page: "contact", key: "page_header", title: "Contact", titleVi: "Liên hệ", subtitle: "Tell us about your project — we reply within 1–2 business days", subtitleVi: "Mô tả dự án của bạn — chúng tôi phản hồi trong 1–2 ngày làm việc", order: 1 },
+  ];
+
+  for (const block of pageBlocks) {
+    await prisma.pageContentBlock.upsert({
+      where: { page_key: { page: block.page, key: block.key } },
+      update: {},
+      create: {
+        page: block.page,
+        key: block.key,
+        title: block.title,
+        titleVi: block.titleVi,
+        subtitle: block.subtitle ?? undefined,
+        subtitleVi: block.subtitleVi ?? undefined,
+        order: block.order,
+        isVisible: true,
+      },
+    });
+  }
+
   for (const s of extraSettings) {
     await prisma.setting.upsert({
       where: { key: s.key },

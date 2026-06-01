@@ -2,19 +2,21 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { AdminPageShell } from "@/components/admin/AdminPageShell";
 
 export default async function AdminBlogPage() {
   const posts = await prisma.blogPost.findMany({ orderBy: { createdAt: "desc" } });
 
   return (
-    <div className="p-8">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Blog Posts</h1>
+    <AdminPageShell
+      title="Blog Posts"
+      actions={
         <Button asChild className="cursor-pointer">
           <Link href="/admin/blog/new">New Post</Link>
         </Button>
-      </div>
-      <div className="overflow-hidden rounded-lg border bg-white">
+      }
+    >
+      <div className="overflow-hidden rounded-xl border border-slate-100">
         <table className="w-full text-sm">
           <thead className="bg-slate-50">
             <tr>
@@ -40,6 +42,6 @@ export default async function AdminBlogPage() {
           </tbody>
         </table>
       </div>
-    </div>
+    </AdminPageShell>
   );
 }
