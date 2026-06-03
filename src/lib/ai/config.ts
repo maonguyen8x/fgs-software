@@ -6,6 +6,12 @@ import { isUsableApiKey } from "./api-key";
 
 export { AI_SETTING_KEYS };
 
+function pickApiKey(env: string | null, db: string | undefined): string | null {
+  if (env && isUsableApiKey(env)) return env;
+  if (isUsableApiKey(db)) return db!.trim();
+  return null;
+}
+
 export interface AiRuntimeConfig {
   provider: string;
   openaiApiKey: string | null;
@@ -23,10 +29,8 @@ export async function getAiRuntimeConfig(): Promise<AiRuntimeConfig> {
   const envOpenai = readEnvApiKey("openai");
   const envGemini = readEnvApiKey("gemini");
 
-  const openaiApiKey =
-    (isUsableApiKey(dbOpenai) ? dbOpenai : null) || envOpenai || null;
-  const googleAiApiKey =
-    (isUsableApiKey(dbGemini) ? dbGemini : null) || envGemini || null;
+  const openaiApiKey = pickApiKey(envOpenai, dbOpenai);
+  const googleAiApiKey = pickApiKey(envGemini, dbGemini);
 
   const hasDb = Boolean(dbOpenai || dbGemini || settings.ai_provider);
   const hasEnv = Boolean(envOpenai || envGemini || process.env.AI_PROVIDER);

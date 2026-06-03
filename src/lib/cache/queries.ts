@@ -149,6 +149,17 @@ export const getCachedBranches = unstable_cache(
   { revalidate: REVALIDATE_SECONDS, tags: [CACHE_TAGS.branches] }
 );
 
+export const getCachedHeroScrollSlides = unstable_cache(
+  async () =>
+    withRedisCache(redisKey("hero-slides"), () =>
+      prisma.heroScrollSlide.findMany({
+        where: { isVisible: true },
+        orderBy: { order: "asc" },
+      }), REVALIDATE_SECONDS),
+  ["hero-slides-list"],
+  { revalidate: REVALIDATE_SECONDS, tags: [CACHE_TAGS.heroSlides] }
+);
+
 export const getCachedPartners = unstable_cache(
   async () =>
     withRedisCache(redisKey("partners"), () =>

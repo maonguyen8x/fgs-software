@@ -22,7 +22,8 @@ export const metadata: Metadata = {
   title: BRAND.companyName,
   description: "IT Outsourcing Partner in Vietnam",
   icons: {
-    icon: [{ url: BRAND.logoPath, type: "image/svg+xml" }, { url: BRAND.logoPngPath }],
+    icon: [{ url: BRAND.logoPngPath, type: "image/png" }],
+    shortcut: BRAND.logoPngPath,
     apple: BRAND.logoPngPath,
   },
 };

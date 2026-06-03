@@ -7,6 +7,8 @@ import { LocaleSettingsPanel } from "@/components/admin/LocaleSettingsPanel";
 import { ThemeSettingsPanel } from "@/components/admin/ThemeSettingsPanel";
 import { HeaderNavSettingsPanel } from "@/components/admin/HeaderNavSettingsPanel";
 import { LogoSettingsPanel } from "@/components/admin/LogoSettingsPanel";
+import { HeroSlidesPanel } from "@/components/admin/HeroSlidesPanel";
+import { ClientsSectionSettingsPanel } from "@/components/admin/ClientsSectionSettingsPanel";
 import { SiteNoticeSettingsPanel } from "@/components/admin/SiteNoticeSettingsPanel";
 import { AdminPanelSkeleton } from "@/components/admin/AdminPanelSkeleton";
 import { AdminSettingsLocaleSwitcher } from "@/components/admin/AdminSettingsLocaleSwitcher";
@@ -35,6 +37,14 @@ export default async function AdminSettingsPage() {
       <div className="space-y-6">
         <AdminContentBlock>
           <LogoSettingsPanel settings={settings} />
+        </AdminContentBlock>
+
+        <AdminContentBlock>
+          <HeroSlidesPanel />
+        </AdminContentBlock>
+
+        <AdminContentBlock>
+          <ClientsSectionSettingsPanel settings={settings} />
         </AdminContentBlock>
 
         <AdminContentBlock>

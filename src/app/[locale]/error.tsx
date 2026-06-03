@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { ErrorPage } from "@/components/errors/ErrorPage";
-import { logger } from "@/lib/logger";
 
 export default function LocaleError({
   error,
@@ -14,13 +12,6 @@ export default function LocaleError({
 }) {
   const locale = useLocale();
   const t = useTranslations("errors");
-
-  useEffect(() => {
-    logger.error("Locale route error", {
-      message: error.message,
-      digest: error.digest,
-    });
-  }, [error]);
 
   return (
     <ErrorPage

@@ -8,16 +8,24 @@ function log(level: LogLevel, message: string, meta?: Record<string, unknown>): 
 
   switch (level) {
     case "error":
-      console.error(line);
+      if (process.env.NODE_ENV === "development") {
+        console.warn(line);
+      }
       break;
     case "warn":
-      console.warn(line);
+      if (process.env.NODE_ENV === "development") {
+        console.warn(line);
+      }
       break;
     case "debug":
-      if (process.env.NODE_ENV === "development") console.debug(line);
+      if (process.env.NODE_ENV === "development") {
+        console.debug(line);
+      }
       break;
     default:
-      console.info(line);
+      if (process.env.NODE_ENV === "development") {
+        console.info(line);
+      }
   }
 }
 

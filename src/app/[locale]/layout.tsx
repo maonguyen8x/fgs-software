@@ -18,6 +18,7 @@ import { BrandThemeStyle } from "@/components/theme/BrandThemeStyle";
 import { LocaleCookieSync } from "@/components/i18n/LocaleCookieSync";
 import { VisitTracker } from "@/components/analytics/VisitTracker";
 import { SiteExperienceShell } from "@/components/layout/SiteExperienceShell";
+import { HydrationNotice } from "@/components/errors/HydrationNotice";
 import { resolveLogoDisplay } from "@/lib/brand-logo";
 
 export const revalidate = 300;
@@ -57,6 +58,7 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages} timeZone={DEFAULT_TIME_ZONE}>
+      <HydrationNotice />
       <BrandThemeStyle settings={settings} />
       <ThemeShell settings={settings}>
         <LocaleCookieSync locale={locale as Locale} />

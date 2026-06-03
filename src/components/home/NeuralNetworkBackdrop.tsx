@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
+import { ClientOnly } from "@/components/ui/ClientOnly";
 
 interface Node {
   id: number;
@@ -41,7 +42,20 @@ function buildGraph(seed: number): { nodes: Node[]; edges: Edge[] } {
   return { nodes, edges };
 }
 
-export function NeuralNetworkBackdrop({ className = "" }: { className?: string }) {
+function BackdropFallback({ className }: { className?: string }) {
+  return (
+    <div
+      className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}
+      aria-hidden
+    >
+      <div className="absolute -left-1/4 top-0 h-[70%] w-[70%] rounded-full bg-primary-400/15 blur-3xl" />
+      <div className="absolute -right-1/4 bottom-0 h-[60%] w-[60%] rounded-full bg-cyan-400/10 blur-3xl" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,var(--background)_88%)]" />
+    </div>
+  );
+}
+
+function NeuralNetworkScene({ className = "" }: { className?: string }) {
   const { nodes, edges } = useMemo(() => buildGraph(1.2), []);
 
   return (
@@ -134,10 +148,15 @@ export function NeuralNetworkBackdrop({ className = "" }: { className?: string }
         ))}
       </motion.svg>
 
-      <div
-        className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,var(--background)_88%)]"
-        style={{ backgroundColor: "transparent" }}
-      />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,var(--background)_88%)]" />
     </div>
+  );
+}
+
+export function NeuralNetworkBackdrop({ className = "" }: { className?: string }) {
+  return (
+    <ClientOnly fallback={<BackdropFallback className={className} />}>
+      <NeuralNetworkScene className={className} />
+    </ClientOnly>
   );
 }

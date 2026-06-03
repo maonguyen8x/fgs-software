@@ -51,7 +51,7 @@ export async function generateChatReply({
 }: GenerateReplyParams): Promise<string> {
   const knowledge = await buildCompanyKnowledge(locale);
   const latestUser = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
-  const systemPrompt = buildSystemPrompt(locale, knowledge, assistantName, latestUser);
+  const systemPrompt = buildSystemPrompt(locale, knowledge, assistantName, latestUser, messages);
 
   const candidates = await resolveAiProviderCandidates();
 

@@ -2,10 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useMounted } from "@/hooks/use-mounted";
+
+type TypewriterAs = "span" | "p" | "div";
 
 interface TypewriterTextProps {
   text: string;
   className?: string;
+  /** Use span inside headings (h1) — never nest <p> in <h1> */
+  as?: TypewriterAs;
   speedMs?: number;
   startDelayMs?: number;
 }
@@ -13,13 +18,16 @@ interface TypewriterTextProps {
 export function TypewriterText({
   text,
   className,
+  as: Tag = "span",
   speedMs = 58,
   startDelayMs = 500,
 }: TypewriterTextProps) {
+  const mounted = useMounted();
   const [visible, setVisible] = useState("");
   const [done, setDone] = useState(false);
 
   useEffect(() => {
+    if (!mounted) return;
     setVisible("");
     setDone(false);
     let index = 0;
@@ -40,10 +48,18 @@ export function TypewriterText({
       clearTimeout(startId);
       if (intervalId) clearInterval(intervalId);
     };
-  }, [text, speedMs, startDelayMs]);
+  }, [mounted, text, speedMs, startDelayMs]);
+
+  if (!mounted) {
+    return (
+      <Tag className={cn("block min-h-[1.5em]", className)} suppressHydrationWarning>
+        {text}
+      </Tag>
+    );
+  }
 
   return (
-    <p className={cn("min-h-[1.5em]", className)} aria-label={text}>
+    <Tag className={cn("block min-h-[1.5em]", className)} aria-label={text}>
       <span>{visible}</span>
       {!done && (
         <span
@@ -52,6 +68,6 @@ export function TypewriterText({
           aria-hidden
         />
       )}
-    </p>
+    </Tag>
   );
 }

@@ -32,15 +32,15 @@ async function main() {
     { key: "meta_title", value: "FGS Software — IT Outsourcing Partner" },
     { key: "meta_description", value: "FGS Software delivers high-quality software development for Japanese businesses from Vietnam." },
     { key: "working_hours", value: "Mon–Fri 9:00–18:00 (ICT)" },
-    { key: "hero_headline", value: "Your Trusted IT Outsourcing Partner in Vietnam" },
-    { key: "hero_headline_ja", value: "ベトナムの信頼できるITアウトソーシングパートナー" },
-    { key: "hero_headline_vi", value: "FGS Software" },
-    { key: "hero_subheadline", value: "We help businesses develop products and optimize operations through technology" },
-    { key: "hero_subheadline_ja", value: "テクノロジーで企業のプロダクト成長と業務の最適化を支援します" },
-    { key: "hero_subheadline_vi", value: "Chúng tôi giúp doanh nghiệp phát triển sản phẩm và tối ưu vận hành bằng công nghệ" },
+    { key: "hero_headline", value: "" },
+    { key: "hero_headline_ja", value: "" },
+    { key: "hero_headline_vi", value: "" },
+    { key: "hero_subheadline", value: "" },
+    { key: "hero_subheadline_ja", value: "" },
+    { key: "hero_subheadline_vi", value: "" },
     { key: "hero_typewriter_enabled", value: "true" },
     { key: "site_tagline", value: "We help businesses develop products and optimize operations through technology" },
-    { key: "site_tagline_ja", value: "テクノロジーで企業のプロダクト成長と業務の最適化を支援します" },
+    { key: "site_tagline_ja", value: "" },
     { key: "site_tagline_vi", value: "Chúng tôi giúp doanh nghiệp phát triển sản phẩm và tối ưu vận hành bằng công nghệ" },
     { key: "chatbot_enabled", value: "true" },
     { key: "chatbot_name", value: "Nova" },
@@ -421,6 +421,50 @@ async function main() {
     });
   }
 
+  const heroSlideCount = await prisma.heroScrollSlide.count();
+  if (heroSlideCount === 0) {
+    await prisma.heroScrollSlide.createMany({
+      data: [
+        {
+          mediaType: "video",
+          imageUrl:
+            "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1920&h=1080&fit=crop&q=85",
+          videoUrl:
+            "https://assets.mixkit.co/videos/preview/mixkit-city-lights-at-night-from-a-bridge-4158-large.mp4",
+          alt: "Cầu Rồng Đà Nẵng về đêm",
+          title: "Dragon Bridge",
+          titleVi: "Cầu Rồng",
+          order: 0,
+          isVisible: true,
+        },
+        {
+          mediaType: "video",
+          imageUrl:
+            "https://images.unsplash.com/photo-1592155931574-092ecc4d1b58?w=1920&h=1080&fit=crop&q=85",
+          videoUrl:
+            "https://assets.mixkit.co/videos/preview/mixkit-traffic-in-a-city-at-night-seen-from-above-3400-large.mp4",
+          alt: "Cầu Trần Thị Lý Đà Nẵng về đêm",
+          title: "Tran Thi Ly Bridge",
+          titleVi: "Cầu Trần Thị Lý",
+          order: 1,
+          isVisible: true,
+        },
+        {
+          mediaType: "video",
+          imageUrl:
+            "https://images.unsplash.com/photo-1559592413-7cec05d19800?w=1920&h=1080&fit=crop&q=85",
+          videoUrl:
+            "https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-city-at-night-4452-large.mp4",
+          alt: "Cầu Sông Hàn Đà Nẵng về đêm",
+          title: "Han River Bridge",
+          titleVi: "Cầu Sông Hàn",
+          order: 2,
+          isVisible: true,
+        },
+      ],
+    });
+  }
+
   const partnerCount = await prisma.partner.count();
   if (partnerCount === 0) {
     await prisma.partner.createMany({
@@ -446,6 +490,12 @@ async function main() {
     { key: "locale_enabled_vi", value: "true" },
     { key: "site_logo_url", value: "/logo.png" },
     { key: "site_logo_url_backup", value: "/logo.png" },
+    { key: "home_clients_title", value: "Our clients" },
+    { key: "home_clients_title_vi", value: "Khách hàng của chúng tôi" },
+    { key: "home_clients_title_ja", value: "お客様" },
+    { key: "home_clients_subtitle", value: "Trusted on their digital transformation journey." },
+    { key: "home_clients_subtitle_vi", value: "Đồng hành cùng các doanh nghiệp trên hành trình chuyển đổi số." },
+    { key: "home_clients_subtitle_ja", value: "デジタル変革の旅路でご一緒している企業様です。" },
     { key: "site_logo_mode", value: "image" },
     { key: "site_notice_enabled", value: "false" },
     { key: "site_maintenance_mode", value: "false" },

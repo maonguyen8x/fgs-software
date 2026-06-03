@@ -9,6 +9,7 @@ import { toVietnamMapPosition } from "@/lib/map/vietnam-map-position";
 import type { Locale } from "@/i18n/routing";
 import { PageSection } from "@/components/layout/PageSection";
 import { SurfaceBlock } from "@/components/ui/SurfaceBlock";
+import { RotatingGlobe } from "@/components/about/RotatingGlobe";
 
 interface VietnamMapProps {
   title: string;
@@ -42,7 +43,7 @@ function DanangMarker({ label, position }: { label: string; position: { left: st
 
       <span className="map-marker-pulse absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-500/25" />
       <span className="map-marker-pulse map-marker-pulse-delay absolute left-1/2 top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-500/40" />
-      <span className="relative z-10 block h-3.5 w-3.5 rounded-full border-2 border-white bg-primary-600 shadow-lg shadow-primary-600/50 ring-2 ring-primary-400/60 dark:border-slate-900" />
+      <span className="relative z-10 block h-4 w-4 rounded-full border-2 border-white bg-primary-600 shadow-lg shadow-primary-600/50 ring-2 ring-primary-400/60 dark:border-slate-900" />
     </div>
   );
 }
@@ -59,8 +60,8 @@ export function VietnamMap({ title, branches, locale }: VietnamMapProps) {
       const rect = el.getBoundingClientRect();
       const x = (event.clientX - rect.left) / rect.width - 0.5;
       const y = (event.clientY - rect.top) / rect.height - 0.5;
-      rotateY.set(x * 5);
-      rotateX.set(-y * 4);
+      rotateY.set(x * 4);
+      rotateX.set(-y * 3);
     },
     [rotateX, rotateY]
   );
@@ -77,10 +78,14 @@ export function VietnamMap({ title, branches, locale }: VietnamMapProps) {
   const markerPos = toVietnamMapPosition(hq.latitude, hq.longitude);
 
   return (
-    <PageSection muted className="!py-6 md:!py-8">
-      <h2 className="mb-6 text-center text-2xl font-bold text-heading md:mb-8 md:text-3xl">{title}</h2>
+    <PageSection muted className="!py-8 md:!py-10">
+      <h2 className="mb-8 text-center text-2xl font-bold text-heading md:mb-10 md:text-3xl">{title}</h2>
 
-      <div className="grid items-start gap-6 lg:grid-cols-2 lg:gap-8">
+      <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-10">
+        <div className="flex justify-center lg:justify-end">
+          <RotatingGlobe />
+        </div>
+
         <div
           ref={containerRef}
           className="relative mx-auto w-full max-w-md perspective-[1000px]"
@@ -91,18 +96,21 @@ export function VietnamMap({ title, branches, locale }: VietnamMapProps) {
             className="relative aspect-[4/5] w-full"
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           >
-            <div className="relative h-full w-full">
+            <div className="relative h-full w-full rounded-2xl bg-primary-50/30 p-2 dark:bg-primary-950/20">
               <Image
                 src="/images/vietnam-map.png"
-                alt="Vietnam map"
+                alt="Bản đồ Việt Nam hình chữ S"
                 fill
                 priority
-                className="object-contain object-center drop-shadow-[0_8px_24px_rgba(15,23,42,0.12)] transition-transform duration-300"
+                className="object-contain object-center drop-shadow-[0_8px_24px_rgba(37,99,235,0.15)]"
                 sizes="(max-width: 768px) 100vw, 400px"
               />
               <DanangMarker label={cityLabel} position={markerPos} />
             </div>
           </motion.div>
+          <p className="mt-3 text-center text-xs font-medium text-primary-600 dark:text-primary-400">
+            {locale === "vi" ? "Trụ sở chính · Đà Nẵng" : locale === "ja" ? "本社 · ダナン" : "Headquarters · Da Nang"}
+          </p>
         </div>
 
         <div className="flex flex-col gap-3">

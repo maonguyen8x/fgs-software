@@ -43,8 +43,8 @@ async function requestGemini(
       systemInstruction: { parts: [{ text: systemPrompt }] },
       contents,
       generationConfig: {
-        temperature: 0.35,
-        maxOutputTokens: 700,
+        temperature: 0.45,
+        maxOutputTokens: 1024,
       },
     }),
   });

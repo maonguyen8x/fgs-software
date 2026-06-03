@@ -122,6 +122,9 @@ export function SettingsForm({ settings }: { settings: Record<string, string> })
           <h2 className="mb-4 text-lg font-semibold text-primary-700 dark:text-primary-400">
             {t(section.titleKey)}
           </h2>
+          {section.id === "hero" && (
+            <p className="mb-4 text-sm text-slate-600 dark:text-slate-400">{t("section_hero_hint")}</p>
+          )}
           <div className="space-y-4">
             {section.id === "maps" && (
               <>

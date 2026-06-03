@@ -62,6 +62,7 @@ export async function POST(request: Request) {
 
     const turns = history
       .filter((m) => m.role === "user" || m.role === "assistant")
+      .filter((m) => !m.content.includes("AI_UNAVAILABLE") && !m.content.includes("chưa kết nối"))
       .map((m) => ({
         role: m.role as "user" | "assistant",
         content: m.content,

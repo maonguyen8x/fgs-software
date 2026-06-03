@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  /** Prevents broken vendor-chunks for framer-motion / motion-dom in dev */
+  transpilePackages: ["framer-motion", "motion-dom", "motion-utils"],
+  experimental: {
+    optimizePackageImports: ["framer-motion", "lucide-react"],
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**" },

@@ -74,13 +74,13 @@ export async function resolveAiProviderCandidates(): Promise<ResolvedAiProvider[
     preferred === "openai" || preferred === "gemini" || preferred === "anthropic";
 
   if (strictPreferred) {
-    add(pickDb(preferred));
     add(envProvider(preferred, config));
+    add(pickDb(preferred));
   }
 
   for (const type of PROVIDER_TYPES) {
-    add(pickDb(type));
     add(envProvider(type, config));
+    add(pickDb(type));
   }
 
   return candidates;

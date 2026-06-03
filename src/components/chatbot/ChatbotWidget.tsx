@@ -143,67 +143,84 @@ export function ChatbotWidget({
     if (open && !minimized) inputRef.current?.focus();
   }, [open, minimized]);
 
-  const sendMessage = async (text: string) => {
-    const trimmed = text.trim();
-    if (!trimmed || loading) return;
+  const sendMessage = useCallback(
+    async (text: string) => {
+      const trimmed = text.trim();
+      if (!trimmed || loading) return;
 
-    const userMsg: ChatMessage = {
-      id: `u-${Date.now()}`,
-      role: "user",
-      content: trimmed,
-    };
-    setMessages((prev) => [...prev, userMsg]);
-    setInput("");
-    setLoading(true);
+      const userMsg: ChatMessage = {
+        id: `u-${Date.now()}`,
+        role: "user",
+        content: trimmed,
+      };
+      setMessages((prev) => [...prev, userMsg]);
+      setInput("");
+      setLoading(true);
 
-    try {
-      const res = await fetch(API_ROUTES.chat, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sessionId: getSessionId(),
-          locale,
-          message: trimmed,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        const code = data.code ?? res.status;
-        const msg =
-          code === "SERVICE_UNAVAILABLE"
-            ? t("error_disabled")
-            : code === "AI_UNAVAILABLE"
-              ? t("error_ai")
-            : code === "VALIDATION_ERROR" || res.status === 400
-              ? t("error_invalid")
-              : res.status >= 500
-                ? t("error_server")
-                : t("error");
-        throw new Error(msg);
+      try {
+        const res = await fetch(API_ROUTES.chat, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sessionId: getSessionId(),
+            locale,
+            message: trimmed,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          const code = data.code ?? res.status;
+          const msg =
+            code === "SERVICE_UNAVAILABLE"
+              ? t("error_disabled")
+              : code === "AI_UNAVAILABLE"
+                ? t("error_ai")
+                : code === "VALIDATION_ERROR" || res.status === 400
+                  ? t("error_invalid")
+                  : res.status >= 500
+                    ? t("error_server")
+                    : t("error");
+          throw new Error(msg);
+        }
+
+        const reply =
+          typeof data.reply === "string"
+            ? data.reply
+            : typeof data.data?.reply === "string"
+              ? data.data.reply
+              : "";
+
+        if (!reply) throw new Error(t("error"));
+
+        setMessages((prev) => [
+          ...prev,
+          { id: `a-${Date.now()}`, role: "assistant", content: reply },
+        ]);
+      } catch (err) {
+        const errorText =
+          err instanceof TypeError
+            ? t("error_network")
+            : err instanceof Error && err.message
+              ? err.message
+              : t("error");
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `e-${Date.now()}`,
+            role: "assistant",
+            content: errorText,
+          },
+        ]);
+      } finally {
+        setLoading(false);
       }
+    },
+    [loading, locale, t]
+  );
 
-      setMessages((prev) => [
-        ...prev,
-        { id: `a-${Date.now()}`, role: "assistant", content: data.reply },
-      ]);
-    } catch (err) {
-      const text =
-        err instanceof TypeError
-          ? t("error_network")
-          : err instanceof Error && err.message
-            ? err.message
-            : t("error");
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `e-${Date.now()}`,
-          role: "assistant",
-          content: text,
-        },
-      ]);
-    } finally {
-      setLoading(false);
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    void sendMessage(input);
   };
 
   const quickActions = [
@@ -334,7 +351,7 @@ export function ChatbotWidget({
                       <button
                         key={q.key}
                         type="button"
-                        onClick={() => sendMessage(quickPrompts[q.key])}
+                        onClick={() => void sendMessage(quickPrompts[q.key])}
                         className="cursor-pointer rounded-full border border-primary-200/80 bg-white/80 px-3 py-1.5 text-xs font-medium text-primary-700 shadow-sm transition-all hover:border-primary-400 hover:bg-primary-50 hover:shadow"
                       >
                         {q.label}
@@ -344,7 +361,11 @@ export function ChatbotWidget({
                 )}
 
                 {/* Input */}
-                <div className="border-t border-slate-200/60 bg-white/60 p-4">
+                <form
+                  className="border-t border-slate-200/60 bg-white/60 p-4"
+                  onSubmit={handleSubmit}
+                  noValidate
+                >
                   <div className="flex items-end gap-2 rounded-2xl bg-white p-2 shadow-inner ring-1 ring-slate-200/80">
                     <textarea
                       ref={inputRef}
@@ -354,7 +375,8 @@ export function ChatbotWidget({
                       onKeyDown={(e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
                           e.preventDefault();
-                          sendMessage(input);
+                          e.stopPropagation();
+                          void sendMessage(input);
                         }
                       }}
                       placeholder={t("placeholder")}
@@ -362,8 +384,7 @@ export function ChatbotWidget({
                       disabled={loading}
                     />
                     <button
-                      type="button"
-                      onClick={() => sendMessage(input)}
+                      type="submit"
                       disabled={!input.trim() || loading}
                       className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-primary-600 text-white transition-all hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-40"
                       aria-label={t("send")}
@@ -374,11 +395,12 @@ export function ChatbotWidget({
                   <Link
                     href={contactHref}
                     className="mt-3 flex items-center justify-center gap-1 text-xs font-medium text-primary-600 transition-colors hover:text-primary-800"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     {t("human_handoff")}
                     <ArrowRight className="h-3 w-3" />
                   </Link>
-                </div>
+                </form>
               </>
             )}
           </motion.div>
