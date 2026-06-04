@@ -7,6 +7,7 @@ import {
 import { LOCALE_COOKIE_NAME, parseLocale } from "@/config/locale";
 import { loadMessages } from "./resolve-locale";
 import type { Locale } from "@/i18n/routing";
+import { mergeAdminSettingsMessages } from "@/i18n/fallbacks/admin-settings";
 
 export async function resolveAdminLocaleFromCookies(): Promise<Locale> {
   const cookieStore = await cookies();
@@ -21,5 +22,6 @@ export async function resolveAdminLocaleFromCookies(): Promise<Locale> {
 
 export async function loadAdminMessages(): Promise<Record<string, unknown>> {
   const locale = await resolveAdminLocaleFromCookies();
-  return loadMessages(locale);
+  const messages = await loadMessages(locale);
+  return mergeAdminSettingsMessages(messages, locale);
 }

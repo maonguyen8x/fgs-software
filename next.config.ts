@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["framer-motion", "lucide-react"],
   },
   images: {
+    localPatterns: [
+      { pathname: "/uploads/**" },
+      { pathname: "/images/**" },
+    ],
     remotePatterns: [
       { protocol: "https", hostname: "**" },
     ],
