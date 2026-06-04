@@ -77,7 +77,7 @@ export function FgsLogo({
             width={imageWidth}
             height={s.height}
             className="h-full w-auto max-w-full object-contain object-left"
-            unoptimized={src.startsWith("/uploads/")}
+            unoptimized={src.startsWith("/uploads/") || src === BRAND.logoPngPath}
             priority={size === "md"}
           />
         </span>

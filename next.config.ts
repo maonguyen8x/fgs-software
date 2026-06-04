@@ -13,9 +13,13 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["framer-motion", "lucide-react"],
   },
   images: {
+    /** When set, only matching public paths are allowed — include logo + uploads + images */
     localPatterns: [
-      { pathname: "/uploads/**" },
+      { pathname: "/logo.png" },
+      { pathname: "/logo.svg" },
       { pathname: "/images/**" },
+      { pathname: "/uploads/**" },
+      { pathname: "/*" },
     ],
     remotePatterns: [
       { protocol: "https", hostname: "**" },
