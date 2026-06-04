@@ -307,6 +307,106 @@
     }
   }
 
+  .team-page-hero-stars {
+    background-image:
+      radial-gradient(1px 1px at 12% 22%, rgba(255, 255, 255, 0.55), transparent),
+      radial-gradient(1px 1px at 78% 12%, rgba(255, 255, 255, 0.4), transparent),
+      radial-gradient(1.5px 1.5px at 44% 68%, rgba(255, 255, 255, 0.35), transparent),
+      radial-gradient(1px 1px at 88% 48%, rgba(255, 255, 255, 0.45), transparent),
+      radial-gradient(1px 1px at 28% 82%, rgba(255, 255, 255, 0.3), transparent),
+      radial-gradient(1px 1px at 62% 34%, rgba(255, 255, 255, 0.5), transparent);
+    background-size: 100% 100%;
+    opacity: 0.7;
+  }
+
+  .team-globe-scene {
+    perspective: 1100px;
+    transform-style: preserve-3d;
+  }
+
+  .team-globe-spin-outer {
+    transform-style: preserve-3d;
+    animation: globe-rotate-y 32s linear infinite;
+  }
+
+  .team-globe-sphere {
+    box-shadow:
+      inset -28px -32px 56px rgba(0, 0, 0, 0.55),
+      inset 12px 8px 24px rgba(255, 255, 255, 0.08),
+      0 0 48px rgba(56, 189, 248, 0.35),
+      0 0 100px rgba(37, 99, 235, 0.25);
+  }
+
+  .team-globe-shade {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.45) 0%,
+      transparent 42%,
+      transparent 58%,
+      rgba(255, 255, 255, 0.06) 100%
+    );
+  }
+
+  .team-globe-rim {
+    box-shadow: inset 0 0 28px 4px rgba(125, 211, 252, 0.22);
+  }
+
+  .team-globe-aura {
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, transparent 68%);
+  }
+
+  .team-globe-floor-glow {
+    background: radial-gradient(ellipse, rgba(37, 99, 235, 0.45) 0%, transparent 72%);
+  }
+
+  .team-globe-neural-wrap {
+    transform-style: preserve-3d;
+  }
+
+  @keyframes team-neural-pulse-keyframes {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(0.92);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+  }
+
+  @keyframes team-neural-line-flow {
+    0%,
+    100% {
+      stroke-opacity: 0.35;
+    }
+    50% {
+      stroke-opacity: 1;
+    }
+  }
+
+  .team-globe-neural-line {
+    animation: team-neural-line-flow 2.8s ease-in-out infinite;
+  }
+
+  .team-globe-neural-node,
+  .team-globe-neural-pulse {
+    animation: team-neural-pulse-keyframes 2.4s ease-in-out infinite;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .team-globe-spin-outer {
+      animation: none;
+    }
+    .team-globe-neural-line,
+    .team-globe-neural-node,
+    .team-globe-neural-pulse {
+      animation: none;
+    }
+  }
+
   .site-footer a:focus-visible {
     outline: 2px solid rgba(255, 255, 255, 0.8);
     outline-offset: 2px;
@@ -390,6 +490,59 @@
     border-color: var(--color-primary-800);
   }
 
+  .work-detail-prose {
+    @apply text-base leading-relaxed text-slate-700 md:text-[1.0625rem] md:leading-[1.75];
+  }
+
+  .work-detail-prose h2 {
+    @apply mt-8 mb-3 text-2xl font-bold text-slate-900 first:mt-0;
+  }
+
+  .work-detail-prose h3 {
+    @apply mt-6 mb-2 text-xl font-bold text-slate-900;
+  }
+
+  .work-detail-prose p {
+    @apply mb-4 last:mb-0;
+  }
+
+  .work-detail-prose ul,
+  .work-detail-prose ol {
+    @apply mb-5 ml-5 list-outside space-y-2;
+  }
+
+  .work-detail-prose ul {
+    @apply list-disc;
+  }
+
+  .work-detail-prose ol {
+    @apply list-decimal;
+  }
+
+  .work-detail-prose li {
+    @apply pl-1;
+  }
+
+  .work-detail-prose a {
+    @apply font-medium text-primary-600 underline decoration-primary-300 underline-offset-2 hover:text-primary-800;
+  }
+
+  .work-detail-prose blockquote {
+    @apply my-6 border-l-4 border-primary-300 bg-primary-50/50 py-3 pl-5 text-slate-600 italic dark:bg-primary-950/30;
+  }
+
+  .work-detail-prose code {
+    @apply rounded-md bg-slate-100 px-1.5 py-0.5 text-sm text-slate-800;
+  }
+
+  .work-detail-prose pre {
+    @apply my-5 overflow-x-auto rounded-xl bg-slate-900 p-4 text-sm text-slate-100;
+  }
+
+  .work-detail-prose img {
+    @apply my-6 rounded-xl;
+  }
+
   .content-card {
     @apply rounded-2xl border shadow-sm transition-all duration-300 ease-out;
     background-color: var(--surface);
@@ -443,6 +596,14 @@
   }
   .page-section {
     @apply px-4 py-6 md:px-8 md:py-8;
+  }
+
+  .team-flow-section {
+    @apply px-4 py-7 md:px-8 md:py-9;
+  }
+
+  .team-page-hero + .team-flow-section {
+    @apply pt-6 md:pt-8;
   }
   .container-narrow {
     @apply mx-auto max-w-6xl;

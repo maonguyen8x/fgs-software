@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { BlueRadioGroup } from "@/components/ui/BlueRadio";
 import { processLogoFile } from "@/lib/admin/process-logo-file";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
+import { publishPublicSiteUpdate } from "@/lib/admin-public-sync";
 import { FgsLogo } from "@/components/brand/FgsLogo";
 import {
   LOGO_BACKUP_KEY,
@@ -81,7 +82,7 @@ export function LogoSettingsPanel({ settings: initial }: LogoSettingsPanelProps)
       return false;
     }
     showAdminSuccessToast(t("save_success"));
-    router.refresh();
+    publishPublicSiteUpdate(router);
     return true;
   };
 

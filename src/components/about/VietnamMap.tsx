@@ -9,7 +9,7 @@ import { toVietnamMapPosition } from "@/lib/map/vietnam-map-position";
 import type { Locale } from "@/i18n/routing";
 import { PageSection } from "@/components/layout/PageSection";
 import { SurfaceBlock } from "@/components/ui/SurfaceBlock";
-import { RotatingGlobe } from "@/components/about/RotatingGlobe";
+import { EarthGlobeNeural } from "@/components/about/EarthGlobeNeural";
 
 interface VietnamMapProps {
   title: string;
@@ -83,7 +83,7 @@ export function VietnamMap({ title, branches, locale }: VietnamMapProps) {
 
       <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-10">
         <div className="flex justify-center lg:justify-end">
-          <RotatingGlobe />
+          <EarthGlobeNeural compact />
         </div>
 
         <div

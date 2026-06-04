@@ -128,9 +128,16 @@ export function AvatarImageEditor({ value, onChange }: AvatarImageEditorProps) {
 
   const handleSaveCrop = async () => {
     if (!source) return;
+    if (imageSize.width <= 0 || imageSize.height <= 0) {
+      showAdminErrorToast(te("image_not_ready"));
+      return;
+    }
     setUploading(true);
     try {
       const img = new Image();
+      if (!source.startsWith("blob:") && !source.startsWith("data:")) {
+        img.crossOrigin = "anonymous";
+      }
       img.src = source;
       await new Promise<void>((resolve, reject) => {
         img.onload = () => resolve();
@@ -159,23 +166,35 @@ export function AvatarImageEditor({ value, onChange }: AvatarImageEditorProps) {
       if (!blob) throw new Error("blob");
 
       const formData = new FormData();
-      formData.append("file", new File([blob], "avatar.jpg", { type: "image/jpeg" }));
+      formData.append("file", blob, "avatar.jpg");
       const res = await fetch("/api/admin/upload", {
         method: "POST",
         body: formData,
         credentials: "same-origin",
       });
-      const data = await res.json();
+      let data: { url?: string; code?: string; error?: string } = {};
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
       if (!res.ok) {
         const code = data.code as string | undefined;
         if (code === "INVALID_TYPE") showAdminErrorToast(te("invalid_type"));
         else if (code === "FILE_TOO_LARGE") showAdminErrorToast(te("file_too_large"));
+        else if (res.status === 401) showAdminErrorToast(te("unauthorized"));
         else showAdminErrorToast(te("upload_failed"));
         return;
       }
 
-      setPreview(`${data.url}?v=${Date.now()}`);
-      onChange(data.url);
+      const url = typeof data.url === "string" ? data.url.split("?")[0] : "";
+      if (!url) {
+        showAdminErrorToast(te("upload_failed"));
+        return;
+      }
+
+      setPreview(`${url}?v=${Date.now()}`);
+      onChange(url);
       clearSource();
       showAdminSuccessToast(t("uploaded"));
     } catch {

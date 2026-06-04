@@ -1,15 +1,21 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { getLocalizedField } from "@/lib/i18n-content";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import type { Locale } from "@/i18n/routing";
-import { ExternalLink } from "lucide-react";
+import { WorkDetailContent } from "@/components/works/WorkDetailContent";
+
+function collectWorkImages(thumbnail: string | null, gallery: string[]): string[] {
+  const seen = new Set<string>();
+  const list: string[] = [];
+  for (const url of [thumbnail, ...gallery]) {
+    const trimmed = url?.trim();
+    if (!trimmed || seen.has(trimmed)) continue;
+    seen.add(trimmed);
+    list.push(trimmed);
+  }
+  return list;
+}
 
 export default async function WorkDetailPage({
   params,
@@ -26,59 +32,24 @@ export default async function WorkDetailPage({
   });
   if (!work) notFound();
 
-  const description = getLocalizedField(work, "description", loc);
+  const images = collectWorkImages(work.thumbnail, work.gallery);
 
   return (
-    <article>
-      <section className="bg-gradient-to-br from-primary-50 to-white section-padding">
-        <div className="container-narrow">
-          <Button asChild variant="ghost" className="mb-4">
-            <Link href={`/${locale}/works`}>← {t("filter_all")}</Link>
-          </Button>
-          <Badge className="mb-4">{work.category}</Badge>
-          <h1 className="text-4xl font-bold">{getLocalizedField(work, "title", loc)}</h1>
-          <p className="mt-4 text-lg text-slate-600">{getLocalizedField(work, "summary", loc)}</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {work.techStack.map((tech) => (
-              <Badge key={tech} variant="secondary">{tech}</Badge>
-            ))}
-          </div>
-          {work.duration && (
-            <p className="mt-4 text-sm text-slate-500">{t("duration")}: {work.duration}</p>
-          )}
-        </div>
-      </section>
-
-      {work.thumbnail && (
-        <div className="container-narrow relative mb-8 aspect-video overflow-hidden rounded-2xl">
-          <Image src={work.thumbnail} alt={work.title} fill className="object-cover" />
-        </div>
-      )}
-
-      <section className="section-padding">
-        <div className="container-narrow prose prose-slate max-w-3xl">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{description}</ReactMarkdown>
-        </div>
-        {(work.demoUrl || work.githubUrl) && (
-          <div className="container-narrow mt-8 flex gap-4">
-            {work.demoUrl && (
-              <Button asChild>
-                <a href={work.demoUrl} target="_blank" rel="noopener noreferrer">
-                  <ExternalLink className="mr-2 h-4 w-4" />
-                  {t("demo")}
-                </a>
-              </Button>
-            )}
-            {work.githubUrl && (
-              <Button asChild variant="outline">
-                <a href={work.githubUrl} target="_blank" rel="noopener noreferrer">
-                  {t("github")}
-                </a>
-              </Button>
-            )}
-          </div>
-        )}
-      </section>
-    </article>
+    <div className="bg-linear-to-b from-indigo-50/40 via-white to-slate-50/80 pb-12 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900">
+      <div className="container-narrow px-4 py-6 md:py-8">
+        <WorkDetailContent
+          work={work}
+          locale={loc}
+          images={images}
+          labels={{
+            back: t("back_to_list"),
+            duration: t("duration"),
+            demo: t("demo"),
+            github: t("github"),
+            gallery: t("gallery_title"),
+          }}
+        />
+      </div>
+    </div>
   );
 }

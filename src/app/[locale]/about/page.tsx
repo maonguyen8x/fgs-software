@@ -9,7 +9,7 @@ import { ActivitiesSection } from "@/components/about/ActivitiesSection";
 import { ScrollToTopButton } from "@/components/layout/ScrollToTopButton";
 import { CoreValuesGrid } from "@/components/about/CoreValuesGrid";
 import { VietnamMap } from "@/components/about/VietnamMap";
-import { FoundersGrid } from "@/components/about/FoundersGrid";
+import { LeadershipSection } from "@/components/team/LeadershipSection";
 import { fetchAboutPageData } from "@/lib/cache/safe-about-data";
 import { fetchPageBlockMap } from "@/lib/cache/safe-page-blocks";
 import { getPageBlockSubtitle, getPageBlockTitle } from "@/lib/page-content";
@@ -23,6 +23,7 @@ export default async function AboutPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("about");
+  const tTeam = await getTranslations("team");
   const loc = locale as Locale;
 
   const [{ aboutSections, timeline, activities, coreValues, branches, founders, whyItems }, blocks, settings] =
@@ -84,7 +85,7 @@ export default async function AboutPage({
         branches={branches}
         locale={loc}
       />
-      <FoundersGrid title={t("founders_title")} founders={founders} locale={loc} />
+      <LeadershipSection title={tTeam("leadership_title")} founders={founders} />
 
       <PageSection muted>
         <h2 className="mb-6 text-center text-2xl font-bold text-heading md:text-3xl">{t("why_japan_title")}</h2>

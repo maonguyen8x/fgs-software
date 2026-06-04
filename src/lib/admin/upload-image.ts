@@ -32,7 +32,10 @@ function inferMimeFromName(name: string): string {
 }
 
 export async function saveUploadedImage(file: File): Promise<string> {
-  const mime = file.type || inferMimeFromName(file.name);
+  const mime =
+    file.type && file.type !== "application/octet-stream"
+      ? file.type
+      : inferMimeFromName(file.name) || "image/jpeg";
   if (!ALLOWED_TYPES.has(mime)) {
     throw new Error("INVALID_TYPE");
   }

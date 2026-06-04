@@ -81,27 +81,42 @@
   },
   "team": {
     "title": "私たちについて",
-    "subtitle": "持続的な成長を支えるテクノロジーパートナー",
-    "intro_title": "私たちについて",
-    "intro_body": "FGS Softwareはベトナムを拠点とするソフトウェアエンジニアリングチームです。デジタルプロダクト開発、AI連携、日本およびグローバル向けの高品質アウトソーシングを提供しています。確かな技術力と透明性の高いプロセスで、長期的な価値をお届けします。",
-    "founders_title": "創業チーム",
-    "members_title": "エンジニアチーム",
-    "members_subtitle": "プロジェクトに直接携わるメンバー",
-    "cta_about_title": "FGSのことをもっと知る",
-    "cta_about_subtitle": "沿革、社内活動、成長の歩みをご覧ください。",
-    "cta_about_button": "会社概要を見る",
+    "subtitle": "",
+    "intro_block_1": "FGS Softwareは、デジタル変革、プロダクト開発、AIの実務活用を支援するテクノロジーパートナーです。",
+    "intro_block_2": "ソフトウェア開発にとどまらず、お客様とともに最適な解決策を見つけ、業務の最適化、運用効率の向上、持続可能な価値創出を実現します。",
+    "intro_block_3": "経験豊富なエンジニアチームと、日本・海外のお客様との協業実績をもとに、信頼、透明性、長期的な成長を大切にしています。",
+    "leadership_title": "シニアリーダーシップ",
     "years": "年の経験",
-    "detail_close": "閉じる"
+    "culture": {
+      "section_title": "FGSの文化",
+      "intro_headline": "人こそがFGSの核心資産",
+      "intro_body": "メンバー一人ひとりの成長に投資します。チームが成長してこそ、プロダクトも本当に成長すると信じているからです。",
+      "innovation_title": "Innovation",
+      "innovation_body": "学び続け、革新し、先端技術を実務に活かします。",
+      "ownership_title": "Ownership",
+      "ownership_body": "主体的に行動し、責任を持ち、お客様のチームの一員として伴走します。",
+      "growth_title": "Growth",
+      "growth_body": "お客様、パートナー、テックコミュニティとともに持続的に成長します。"
+    },
+    "leadership": {
+      "read_more": "続きを読む",
+      "view_profile": "{name}のプロフィールを見る",
+      "back_to_team": "私たちについてに戻る",
+      "bio_heading": "プロフィール",
+      "skills_heading": "スキル"
+    }
   },
   "works": {
     "title": "制作実績",
-    "subtitle": "お届けした誇りあるプロジェクト",
+    "subtitle": "開発した製品一覧",
     "filter_all": "すべて",
     "filter_web": "Web",
     "filter_mobile": "モバイル",
     "filter_api": "API",
     "filter_other": "その他",
     "view_details": "詳細を見る",
+    "back_to_list": "製品一覧に戻る",
+    "gallery_title": "製品ギャラリー",
     "challenge": "課題",
     "solution": "解決策",
     "result": "結果",
@@ -330,6 +345,8 @@
       "locale_panel": {
         "title": "多言語 (EN / JA / VI)",
         "subtitle": "言語の有効化とタグラインの編集。",
+        "default_locale": "サイトのデフォルト言語",
+        "default_locale_hint": "初回訪問時（言語未選択時）に適用されます。保存するとサイト全体に反映されます。",
         "lang_en": "英語",
         "lang_ja": "日本語",
         "lang_vi": "ベトナム語",
@@ -440,6 +457,17 @@
         "subtitle_ja": "サブタイトル (日本語)",
         "hint_logos": "Clients & Partners でロゴと社名を追加。並び順が表示順です。",
         "save": "保存",
+        "saving": "保存中...",
+        "save_success": "保存しました",
+        "save_failed": "保存に失敗しました"
+      },
+      "team_page": {
+        "title": "私たちについてページ",
+        "subtitle": "ヒーロー背景画像とリーダーシップ管理（ホバー時のポップアップ・詳細ページ）。",
+        "hero_image": "背景画像（ヒーロー）",
+        "hero_hint": "横長の画像を推奨（1600×600px以上）。空欄の場合はデフォルトのグラデーションを表示します。",
+        "manage_leaders": "リーダーシップを管理",
+        "save": "ページ設定を保存",
         "saving": "保存中...",
         "save_success": "保存しました",
         "save_failed": "保存に失敗しました"
@@ -617,6 +645,8 @@
         "invalid_type": "画像形式が無効です。",
         "file_too_large": "画像が大きすぎます（最大5MB）。",
         "upload_failed": "アップロードに失敗しました。",
+        "image_not_ready": "画像の読み込みが完了していません。しばらく待ってから再度お試しください。",
+        "unauthorized": "セッションの有効期限が切れました。再度ログインしてください。",
         "no_file": "ファイルが選択されていません。"
       },
       "avatar_editor": {

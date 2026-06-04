@@ -5,6 +5,7 @@ import { requireAdminSession } from "@/lib/admin-auth";
 import { afterAdminMutation } from "@/lib/cache/admin-mutation";
 import { CACHE_TAGS } from "@/lib/cache/tags";
 import { founderSchema } from "@/lib/admin/founder-schema";
+import { buildFounderUpdateData } from "@/lib/admin/founder-update";
 import { syncFounderToTeam } from "@/lib/admin/founder-team-sync";
 import { logger } from "@/lib/logger";
 
@@ -21,22 +22,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     const founder = await prisma.founder.update({
       where: { id },
-      data: {
-        name: data.name,
-        role: data.role,
-        roleJa: data.roleJa,
-        roleVi: data.roleVi,
-        slogan: data.slogan,
-        sloganJa: data.sloganJa,
-        sloganVi: data.sloganVi,
-        bio: data.bio,
-        bioJa: data.bioJa,
-        bioVi: data.bioVi,
-        skills: data.skills,
-        avatar: data.avatar,
-        order: data.order,
-        isVisible: data.isVisible,
-      },
+      data: buildFounderUpdateData(data),
     });
 
     const shouldSync = data.syncToTeam !== false;

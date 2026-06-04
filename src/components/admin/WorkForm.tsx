@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LocaleTabs } from "./LocaleTabs";
 import { ImageUploadField } from "./ImageUploadField";
+import { ImageUrlsField } from "./ImageUrlsField";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 
 interface WorkFormProps {
@@ -22,6 +23,7 @@ interface WorkFormProps {
     descriptionJa?: string | null;
     descriptionVi?: string | null;
     thumbnail?: string | null;
+    gallery?: string[];
     techStack: string[];
     category: string;
     duration?: string | null;
@@ -47,6 +49,7 @@ export function WorkForm({ initial }: WorkFormProps) {
     descriptionJa: initial?.descriptionJa ?? "",
     descriptionVi: initial?.descriptionVi ?? "",
     thumbnail: initial?.thumbnail ?? "",
+    gallery: initial?.gallery ?? [],
     techStack: initial?.techStack?.join(", ") ?? "",
     category: initial?.category ?? "web",
     duration: initial?.duration ?? "",
@@ -73,6 +76,7 @@ export function WorkForm({ initial }: WorkFormProps) {
       descriptionJa: form.descriptionJa || undefined,
       descriptionVi: form.descriptionVi || undefined,
       thumbnail: form.thumbnail || undefined,
+      gallery: form.gallery.filter((url) => url.trim().length > 0),
       techStack: form.techStack.split(",").map((s) => s.trim()).filter(Boolean),
       category: form.category,
       duration: form.duration || undefined,
@@ -105,9 +109,32 @@ export function WorkForm({ initial }: WorkFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-3xl space-y-6 rounded-xl border bg-white p-8 shadow-sm">
-      <LocaleTabs prefix="title" labels={tabLabels} values={form} onChange={update} required />
-      <LocaleTabs prefix="summary" labels={tabLabels} values={form} onChange={update} required />
-      <LocaleTabs prefix="description" labels={tabLabels} values={form} onChange={update} multiline required />
+      <LocaleTabs
+        prefix="title"
+        labels={tabLabels}
+        values={{ title: form.title, titleJa: form.titleJa, titleVi: form.titleVi }}
+        onChange={update}
+        required
+      />
+      <LocaleTabs
+        prefix="summary"
+        labels={tabLabels}
+        values={{ summary: form.summary, summaryJa: form.summaryJa, summaryVi: form.summaryVi }}
+        onChange={update}
+        required
+      />
+      <LocaleTabs
+        prefix="description"
+        labels={tabLabels}
+        values={{
+          description: form.description,
+          descriptionJa: form.descriptionJa,
+          descriptionVi: form.descriptionVi,
+        }}
+        onChange={update}
+        multiline
+        required
+      />
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
@@ -133,10 +160,18 @@ export function WorkForm({ initial }: WorkFormProps) {
         </div>
         <div className="md:col-span-2">
           <ImageUploadField
-            label="Product thumbnail"
-            hint="Shown on Portfolio / Sản phẩm pages"
+            label="Ảnh đại diện sản phẩm"
+            hint="Hiển thị trên danh sách Sản phẩm và đầu trang chi tiết"
             value={form.thumbnail}
             onChange={(url) => update("thumbnail", url)}
+          />
+        </div>
+        <div className="md:col-span-2">
+          <ImageUrlsField
+            label="Thư viện hình ảnh sản phẩm"
+            hint="Chọn nhiều ảnh cùng lúc — hiển thị trên trang chi tiết khi khách bấm Xem chi tiết."
+            urls={form.gallery}
+            onChange={(gallery) => setForm((f) => ({ ...f, gallery }))}
           />
         </div>
         <div>

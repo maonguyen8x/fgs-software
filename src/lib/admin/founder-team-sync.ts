@@ -44,12 +44,17 @@ export async function syncFounderToTeam(
   const teamData = teamDataFromFounder(payload);
 
   if (founder.teamMemberId) {
-    const updated = await prisma.teamMember.update({
+    const linked = await prisma.teamMember.findUnique({
       where: { id: founder.teamMemberId },
-      data: teamData,
     });
-    afterAdminMutation(CACHE_TAGS.team);
-    return updated;
+    if (linked) {
+      const updated = await prisma.teamMember.update({
+        where: { id: founder.teamMemberId },
+        data: teamData,
+      });
+      afterAdminMutation(CACHE_TAGS.team);
+      return updated;
+    }
   }
 
   const created = await prisma.teamMember.create({ data: teamData });

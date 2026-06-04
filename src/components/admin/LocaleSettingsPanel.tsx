@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { LocaleTabs } from "./LocaleTabs";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
+import { publishPublicSiteUpdate } from "@/lib/admin-public-sync";
+import { SITE_DEFAULT_LOCALE_KEY } from "@/lib/site-default-locale-keys";
+import type { Locale } from "@/i18n/routing";
 import { Save, Globe } from "lucide-react";
 
 const LOCALE_CODES = ["en", "ja", "vi"] as const;
@@ -21,6 +24,7 @@ export function LocaleSettingsPanel({ settings: initial }: LocaleSettingsPanelPr
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
+    site_default_locale: (initial[SITE_DEFAULT_LOCALE_KEY] ?? "en") as Locale,
     locale_enabled_en: initial.locale_enabled_en ?? "true",
     locale_enabled_ja: initial.locale_enabled_ja ?? "true",
     locale_enabled_vi: initial.locale_enabled_vi ?? "true",
@@ -43,6 +47,7 @@ export function LocaleSettingsPanel({ settings: initial }: LocaleSettingsPanelPr
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        [SITE_DEFAULT_LOCALE_KEY]: form.site_default_locale,
         locale_enabled_en: form.locale_enabled_en,
         locale_enabled_ja: form.locale_enabled_ja,
         locale_enabled_vi: form.locale_enabled_vi,
@@ -60,7 +65,7 @@ export function LocaleSettingsPanel({ settings: initial }: LocaleSettingsPanelPr
       return;
     }
     showAdminSuccessToast(t("save_success"));
-    router.refresh();
+    publishPublicSiteUpdate(router, { defaultLocale: form.site_default_locale });
   };
 
   const tabLabels = { en: t("lang_en"), ja: t("lang_ja"), vi: t("lang_vi") };
@@ -75,6 +80,25 @@ export function LocaleSettingsPanel({ settings: initial }: LocaleSettingsPanelPr
           <h2 className="text-lg font-semibold text-primary-800">{t("title")}</h2>
           <p className="text-sm text-slate-500">{t("subtitle")}</p>
         </div>
+      </div>
+
+      <div className="mb-6 rounded-xl border border-primary-100 bg-primary-50/40 p-4">
+        <Label htmlFor="site_default_locale" className="text-sm font-semibold text-slate-800">
+          {t("default_locale")}
+        </Label>
+        <p className="mt-1 text-xs text-slate-500">{t("default_locale_hint")}</p>
+        <select
+          id="site_default_locale"
+          value={form.site_default_locale}
+          onChange={(e) => update("site_default_locale", e.target.value)}
+          className="mt-3 w-full max-w-xs cursor-pointer rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm"
+        >
+          {LOCALE_CODES.map((code) => (
+            <option key={code} value={code}>
+              {localeMeta[code].flag} {localeMeta[code].label}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="mb-6 grid gap-4 md:grid-cols-3">

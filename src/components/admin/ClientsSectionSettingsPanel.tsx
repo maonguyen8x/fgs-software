@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
+import { publishPublicSiteUpdate } from "@/lib/admin-public-sync";
 
 import {
   HOME_CLIENTS_SUBTITLE_KEY,
@@ -56,7 +57,7 @@ export function ClientsSectionSettingsPanel({ settings: initial }: ClientsSectio
       return;
     }
     showAdminSuccessToast(t("save_success"));
-    router.refresh();
+    publishPublicSiteUpdate(router);
   };
 
   return (

@@ -12,24 +12,31 @@ interface ImageUrlsFieldProps {
   label: string;
   urls: string[];
   onChange: (urls: string[]) => void;
+  hint?: string;
 }
 
-export function ImageUrlsField({ label, urls, onChange }: ImageUrlsFieldProps) {
+export function ImageUrlsField({ label, urls, onChange, hint }: ImageUrlsFieldProps) {
   const [uploading, setUploading] = useState(false);
 
-  const uploadFile = async (file: File) => {
+  const uploadFiles = async (files: FileList | File[]) => {
+    const list = Array.from(files).filter((f) => f.type.startsWith("image/"));
+    if (list.length === 0) return;
     setUploading(true);
+    const added: string[] = [];
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
-      const data = await res.json();
-      if (!res.ok || !data.url) {
+      for (const file of list) {
+        const formData = new FormData();
+        formData.append("file", file);
+        const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+        const data = await res.json();
+        if (res.ok && data.url) added.push(data.url as string);
+      }
+      if (added.length === 0) {
         showAdminErrorToast("Upload failed");
         return;
       }
-      onChange([...urls, data.url as string]);
-      showAdminSuccessToast("Image added");
+      onChange([...urls, ...added]);
+      showAdminSuccessToast(added.length > 1 ? `Added ${added.length} images` : "Image added");
     } catch {
       showAdminErrorToast("Upload failed");
     } finally {
@@ -40,21 +47,23 @@ export function ImageUrlsField({ label, urls, onChange }: ImageUrlsFieldProps) {
   return (
     <div className="space-y-3">
       <Label>{label}</Label>
+      {hint && <p className="text-xs text-slate-500">{hint}</p>}
       <div className="flex flex-wrap gap-2">
         <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-slate-50">
           <input
             type="file"
             accept="image/*"
+            multiple
             className="sr-only"
             disabled={uploading}
             onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) void uploadFile(file);
+              const files = e.target.files;
+              if (files?.length) void uploadFiles(files);
               e.target.value = "";
             }}
           />
           {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
-          Upload image
+          Upload images
         </label>
       </div>
 

@@ -81,27 +81,42 @@
   },
   "team": {
     "title": "Về chúng tôi",
-    "subtitle": "Đối tác công nghệ đồng hành cùng sự phát triển bền vững của doanh nghiệp",
-    "intro_title": "Chúng tôi là ai",
-    "intro_body": "FGS Software là đội ngũ kỹ sư phần mềm tại Việt Nam, chuyên phát triển sản phẩm số, tích hợp AI và outsourcing chất lượng cao cho thị trường Nhật Bản và quốc tế. Chúng tôi kết hợp kỹ thuật vững chắc với quy trình minh bạch để mang lại giá trị lâu dài cho khách hàng.",
-    "founders_title": "Đội ngũ sáng lập",
-    "members_title": "Đội ngũ kỹ sư",
-    "members_subtitle": "Những người đồng hành trực tiếp trong dự án của bạn",
-    "cta_about_title": "Khám phá thêm về FGS",
-    "cta_about_subtitle": "Xem lịch sử hình thành, hoạt động nội bộ và hành trình phát triển của công ty.",
-    "cta_about_button": "Xem Giới thiệu",
+    "subtitle": "",
+    "intro_block_1": "FGS Software là đối tác công nghệ đồng hành cùng doanh nghiệp trong hành trình chuyển đổi số, phát triển sản phẩm và ứng dụng AI vào thực tiễn.",
+    "intro_block_2": "Chúng tôi không chỉ phát triển phần mềm, mà còn cùng khách hàng tìm ra giải pháp phù hợp để tối ưu quy trình, nâng cao hiệu quả vận hành và tạo ra giá trị bền vững.",
+    "intro_block_3": "Với đội ngũ kỹ sư giàu kinh nghiệm cùng khả năng hợp tác với khách hàng Nhật Bản và quốc tế, FGS Software luôn hướng đến sự tin cậy, minh bạch và phát triển lâu dài.",
+    "leadership_title": "Ban lãnh đạo cấp cao",
     "years": "năm kinh nghiệm",
-    "detail_close": "Đóng"
+    "culture": {
+      "section_title": "Văn hóa FGS",
+      "intro_headline": "Con người là tài sản cốt lõi của FGS",
+      "intro_body": "Chúng tôi đầu tư vào sự trưởng thành của từng thành viên — vì chúng tôi tin rằng đội ngũ phát triển, sản phẩm mới thực sự phát triển.",
+      "innovation_title": "Innovation",
+      "innovation_body": "Luôn học hỏi, đổi mới và ứng dụng công nghệ tiên tiến vào thực tiễn.",
+      "ownership_title": "Ownership",
+      "ownership_body": "Chủ động, trách nhiệm và đồng hành cùng khách hàng như một thành viên trong đội ngũ.",
+      "growth_title": "Growth",
+      "growth_body": "Phát triển cùng khách hàng, đối tác và cộng đồng công nghệ một cách bền vững."
+    },
+    "leadership": {
+      "read_more": "Xem thêm",
+      "view_profile": "Xem hồ sơ {name}",
+      "back_to_team": "Quay lại Về chúng tôi",
+      "bio_heading": "Giới thiệu",
+      "skills_heading": "Kỹ năng"
+    }
   },
   "works": {
     "title": "Portfolio",
-    "subtitle": "Các dự án chúng tôi tự hào đã hoàn thành",
+    "subtitle": "CÁC SẢN PHẨM ĐÃ PHÁT TRIỂN",
     "filter_all": "Tất cả",
     "filter_web": "Web",
     "filter_mobile": "Mobile",
     "filter_api": "API",
     "filter_other": "Khác",
     "view_details": "Xem chi tiết",
+    "back_to_list": "Quay lại danh sách sản phẩm",
+    "gallery_title": "Hình ảnh sản phẩm",
     "challenge": "Thách thức",
     "solution": "Giải pháp",
     "result": "Kết quả",
@@ -330,6 +345,8 @@
       "locale_panel": {
         "title": "Đa ngôn ngữ (EN / JA / VI)",
         "subtitle": "Bật ngôn ngữ và chỉnh tagline trang theo từng ngôn ngữ.",
+        "default_locale": "Ngôn ngữ mặc định website",
+        "default_locale_hint": "Áp dụng khi khách truy cập lần đầu (trước khi chọn ngôn ngữ). Lưu để cập nhật toàn site.",
         "lang_en": "Tiếng Anh",
         "lang_ja": "Tiếng Nhật",
         "lang_vi": "Tiếng Việt",
@@ -443,6 +460,17 @@
         "save": "Lưu tiêu đề",
         "saving": "Đang lưu...",
         "save_success": "Đã lưu",
+        "save_failed": "Lưu thất bại"
+      },
+      "team_page": {
+        "title": "Trang Về chúng tôi",
+        "subtitle": "Ảnh nền đầu trang và liên kết quản lý ban lãnh đạo (hồ sơ hiển thị khi hover và trang chi tiết).",
+        "hero_image": "Ảnh nền (hero)",
+        "hero_hint": "Khuyến nghị ảnh ngang rộng, tối thiểu 1600×600px. Để trống sẽ dùng gradient mặc định.",
+        "manage_leaders": "Quản lý ban lãnh đạo",
+        "save": "Lưu trang Về chúng tôi",
+        "saving": "Đang lưu...",
+        "save_success": "Đã lưu cài đặt trang Về chúng tôi",
         "save_failed": "Lưu thất bại"
       },
       "site_notice": {
@@ -619,6 +647,8 @@
         "invalid_type": "Định dạng ảnh không hợp lệ.",
         "file_too_large": "Ảnh quá lớn (tối đa 5MB).",
         "upload_failed": "Tải ảnh thất bại.",
+        "image_not_ready": "Ảnh chưa tải xong. Vui lòng đợi một chút rồi thử lại.",
+        "unauthorized": "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.",
         "no_file": "Chưa chọn file."
       },
       "avatar_editor": {

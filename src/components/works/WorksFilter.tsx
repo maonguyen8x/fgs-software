@@ -24,16 +24,16 @@ export function WorksFilter({
   };
 
   return (
-    <div className="flex flex-wrap justify-center gap-2">
+    <div className="flex flex-wrap justify-center gap-2 md:gap-2.5">
       {categories.map((cat) => (
         <Link
           key={cat}
           href={cat === "all" ? `/${locale}/works` : `/${locale}/works?category=${cat}`}
           className={cn(
-            "rounded-full px-4 py-2 text-sm font-medium transition-all",
+            "cursor-pointer rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200",
             currentCategory === cat
-              ? "bg-primary-600 text-white"
-              : "bg-slate-100 text-slate-600 hover:bg-primary-50"
+              ? "border-primary-500 bg-primary-600 text-white shadow-md shadow-primary-600/25"
+              : "border-slate-200/90 bg-white text-slate-600 shadow-sm hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-primary-700 dark:hover:bg-primary-950/50"
           )}
         >
           {labels[cat]}

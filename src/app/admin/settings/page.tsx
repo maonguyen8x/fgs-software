@@ -9,6 +9,7 @@ import { HeaderNavSettingsPanel } from "@/components/admin/HeaderNavSettingsPane
 import { LogoSettingsPanel } from "@/components/admin/LogoSettingsPanel";
 import { HeroSlidesPanel } from "@/components/admin/HeroSlidesPanel";
 import { ClientsSectionSettingsPanel } from "@/components/admin/ClientsSectionSettingsPanel";
+import { TeamPageSettingsPanel } from "@/components/admin/TeamPageSettingsPanel";
 import { SiteNoticeSettingsPanel } from "@/components/admin/SiteNoticeSettingsPanel";
 import { AdminPanelSkeleton } from "@/components/admin/AdminPanelSkeleton";
 import { AdminSettingsLocaleSwitcher } from "@/components/admin/AdminSettingsLocaleSwitcher";
@@ -45,6 +46,10 @@ export default async function AdminSettingsPage() {
 
         <AdminContentBlock>
           <ClientsSectionSettingsPanel settings={settings} />
+        </AdminContentBlock>
+
+        <AdminContentBlock>
+          <TeamPageSettingsPanel settings={settings} />
         </AdminContentBlock>
 
         <AdminContentBlock>

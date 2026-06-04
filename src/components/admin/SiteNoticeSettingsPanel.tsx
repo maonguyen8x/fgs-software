@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { BlueCheckbox } from "@/components/ui/BlueCheckbox";
 import { BlueRadioGroup } from "@/components/ui/BlueRadio";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
-import { notifySiteSettingsChange } from "@/lib/site-settings-sync";
+import { publishPublicSiteUpdate } from "@/lib/admin-public-sync";
 
 interface SiteNoticeSettingsPanelProps {
   settings: Record<string, string>;
@@ -51,9 +51,8 @@ export function SiteNoticeSettingsPanel({ settings: initial }: SiteNoticeSetting
       showAdminErrorToast(t("save_failed"));
       return;
     }
-    notifySiteSettingsChange();
     showAdminSuccessToast(t("save_success"));
-    router.refresh();
+    publishPublicSiteUpdate(router);
   };
 
   return (

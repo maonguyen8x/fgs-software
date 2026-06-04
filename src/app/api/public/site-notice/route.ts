@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { routing, type Locale } from "@/i18n/routing";
 import { getSettingsMapSafe } from "@/lib/settings-safe";
 import { parseSiteNoticeState } from "@/lib/site-notice-state";
+import { SITE_DEFAULT_LOCALE_KEY } from "@/lib/site-default-locale-keys";
 
 export async function GET(request: NextRequest) {
   const localeParam = request.nextUrl.searchParams.get("locale");
@@ -24,6 +25,7 @@ export async function GET(request: NextRequest) {
       site_notice_message_vi: settings.site_notice_message_vi ?? "",
       site_notice_message_en: settings.site_notice_message_en ?? "",
       site_notice_message_ja: settings.site_notice_message_ja ?? "",
+      [SITE_DEFAULT_LOCALE_KEY]: settings.site_default_locale ?? "",
     },
   }, {
     headers: { "Cache-Control": "no-store" },

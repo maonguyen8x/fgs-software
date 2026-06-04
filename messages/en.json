@@ -81,27 +81,42 @@
   },
   "team": {
     "title": "About Us",
-    "subtitle": "Your technology partner for sustainable business growth",
-    "intro_title": "Who we are",
-    "intro_body": "FGS Software is a Vietnam-based engineering team focused on digital products, AI integration, and high-quality outsourcing for Japan and global clients. We combine solid engineering with transparent delivery to create long-term value.",
-    "founders_title": "Founding Team",
-    "members_title": "Our Engineers",
-    "members_subtitle": "The people who work directly on your projects",
-    "cta_about_title": "Discover more about FGS",
-    "cta_about_subtitle": "Explore our company history, internal activities, and growth journey.",
-    "cta_about_button": "Company Overview",
+    "subtitle": "",
+    "intro_block_1": "FGS Software is a technology partner that walks alongside businesses on their digital transformation journey—developing products and applying AI in real-world operations.",
+    "intro_block_2": "We do more than build software. We work with clients to find the right solutions to optimize processes, improve operational efficiency, and create sustainable value.",
+    "intro_block_3": "With experienced engineers and proven collaboration with Japanese and international clients, FGS Software is committed to trust, transparency, and long-term growth.",
+    "leadership_title": "Senior Leadership",
     "years": "years experience",
-    "detail_close": "Close"
+    "culture": {
+      "section_title": "FGS Culture",
+      "intro_headline": "People are FGS's core asset",
+      "intro_body": "We invest in every team member's growth—because we believe when the team grows, the product truly grows.",
+      "innovation_title": "Innovation",
+      "innovation_body": "We keep learning, innovating, and applying advanced technology in practice.",
+      "ownership_title": "Ownership",
+      "ownership_body": "We take initiative, act responsibly, and work alongside clients as part of their team.",
+      "growth_title": "Growth",
+      "growth_body": "We grow sustainably with clients, partners, and the technology community."
+    },
+    "leadership": {
+      "read_more": "Read more",
+      "view_profile": "View profile for {name}",
+      "back_to_team": "Back to About Us",
+      "bio_heading": "About",
+      "skills_heading": "Skills"
+    }
   },
   "works": {
     "title": "Portfolio",
-    "subtitle": "Projects we are proud to have delivered",
+    "subtitle": "PRODUCTS WE HAVE DEVELOPED",
     "filter_all": "All",
     "filter_web": "Web",
     "filter_mobile": "Mobile",
     "filter_api": "API",
     "filter_other": "Other",
     "view_details": "View Details",
+    "back_to_list": "Back to products",
+    "gallery_title": "Product gallery",
     "challenge": "Challenge",
     "solution": "Solution",
     "result": "Result",
@@ -330,6 +345,8 @@
       "locale_panel": {
         "title": "Multilingual (EN / JA / VI)",
         "subtitle": "Enable locales and edit shared site taglines per language.",
+        "default_locale": "Default website language",
+        "default_locale_hint": "Used for first-time visitors before they pick a language. Saves apply site-wide.",
         "lang_en": "English",
         "lang_ja": "Japanese",
         "lang_vi": "Vietnamese",
@@ -443,6 +460,17 @@
         "save": "Save titles",
         "saving": "Saving...",
         "save_success": "Saved",
+        "save_failed": "Save failed"
+      },
+      "team_page": {
+        "title": "About Us page",
+        "subtitle": "Hero background image and link to manage leadership profiles (hover popup and detail pages).",
+        "hero_image": "Background image (hero)",
+        "hero_hint": "Wide landscape image recommended, at least 1600×600px. Leave empty for the default gradient.",
+        "manage_leaders": "Manage leadership",
+        "save": "Save About Us page",
+        "saving": "Saving...",
+        "save_success": "About Us page settings saved",
         "save_failed": "Save failed"
       },
       "site_notice": {
@@ -619,6 +647,8 @@
         "invalid_type": "Invalid image type.",
         "file_too_large": "Image is too large (max 5MB).",
         "upload_failed": "Upload failed. Please try again.",
+        "image_not_ready": "Image is still loading. Please wait a moment and try again.",
+        "unauthorized": "Session expired. Please sign in again.",
         "no_file": "No file selected."
       },
       "avatar_editor": {

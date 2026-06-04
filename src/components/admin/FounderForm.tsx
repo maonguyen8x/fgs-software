@@ -12,6 +12,7 @@ import { LocaleTabs } from "./LocaleTabs";
 import { AvatarImageEditor } from "./AvatarImageEditor";
 import { SkillsTagInput } from "./SkillsTagInput";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
+import { sanitizeAvatarUrl } from "@/lib/admin/founder-update";
 
 interface FounderFormProps {
   initial?: {
@@ -73,7 +74,7 @@ export function FounderForm({ initial }: FounderFormProps) {
       bioJa: form.bioJa || undefined,
       bioVi: form.bioVi || undefined,
       skills,
-      avatar: form.avatar || undefined,
+      avatar: sanitizeAvatarUrl(form.avatar),
       order: parseInt(form.order, 10) || 0,
       isVisible: form.isVisible,
       syncToTeam: form.syncToTeam,
@@ -88,7 +89,19 @@ export function FounderForm({ initial }: FounderFormProps) {
     });
     setLoading(false);
     if (!res.ok) {
-      showAdminErrorToast(te("save_failed"));
+      let message = te("save_failed");
+      try {
+        const err = await res.json();
+        if (Array.isArray(err.error)) {
+          const first = err.error[0];
+          if (first?.message) message = String(first.message);
+        } else if (typeof err.error === "string") {
+          message = err.error;
+        }
+      } catch {
+        /* ignore */
+      }
+      showAdminErrorToast(message);
       return;
     }
     showAdminSuccessToast(t("saved"));

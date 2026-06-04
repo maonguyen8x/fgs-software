@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
+import { publishPublicSiteUpdate } from "@/lib/admin-public-sync";
 import { GoogleMapsAddressField, GoogleMapsLinkSettings } from "@/components/admin/MapLocationSettings";
 import { BlueRadioGroup } from "@/components/ui/BlueRadio";
 
@@ -109,7 +110,7 @@ export function SettingsForm({ settings }: { settings: Record<string, string> })
       return;
     }
     showAdminSuccessToast(t("save_success"));
-    router.refresh();
+    publishPublicSiteUpdate(router);
   };
 
   return (

@@ -8,6 +8,7 @@ import { AdminSelect } from "@/components/admin/AdminSelect";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
+import { publishPublicSiteUpdate } from "@/lib/admin-public-sync";
 import { Palette, Save } from "lucide-react";
 import { applyBrandThemeToDocument, buildBrandThemeCss } from "@/lib/theme/brand-theme";
 
@@ -51,7 +52,7 @@ export function ThemeSettingsPanel({ settings: initial }: ThemeSettingsPanelProp
       styleEl.textContent = buildBrandThemeCss(form.theme_primary_color, form.theme_radius);
     }
     showAdminSuccessToast(t("save_success"));
-    router.refresh();
+    publishPublicSiteUpdate(router);
   };
 
   return (

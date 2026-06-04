@@ -23,6 +23,7 @@ interface PageHeaderProps {
   variant?: PageHeaderVariant;
   promoteSubtitle?: boolean;
   backgroundColor?: string;
+  className?: string;
 }
 
 export function PageHeader({
@@ -31,6 +32,7 @@ export function PageHeader({
   variant = "default",
   promoteSubtitle = false,
   backgroundColor,
+  className,
 }: PageHeaderProps) {
   const mainText = (promoteSubtitle ? subtitle : title) || title || subtitle || "";
   const secondaryText = promoteSubtitle ? "" : subtitle || "";
@@ -39,7 +41,8 @@ export function PageHeader({
     <section
       className={cn(
         "section-padding-compact border-b border-primary-100/60 dark:border-primary-900/40",
-        backgroundColor ? "" : variantClass[variant]
+        backgroundColor ? "" : variantClass[variant],
+        className
       )}
       style={backgroundColor ? { backgroundColor } : undefined}
     >

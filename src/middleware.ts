@@ -4,8 +4,8 @@ import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { getAdminLoginSecret, isDefaultAdminLoginDisabled } from "@/config/admin";
 import { routing } from "./i18n/routing";
-
-const intlMiddleware = createIntlMiddleware(routing);
+import { resolveMiddlewareDefaultLocale } from "./lib/middleware-default-locale";
+import { SITE_DEFAULT_LOCALE_COOKIE } from "./lib/site-default-locale-keys";
 
 const ADMIN_PUBLIC_PATHS = [
   "/admin/login",
@@ -89,7 +89,20 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    return intlMiddleware(request);
+    const siteDefaultLocale = await resolveMiddlewareDefaultLocale(request);
+    const intlMiddleware = createIntlMiddleware({
+      locales: routing.locales,
+      defaultLocale: siteDefaultLocale,
+      localePrefix: routing.localePrefix,
+      localeDetection: false,
+    });
+    const response = intlMiddleware(request);
+    response.cookies.set(SITE_DEFAULT_LOCALE_COOKIE, siteDefaultLocale, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: "lax",
+    });
+    return response;
   } catch {
     return NextResponse.rewrite(new URL("/error-ui/500", request.url));
   }
