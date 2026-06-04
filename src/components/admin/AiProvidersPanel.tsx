@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { AdminSelect } from "@/components/admin/AdminSelect";
 import { Input } from "@/components/ui/input";
+import { SecretInput } from "@/components/ui/secret-input";
 import { Label } from "@/components/ui/label";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 import {
@@ -19,6 +20,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { maskSecretForInput } from "@/lib/ai/mask-secret";
 
 interface AiProviderRow {
   id: string;
@@ -111,14 +113,16 @@ export function AiProvidersPanel() {
     router.refresh();
   };
 
-  const saveProvider = async (p: AiProviderRow) => {
+  const saveProvider = async (p: AiProviderRow, index: number) => {
+    const rawKey = p.apiKey?.trim() ?? "";
+    const sendingNewKey = rawKey.length > 0 && !rawKey.includes("•");
     const payload = {
       providerType: p.providerType,
       displayName: p.displayName,
       model: p.model,
       isEnabled: p.isEnabled,
       order: p.order,
-      ...(p.apiKey && !p.apiKey.includes("•") ? { apiKey: p.apiKey } : {}),
+      ...(sendingNewKey ? { apiKey: rawKey } : {}),
     };
     const url = p.id.startsWith("new-") ? "/api/admin/ai-providers" : `/api/admin/ai-providers/${p.id}`;
     const method = p.id.startsWith("new-") ? "POST" : "PUT";
@@ -131,7 +135,19 @@ export function AiProvidersPanel() {
       showAdminErrorToast(t("save_failed"));
       return;
     }
+    const saved = (await res.json()) as AiProviderRow;
     showAdminSuccessToast(t("save_success"));
+    setProviders((list) => {
+      const next = [...list];
+      next[index] = {
+        ...next[index],
+        ...saved,
+        apiKey: sendingNewKey
+          ? maskSecretForInput(rawKey)
+          : maskSecretForInput(saved.apiKey ?? next[index].apiKey),
+      };
+      return next;
+    });
     await load();
   };
 
@@ -270,9 +286,8 @@ export function AiProvidersPanel() {
                 </div>
                 <div className="md:col-span-2">
                   <Label>{t("api_key")}</Label>
-                  <Input
-                    type="password"
-                    className="mt-1 font-mono text-sm"
+                  <SecretInput
+                    className="mt-1"
                     placeholder={t("api_key_placeholder")}
                     value={p.apiKey ?? ""}
                     onChange={(e) => {
@@ -309,7 +324,12 @@ export function AiProvidersPanel() {
                   <CheckCircle2 className="mr-1 h-3 w-3" />
                   {isActive ? t("active_nova") : t("activate_nova")}
                 </Button>
-                <Button type="button" size="sm" className="cursor-pointer" onClick={() => void saveProvider(p)}>
+                <Button
+                  type="button"
+                  size="sm"
+                  className="cursor-pointer"
+                  onClick={() => void saveProvider(p, idx)}
+                >
                   <Save className="mr-1 h-3 w-3" />
                   {t("save")}
                 </Button>

@@ -42,14 +42,21 @@ function envProvider(
   };
 }
 
-/** All configured providers in priority order (preferred first, no duplicates). */
+function providerTypeOrder(preferred: string | undefined): ResolvedAiProvider["type"][] {
+  const strict =
+    preferred === "openai" || preferred === "gemini" || preferred === "anthropic";
+  if (!strict) return [...PROVIDER_TYPES];
+  return [preferred, ...PROVIDER_TYPES.filter((t) => t !== preferred)];
+}
+
+/** All configured providers: .env first, then database; preferred type ordered first. */
 export async function resolveAiProviderCandidates(): Promise<ResolvedAiProvider[]> {
   const dbProviders = await prisma.aiProvider.findMany({
     where: { isEnabled: true },
     orderBy: { order: "asc" },
   });
   const config = await getAiRuntimeConfig();
-  const preferred = config.provider?.toLowerCase();
+  const typeOrder = providerTypeOrder(config.provider?.toLowerCase());
   const seen = new Set<string>();
   const candidates: ResolvedAiProvider[] = [];
 
@@ -70,16 +77,10 @@ export async function resolveAiProviderCandidates(): Promise<ResolvedAiProvider[
     };
   };
 
-  const strictPreferred =
-    preferred === "openai" || preferred === "gemini" || preferred === "anthropic";
-
-  if (strictPreferred) {
-    add(envProvider(preferred, config));
-    add(pickDb(preferred));
-  }
-
-  for (const type of PROVIDER_TYPES) {
+  for (const type of typeOrder) {
     add(envProvider(type, config));
+  }
+  for (const type of typeOrder) {
     add(pickDb(type));
   }
 

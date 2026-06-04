@@ -9,7 +9,8 @@ const ENV_MAP: Record<string, string | undefined> = {
   ai_provider: process.env.AI_PROVIDER,
   openai_api_key: process.env.OPENAI_API_KEY,
   openai_model: process.env.OPENAI_MODEL,
-  google_ai_api_key: process.env.GOOGLE_AI_API_KEY,
+  google_ai_api_key:
+    process.env.GOOGLE_AI_API_KEY ?? process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY,
   gemini_model: process.env.GEMINI_MODEL,
 };
 

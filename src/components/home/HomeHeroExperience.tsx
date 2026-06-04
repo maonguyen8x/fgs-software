@@ -13,6 +13,7 @@ import {
   scrollToHomeSection,
   setHomeHash,
 } from "@/lib/home-hash";
+import { useHeroAutoplayUnlock } from "@/lib/hero-media-autoplay";
 
 interface HomeHeroExperienceProps {
   slides: HeroScrollSlideItem[];
@@ -43,6 +44,8 @@ export function HomeHeroExperience({ slides, copy }: HomeHeroExperienceProps) {
   const [isHovered, setIsHovered] = useState(false);
   const count = Math.max(slides.length, 1);
   const showText = copy.showHeadline || copy.showSubheadline;
+
+  useHeroAutoplayUnlock();
 
   activeIndexRef.current = activeIndex;
 
@@ -100,7 +103,7 @@ export function HomeHeroExperience({ slides, copy }: HomeHeroExperienceProps) {
     <section
       id={HOME_HASH_HERO}
       ref={rootRef}
-      className={`hero-scroll-root relative h-screen w-full overflow-hidden scroll-mt-0 ${isHovered ? "hero-scroll-root--hovered" : ""}`}
+      className={`hero-scroll-root relative w-full overflow-hidden scroll-mt-0 ${isHovered ? "hero-scroll-root--hovered" : ""}`}
       aria-label={t("scroll_to_explore")}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SecretInput } from "@/components/ui/secret-input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Download, RefreshCw, Save, Sparkles, Trash2 } from "lucide-react";
@@ -180,15 +181,24 @@ export function AiSettingsPanel({ initial }: AiSettingsPanelProps) {
           return (
             <div key={key}>
               <Label htmlFor={key}>{LABELS[key] ?? key}</Label>
-              <Input
-                id={key}
-                type={isSecret ? "password" : "text"}
-                className="mt-1 font-mono text-sm"
-                placeholder={isSecret ? "Leave blank to keep current / use .env" : ""}
-                value={values[key] ?? ""}
-                onChange={(e) => setValues((v) => ({ ...v, [key]: e.target.value }))}
-                autoComplete="off"
-              />
+              {isSecret ? (
+                <SecretInput
+                  id={key}
+                  className="mt-1"
+                  placeholder="Leave blank to keep current / use .env"
+                  value={values[key] ?? ""}
+                  onChange={(e) => setValues((v) => ({ ...v, [key]: e.target.value }))}
+                />
+              ) : (
+                <Input
+                  id={key}
+                  type="text"
+                  className="mt-1 font-mono text-sm"
+                  value={values[key] ?? ""}
+                  onChange={(e) => setValues((v) => ({ ...v, [key]: e.target.value }))}
+                  autoComplete="off"
+                />
+              )}
               {initial[key] && isSecret && !values[key] && (
                 <p className="mt-1 text-xs text-slate-500">A key is saved in the database (hidden).</p>
               )}

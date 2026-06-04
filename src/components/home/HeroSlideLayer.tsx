@@ -49,7 +49,7 @@ export function HeroSlideLayer({ slide, isActive, offset }: HeroSlideLayerProps)
       alt={slide.alt}
       fill
       quality={95}
-      className={`hero-media-sharp object-cover object-center ${isActive ? "hero-ken-burns" : ""}`}
+      className={`hero-media-sharp hero-media-fill ${isActive ? "hero-ken-burns" : ""}`}
       sizes="100vw"
       priority={isActive}
       unoptimized={isLocal(slide.imageUrl)}

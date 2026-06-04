@@ -38,7 +38,7 @@ export function getYouTubeThumbnail(videoId: string): string {
 }
 
 /** Background embed: autoplay, muted, no controls/branding UI. */
-export function buildYouTubeBackgroundEmbedUrl(videoId: string): string {
+export function buildYouTubeBackgroundEmbedUrl(videoId: string, origin?: string): string {
   const params = new URLSearchParams({
     autoplay: "1",
     mute: "1",
@@ -56,5 +56,6 @@ export function buildYouTubeBackgroundEmbedUrl(videoId: string): string {
     autohide: "1",
     showinfo: "0",
   });
+  if (origin) params.set("origin", origin);
   return `https://www.youtube-nocookie.com/embed/${videoId}?${params.toString()}`;
 }

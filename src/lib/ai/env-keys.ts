@@ -5,9 +5,22 @@ export const AI_ENV_KEY_ALIASES = {
   anthropic: ["ANTHROPIC_API_KEY"],
 } as const;
 
+function normalizeEnvValue(raw: string): string {
+  let v = raw.trim();
+  if (
+    (v.startsWith('"') && v.endsWith('"')) ||
+    (v.startsWith("'") && v.endsWith("'"))
+  ) {
+    v = v.slice(1, -1).trim();
+  }
+  return v;
+}
+
 export function readEnvApiKey(provider: keyof typeof AI_ENV_KEY_ALIASES): string | null {
   for (const key of AI_ENV_KEY_ALIASES[provider]) {
-    const value = process.env[key]?.trim();
+    const raw = process.env[key];
+    if (!raw) continue;
+    const value = normalizeEnvValue(raw);
     if (value) return value;
   }
   return null;

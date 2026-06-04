@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -8,7 +9,6 @@ import {
   Minus,
   Send,
   Sparkles,
-  MessageCircle,
   ArrowRight,
   Bot,
   User,
@@ -17,6 +17,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { API_ROUTES } from "@/config/api-routes";
 import { useMounted } from "@/hooks/use-mounted";
+import { NovaLauncherIcon } from "@/components/chatbot/NovaLauncherIcon";
 
 interface ChatMessage {
   id: string;
@@ -140,7 +141,10 @@ export function ChatbotWidget({
   }, [messages, loading, scrollToBottom]);
 
   useEffect(() => {
-    if (open && !minimized) inputRef.current?.focus();
+    if (!open || minimized) return;
+    requestAnimationFrame(() => {
+      inputRef.current?.focus({ preventScroll: true });
+    });
   }, [open, minimized]);
 
   const sendMessage = useCallback(
@@ -218,8 +222,7 @@ export function ChatbotWidget({
     [loading, locale, t]
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSend = () => {
     void sendMessage(input);
   };
 
@@ -237,8 +240,12 @@ export function ChatbotWidget({
     contact: t("prompts.contact"),
   };
 
-  return (
-    <>
+  const stopBubble = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+  };
+
+  const widget = (
+    <div data-nova-chat-root className="contents">
       {/* Launcher */}
       <AnimatePresence>
         {mounted && !open && (
@@ -250,14 +257,12 @@ export function ChatbotWidget({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setOpen(true)}
-            className="fixed bottom-6 right-6 z-[200] flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-gradient-to-br from-primary-500 via-primary-600 to-primary-800 text-white shadow-2xl shadow-primary-500/40 ring-4 ring-white/80"
+            onMouseDown={stopBubble}
+            onPointerDown={stopBubble}
+            className="nova-chat-launcher fixed bottom-6 right-6 z-[200] flex h-[4.25rem] w-[4.25rem] cursor-pointer items-center justify-center rounded-full shadow-2xl shadow-violet-400/30 ring-2 ring-white/90 transition-shadow hover:shadow-violet-500/40"
             aria-label={t("open")}
           >
-            <span className="absolute inset-0 animate-ping rounded-full bg-primary-400/30" />
-            <MessageCircle className="relative h-7 w-7" />
-            <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-amber-400 text-[10px] font-bold text-amber-950 shadow">
-              AI
-            </span>
+            <NovaLauncherIcon size={46} />
           </motion.button>
         )}
       </AnimatePresence>
@@ -275,6 +280,9 @@ export function ChatbotWidget({
             }}
             exit={{ opacity: 0, y: 24, scale: 0.92 }}
             transition={{ type: "spring", damping: 26, stiffness: 320 }}
+            onMouseDown={stopBubble}
+            onPointerDown={stopBubble}
+            onClick={stopBubble}
             className={cn(
               "fixed bottom-6 right-6 z-[200] flex w-[min(100vw-2rem,400px)] flex-col overflow-hidden rounded-3xl shadow-2xl shadow-primary-900/20 ring-1 ring-white/20",
               minimized ? "h-auto" : "h-[min(85vh,640px)]"
@@ -360,32 +368,39 @@ export function ChatbotWidget({
                   </div>
                 )}
 
-                {/* Input */}
-                <form
+                {/* Input — div (not form) avoids accidental full-page GET submit / reload */}
+                <div
                   className="border-t border-slate-200/60 bg-white/60 p-4"
-                  onSubmit={handleSubmit}
-                  noValidate
+                  role="group"
+                  aria-label={t("placeholder")}
                 >
                   <div className="flex items-end gap-2 rounded-2xl bg-white p-2 shadow-inner ring-1 ring-slate-200/80">
                     <textarea
                       ref={inputRef}
                       rows={1}
+                      name="nova-message"
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
                           e.preventDefault();
                           e.stopPropagation();
-                          void sendMessage(input);
+                          handleSend();
                         }
                       }}
                       placeholder={t("placeholder")}
+                      autoComplete="off"
+                      autoCorrect="on"
+                      enterKeyHint="send"
+                      data-lpignore="true"
+                      data-1p-ignore="true"
                       className="max-h-24 min-h-[40px] flex-1 resize-none bg-transparent px-2 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none"
                       disabled={loading}
                     />
                     <button
-                      type="submit"
+                      type="button"
                       disabled={!input.trim() || loading}
+                      onClick={handleSend}
                       className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-primary-600 text-white transition-all hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-40"
                       aria-label={t("send")}
                     >
@@ -395,17 +410,19 @@ export function ChatbotWidget({
                   <Link
                     href={contactHref}
                     className="mt-3 flex items-center justify-center gap-1 text-xs font-medium text-primary-600 transition-colors hover:text-primary-800"
-                    onClick={(e) => e.stopPropagation()}
                   >
                     {t("human_handoff")}
                     <ArrowRight className="h-3 w-3" />
                   </Link>
-                </form>
+                </div>
               </>
             )}
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
+
+  if (!mounted) return null;
+  return createPortal(widget, document.body);
 }

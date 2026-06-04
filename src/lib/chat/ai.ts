@@ -56,9 +56,13 @@ export async function generateChatReply({
   const candidates = await resolveAiProviderCandidates();
 
   if (candidates.length === 0) {
-    logger.error(
-      "No AI provider configured. Set OPENAI_API_KEY or GOOGLE_AI_API_KEY in .env and activate in Admin → Settings → AI Providers."
-    );
+    const { readEnvApiKey } = await import("@/lib/ai/env-keys");
+    logger.error("No AI provider configured", {
+      envOpenai: Boolean(readEnvApiKey("openai")),
+      envGemini: Boolean(readEnvApiKey("gemini")),
+      envAnthropic: Boolean(readEnvApiKey("anthropic")),
+      hint: "Set OPENAI_API_KEY or GOOGLE_AI_API_KEY in .env, restart the dev server, then use Admin → Sync from .env if needed.",
+    });
     throw new AiChatUnavailableError("No AI API key configured");
   }
 

@@ -11,6 +11,10 @@ const serverEnvSchema = z.object({
   RESEND_API_KEY: z.string().optional(),
   OPENAI_API_KEY: z.string().optional(),
   OPENAI_MODEL: z.string().default("gpt-4o-mini"),
+  GOOGLE_AI_API_KEY: z.string().optional(),
+  GEMINI_API_KEY: z.string().optional(),
+  GEMINI_MODEL: z.string().optional(),
+  AI_PROVIDER: z.string().optional(),
 });
 
 const clientEnvSchema = z.object({
@@ -41,6 +45,10 @@ export function getServerEnv(): ServerEnv {
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     OPENAI_MODEL: process.env.OPENAI_MODEL,
+    GOOGLE_AI_API_KEY: process.env.GOOGLE_AI_API_KEY,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    GEMINI_MODEL: process.env.GEMINI_MODEL,
+    AI_PROVIDER: process.env.AI_PROVIDER,
   });
 }
 

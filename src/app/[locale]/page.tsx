@@ -3,6 +3,7 @@ import { HomeHeroExperience } from "@/components/home/HomeHeroExperience";
 import { HomeExploreSection } from "@/components/home/HomeExploreSection";
 import { HomeClientsMarquee } from "@/components/home/HomeClientsMarquee";
 import { HomeHashSync } from "@/components/home/HomeHashSync";
+import { ScrollToTopButton } from "@/components/layout/ScrollToTopButton";
 import { getCachedHeroScrollSlides } from "@/lib/cache/queries";
 import { resolveHeroScrollSlides } from "@/lib/hero-scroll-slides";
 import { resolveHeroDisplayCopy } from "@/lib/hero-copy";
@@ -83,6 +84,7 @@ export default async function HomePage({
           </div>
         </section>
       )}
+      <ScrollToTopButton home />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdminSession } from "@/lib/admin-auth";
+import { maskSecretForInput } from "@/lib/ai/mask-secret";
 
 const schema = z.object({
   providerType: z.enum(["openai", "gemini", "anthropic"]).optional(),
@@ -24,7 +25,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       ...(apiKey && !apiKey.includes("•") ? { apiKey } : {}),
     };
     const row = await prisma.aiProvider.update({ where: { id }, data });
-    return NextResponse.json(row);
+    return NextResponse.json({ ...row, apiKey: maskSecretForInput(row.apiKey) });
   } catch (e) {
     if (e instanceof z.ZodError) return NextResponse.json({ error: e.errors }, { status: 400 });
     return NextResponse.json({ error: "Server error" }, { status: 500 });

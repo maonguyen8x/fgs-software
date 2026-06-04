@@ -12,6 +12,7 @@ export const LEGACY_HERO_TEXTS = new Set([
   "Chúng tôi giúp doanh nghiệp phát triển sản phẩm và tối ưu vận hành bằng công nghệ",
   "テクノロジーで企業のプロダクト成長と業務の最適化を支援します",
   "FGS Software delivers high-quality software development for Japanese businesses from Vietnam.",
+  "We build high-quality software for Japanese businesses",
   "日本企業向けに高品質なソフトウェアを開発します",
   "高品質なソフトウェアを開発します",
 ]);

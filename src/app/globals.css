@@ -154,10 +154,30 @@
 
   .hero-scroll-root {
     isolation: isolate;
+    min-height: 100svh;
+    height: 100svh;
   }
 
   .hero-scroll-stage {
     overflow: hidden;
+  }
+
+  .hero-bg-layer,
+  .hero-file-video-wrap,
+  .hero-youtube-wrap {
+    overflow: hidden;
+  }
+
+  /* Full-bleed cover — no letterboxing / bottom gap */
+  .hero-media-fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    object-position: center center;
   }
 
   .hero-bg-layer--fade {
@@ -174,14 +194,39 @@
 
   .hero-slide-video {
     pointer-events: none;
+    visibility: hidden;
+  }
+
+  .hero-slide-video.hero-slide-video--live {
+    visibility: visible;
   }
 
   .hero-slide-video::-webkit-media-controls {
     display: none !important;
+    -webkit-appearance: none;
   }
 
   .hero-slide-video::-webkit-media-controls-enclosure {
     display: none !important;
+  }
+
+  .hero-slide-video::-webkit-media-controls-panel {
+    display: none !important;
+  }
+
+  .hero-slide-video::-webkit-media-controls-start-playback-button {
+    display: none !important;
+    opacity: 0 !important;
+  }
+
+  .hero-slide-video::-webkit-media-controls-overlay-play-button {
+    display: none !important;
+    opacity: 0 !important;
+  }
+
+  .hero-slide-video::-webkit-media-controls-play-button {
+    display: none !important;
+    opacity: 0 !important;
   }
 
   .hero-youtube-wrap {
@@ -190,20 +235,27 @@
 
   .hero-youtube-clip {
     pointer-events: none;
-    clip-path: inset(0 0 0 0);
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
   }
 
   .hero-youtube-iframe {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: max(100vw, 177.78vh);
-    height: max(56.25vw, 100vh);
+    width: max(100%, 177.78vh);
+    height: max(100%, 56.25vw);
     min-width: 100%;
     min-height: 100%;
-    transform: translate(-50%, -48%) scale(1.22);
+    transform: translate(-50%, -50%);
     border: 0;
     pointer-events: none;
+    visibility: hidden;
+  }
+
+  .hero-youtube-iframe.hero-youtube-iframe--live {
+    visibility: visible;
   }
 
   .hero-media-ui-mask {
@@ -446,5 +498,73 @@
   }
   to {
     stroke-dashoffset: 0;
+  }
+}
+
+/* Nova chatbot launcher — gradient torus with circular color motion */
+.nova-chat-launcher {
+  background: linear-gradient(145deg, #fafbff 0%, #f0f4ff 48%, #fce7f3 100%);
+}
+
+.nova-launcher-icon {
+  position: relative;
+  border-radius: 50%;
+}
+
+.nova-launcher-icon__halo {
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #22d3ee 0%,
+    #a855f7 28%,
+    #ec4899 52%,
+    #60a5fa 76%,
+    #22d3ee 100%
+  );
+  filter: blur(10px);
+  opacity: 0.55;
+  animation: nova-ring-spin 3.2s linear infinite;
+}
+
+.nova-launcher-icon__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #06b6d4 0%,
+    #8b5cf6 24%,
+    #f472b6 48%,
+    #3b82f6 72%,
+    #06b6d4 100%
+  );
+  animation: nova-ring-spin 2.8s linear infinite;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 11px), #000 calc(100% - 9px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 11px), #000 calc(100% - 9px));
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.65),
+    0 4px 14px rgba(99, 102, 241, 0.28);
+}
+
+.nova-launcher-icon__shine {
+  position: absolute;
+  inset: 22%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.15) 70%);
+  pointer-events: none;
+}
+
+@keyframes nova-ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nova-launcher-icon__halo,
+  .nova-launcher-icon__ring {
+    animation: none;
   }
 }
