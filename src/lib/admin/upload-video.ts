@@ -1,6 +1,4 @@
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
-import { randomUUID } from "crypto";
+import { newUploadFilename, persistUploadBuffer } from "@/lib/admin/upload-storage";
 
 const ALLOWED_TYPES = new Set(["video/mp4", "video/webm"]);
 const MAX_BYTES = 80 * 1024 * 1024;
@@ -27,10 +25,7 @@ export async function saveUploadedVideo(file: File): Promise<string> {
   }
 
   const ext = EXT_BY_MIME[mime] ?? "mp4";
-  const filename = `${randomUUID()}.${ext}`;
-  const uploadDir = path.join(process.cwd(), "public", "uploads", "videos");
-  await mkdir(uploadDir, { recursive: true });
+  const filename = newUploadFilename(ext);
   const buffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(path.join(uploadDir, filename), buffer);
-  return `/uploads/videos/${filename}`;
+  return persistUploadBuffer("uploads/videos", filename, buffer, mime);
 }

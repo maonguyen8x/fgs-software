@@ -176,6 +176,24 @@ fgs-software/
 
 Set the same variables as `.env.sample`. Use a strong `NEXTAUTH_SECRET` and production `NEXTAUTH_URL` (your domain).
 
+### Uploaded images (avatars, portfolio, logo)
+
+Local dev without Cloudinary saves files under `public/uploads/`. **Vercel does not persist that folder.**
+
+**Recommended: [Cloudinary](https://cloudinary.com)** — set on Vercel **and** locally:
+
+```bash
+CLOUDINARY_CLOUD_NAME=""
+CLOUDINARY_API_KEY=""
+CLOUDINARY_API_SECRET=""
+```
+
+1. Add the three variables in Vercel → **Settings → Environment Variables** (Production).
+2. Redeploy, then **re-upload** images in Admin (old `/uploads/...` paths in Neon will not work until re-uploaded).
+3. New files are stored as `https://res.cloudinary.com/...` URLs in the database.
+
+Optional fallback: `BLOB_READ_WRITE_TOKEN` (Vercel Blob) if Cloudinary is not configured.
+
 ## Content Management
 
 All dynamic content is managed via the admin panel:

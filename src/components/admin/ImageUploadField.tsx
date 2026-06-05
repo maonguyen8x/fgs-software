@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Upload, Loader2, X } from "lucide-react";
-import Image from "next/image";
+import { UploadImage } from "@/components/ui/UploadImage";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 import { cn } from "@/lib/utils";
 
@@ -43,13 +43,7 @@ export function ImageUploadField({ value, onChange, label, hint }: ImageUploadFi
       {preview ? (
         <div className="relative inline-block overflow-hidden rounded-xl">
           <div className="relative h-40 w-64">
-            <Image
-              src={preview}
-              alt=""
-              fill
-              className="object-cover"
-              unoptimized={preview.startsWith("/uploads/")}
-            />
+            <UploadImage src={preview} alt="" fill className="object-cover" />
           </div>
           <button
             type="button"

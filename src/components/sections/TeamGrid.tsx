@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { UploadImage } from "@/components/ui/UploadImage";
 import Link from "next/link";
 import { Linkedin, Github, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -60,12 +60,11 @@ export function TeamGrid({
                 aria-label={`View ${member.name}`}
               >
                 {avatarSrc ? (
-                  <Image
+                  <UploadImage
                     src={avatarSrc}
                     alt={member.name}
                     fill
                     className="object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
-                    unoptimized={avatarSrc.startsWith("/uploads/")}
                     sizes="(max-width: 768px) 50vw, 25vw"
                   />
                 ) : (
@@ -144,12 +143,11 @@ export function TeamGrid({
 
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-2xl bg-slate-100 dark:bg-slate-800">
               {selected.avatar ? (
-                <Image
+                <UploadImage
                   src={selected.avatar.split("?")[0]}
                   alt={selected.name}
                   fill
                   className="object-cover"
-                  unoptimized={selected.avatar.startsWith("/uploads/")}
                 />
               ) : (
                 <span className="flex h-full items-center justify-center text-6xl font-bold text-primary-300">

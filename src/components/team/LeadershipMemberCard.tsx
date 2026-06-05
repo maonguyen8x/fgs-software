@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { UploadImage } from "@/components/ui/UploadImage";
 import { Link } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { getLocalizedField } from "@/lib/i18n-content";
@@ -26,13 +26,12 @@ export function LeadershipMemberCard({ member }: LeadershipMemberCardProps) {
     >
       <div className="relative aspect-[5/6] max-h-[235px] w-full shrink-0 overflow-hidden bg-slate-100 sm:max-h-[245px]">
         {avatarSrc ? (
-          <Image
+          <UploadImage
             src={avatarSrc}
             alt={member.name}
             fill
             className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
             sizes="280px"
-            unoptimized={avatarSrc.startsWith("/uploads/")}
           />
         ) : (
           <span className="flex h-full w-full items-center justify-center text-primary-300">

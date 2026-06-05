@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
+import { UploadImage } from "@/components/ui/UploadImage";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getCachedFounders } from "@/lib/cache/queries";
@@ -43,13 +43,12 @@ export default async function LeaderDetailPage({
             <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
               <div className="relative mx-0 h-32 w-32 shrink-0 overflow-hidden rounded-2xl bg-slate-100 ring-2 ring-primary-100 md:h-40 md:w-40 dark:bg-slate-800">
                 {avatarSrc ? (
-                  <Image
+                  <UploadImage
                     src={avatarSrc}
                     alt={member.name}
                     fill
                     className="object-cover"
                     sizes="160px"
-                    unoptimized={avatarSrc.startsWith("/uploads/")}
                   />
                 ) : (
                   <span className="flex h-full items-center justify-center text-primary-300">

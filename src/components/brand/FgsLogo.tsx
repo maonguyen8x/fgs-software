@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { BRAND } from "@/config/brand";
+import { shouldUseUnoptimizedImage } from "@/lib/upload-url";
 import type { LogoDisplayMode } from "@/lib/brand-logo";
 
 interface FgsLogoProps {
@@ -77,7 +78,7 @@ export function FgsLogo({
             width={imageWidth}
             height={s.height}
             className="h-full w-auto max-w-full object-contain object-left"
-            unoptimized={src.startsWith("/uploads/") || src === BRAND.logoPngPath}
+            unoptimized={shouldUseUnoptimizedImage(src) || src === BRAND.logoPngPath}
             priority={size === "md"}
           />
         </span>

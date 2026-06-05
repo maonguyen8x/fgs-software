@@ -22,7 +22,9 @@ const nextConfig: NextConfig = {
       { pathname: "/*" },
     ],
     remotePatterns: [
-      { protocol: "https", hostname: "**" },
+      { protocol: "https", hostname: "res.cloudinary.com", pathname: "/**" },
+      { protocol: "https", hostname: "*.blob.vercel-storage.com", pathname: "/**" },
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com", pathname: "/**" },
     ],
   },
   async headers() {

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { UploadImage } from "@/components/ui/UploadImage";
 import { Link } from "@/i18n/navigation";
 import { getLocalizedField } from "@/lib/i18n-content";
 import type { Locale } from "@/i18n/routing";
@@ -54,13 +54,12 @@ export function WorksGrid({ works, locale, viewLabel }: WorksGridProps) {
           >
             <div className="relative aspect-[16/10] w-full overflow-hidden bg-linear-to-br from-primary-100 to-slate-100 dark:from-primary-950 dark:to-slate-800">
               {work.thumbnail ? (
-                <Image
+                <UploadImage
                   src={work.thumbnail}
                   alt={title}
                   fill
                   className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  unoptimized={work.thumbnail.startsWith("/uploads/")}
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center text-sm font-medium text-primary-400/80">

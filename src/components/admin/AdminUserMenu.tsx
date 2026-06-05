@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { UploadImage } from "@/components/ui/UploadImage";
 import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { LogOut, Settings, User } from "lucide-react";
@@ -77,13 +77,12 @@ export function AdminUserMenu({ initialName, className }: AdminUserMenuProps) {
         >
           {avatarSrc ? (
             <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full ring-2 ring-primary-600 ring-offset-1 ring-offset-slate-100 transition-shadow group-hover:ring-primary-500 dark:ring-offset-slate-800">
-              <Image
+              <UploadImage
                 src={avatarSrc}
                 alt=""
                 width={32}
                 height={32}
                 className="h-8 w-8 object-cover"
-                unoptimized={avatarSrc.startsWith("/uploads/")}
               />
             </span>
           ) : (

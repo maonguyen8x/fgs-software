@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { UploadImage } from "@/components/ui/UploadImage";
 import { getLocalizedField } from "@/lib/i18n-content";
 import type { Locale } from "@/i18n/routing";
 import type { Founder } from "@prisma/client";
@@ -25,7 +25,7 @@ export function FoundersGrid({ title, founders, locale }: FoundersGridProps) {
             >
               <div className="relative mb-5 h-28 w-28 overflow-hidden rounded-full ring-4 ring-primary-100 transition-all group-hover:ring-primary-300">
                 {member.avatar ? (
-                  <Image
+                  <UploadImage
                     src={member.avatar}
                     alt={member.name}
                     fill

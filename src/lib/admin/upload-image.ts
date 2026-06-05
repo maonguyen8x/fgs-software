@@ -1,6 +1,4 @@
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
-import { randomUUID } from "crypto";
+import { newUploadFilename, persistUploadBuffer } from "@/lib/admin/upload-storage";
 
 const ALLOWED_TYPES = new Set([
   "image/jpeg",
@@ -44,10 +42,7 @@ export async function saveUploadedImage(file: File): Promise<string> {
   }
 
   const ext = EXT_BY_MIME[mime] ?? "jpg";
-  const filename = `${randomUUID()}.${ext}`;
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-  await mkdir(uploadDir, { recursive: true });
+  const filename = newUploadFilename(ext);
   const buffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(path.join(uploadDir, filename), buffer);
-  return `/uploads/${filename}`;
+  return persistUploadBuffer("uploads", filename, buffer, mime);
 }
