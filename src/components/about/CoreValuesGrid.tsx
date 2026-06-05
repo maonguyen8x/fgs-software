@@ -25,14 +25,20 @@ export function CoreValuesGrid({ title, items, locale, variant = "default" }: Co
   const isTeam = variant === "team";
 
   return (
-    <section className={isTeam ? "team-flow-section bg-slate-50/80 dark:bg-slate-900/40" : "section-padding bg-slate-50"}>
-      <div className="container-narrow">
+    <section
+      className={
+        isTeam
+          ? "team-flow-section team-flow-section--balanced bg-slate-50/80 dark:bg-slate-900/40"
+          : "page-section !py-3 bg-slate-50"
+      }
+    >
+      <div className={isTeam ? "team-page-inner" : "container-narrow"}>
         {isTeam ? (
-          <TeamSectionHeading icon={Gem} title={title} />
+          <TeamSectionHeading icon={Gem} title={title} className="team-section-heading max-w-none" />
         ) : (
-          <h2 className="mb-10 text-center text-3xl font-bold text-slate-900">{title}</h2>
+          <h2 className="about-emphasis-heading">{title}</h2>
         )}
-        <div className={isTeam ? "grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3" : "grid gap-6 sm:grid-cols-2 lg:grid-cols-3"}>
+        <div className={isTeam ? "grid gap-4 sm:grid-cols-2 lg:grid-cols-3" : "grid gap-6 sm:grid-cols-2 lg:grid-cols-3"}>
           {items.map((item) => {
             const Icon = resolveIcon(item.icon);
             return (

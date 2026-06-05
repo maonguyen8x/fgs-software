@@ -135,6 +135,19 @@ type NavInlineStyle = {
   color?: string;
 };
 
+/** Match current pathname (locale-free, from next-intl) to a nav href. */
+export function isNavHrefActive(
+  pathname: string,
+  href: string,
+  exact?: boolean
+): boolean {
+  const current = pathname.replace(/\/$/, "") || "/";
+  const target = href.replace(/\/$/, "") || "/";
+  if (exact) return current === target;
+  if (current === target) return true;
+  return target !== "/" && current.startsWith(`${target}/`);
+}
+
 export function navItemStyle(
   item: HeaderNavItem,
   global: HeaderNavGlobalStyle,

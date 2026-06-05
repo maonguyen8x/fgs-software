@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import type { Locale } from "@/i18n/routing";
 import type { SiteNoticeState } from "@/lib/site-notice-state";
 import { parseSiteNoticeState } from "@/lib/site-notice-state";
@@ -21,7 +20,6 @@ export function SiteExperienceShell({
   initialSettings,
   children,
 }: SiteExperienceShellProps) {
-  const router = useRouter();
   const [settings, setSettings] = useState(initialSettings);
   const [notice, setNotice] = useState<SiteNoticeState>(() =>
     parseSiteNoticeState(initialSettings, locale)
@@ -57,8 +55,7 @@ export function SiteExperienceShell({
   const applyLiveUpdate = useCallback(() => {
     void refreshFromApi();
     void syncSiteDefaultLocaleCookieFromServer();
-    router.refresh();
-  }, [refreshFromApi, router]);
+  }, [refreshFromApi]);
 
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {

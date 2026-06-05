@@ -1,6 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { fetchAboutPageData } from "@/lib/cache/safe-about-data";
-import { PageSection } from "@/components/layout/PageSection";
 import { CoreValuesGrid } from "@/components/about/CoreValuesGrid";
 import { getLocalizedField } from "@/lib/i18n-content";
 import type { Locale } from "@/i18n/routing";
@@ -40,10 +39,11 @@ export default async function AboutUsPage({
       <TeamCultureSection />
 
       {(mission || vision) && (
-        <PageSection muted className="team-flow-section !py-0">
-          <div className="grid max-w-4xl gap-3 md:grid-cols-2 md:gap-4">
+        <section className="team-flow-section team-flow-section--balanced bg-slate-50/80 dark:bg-slate-900/40">
+          <div className="team-page-inner">
+            <div className="team-grid-tight grid md:grid-cols-2">
             {mission && (
-              <article className="content-block text-left">
+              <article className="team-page-panel px-6 py-5 text-left md:px-8 md:py-6">
                 <h2 className="text-xl font-bold text-primary-600 md:text-2xl dark:text-primary-400">{tAbout("mission")}</h2>
                 <p className="mt-3 whitespace-pre-line text-left text-base font-medium leading-relaxed text-slate-700 md:text-lg dark:text-slate-300">
                   {getLocalizedField(mission, "content", loc)}
@@ -51,15 +51,16 @@ export default async function AboutUsPage({
               </article>
             )}
             {vision && (
-              <article className="content-block text-left">
+              <article className="team-page-panel px-6 py-5 text-left md:px-8 md:py-6">
                 <h2 className="text-xl font-bold text-primary-600 md:text-2xl dark:text-primary-400">{tAbout("vision")}</h2>
                 <p className="mt-3 whitespace-pre-line text-left text-base font-medium leading-relaxed text-slate-700 md:text-lg dark:text-slate-300">
                   {getLocalizedField(vision, "content", loc)}
                 </p>
               </article>
             )}
+            </div>
           </div>
-        </PageSection>
+        </section>
       )}
 
       {coreValues.length > 0 && (

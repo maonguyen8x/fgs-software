@@ -67,17 +67,41 @@
     "activities_badge": "Life at FGS",
     "activities_subtitle": "Moments from our team and company events",
     "branches_title": "Branches",
+    "hq_address_label": "Headquarters",
+    "hq_address": "7 Vung Trung 9, Ngu Hanh Son Ward, Da Nang, Vietnam",
+    "map_alt": "Map of Vietnam",
     "founders_title": "Founding Team",
     "map_title": "Location",
     "maps_link": "Open in Google Maps — {city}",
-    "why_japan_title": "Why Japanese Clients Choose Us"
+    "why_japan_title": "Why Japanese Clients Choose Us",
+    "tech_focus": {
+      "title": "Technology Focus Areas",
+      "subtitle": "Strategic domains FGS Software invests in to deliver long-term value for enterprises",
+      "ai_title": "AI & Machine Learning",
+      "ai_desc": "Practical AI for workflows, data analysis, and smarter decision-making.",
+      "iot_title": "IoT",
+      "iot_desc": "Connected devices, real-time telemetry, and optimized remote operations.",
+      "bigdata_title": "Big Data",
+      "bigdata_desc": "Large-scale data processing, analytics, and insights for strategy.",
+      "blockchain_title": "Blockchain",
+      "blockchain_desc": "Transparent transactions, verifiable data, and trusted digital ecosystems.",
+      "cloud_title": "Cloud",
+      "cloud_desc": "Elastic infrastructure, secure deployment, and scalable platforms.",
+      "dx_title": "Digital Transformation (DX)",
+      "dx_desc": "Process redesign, digitization, and elevated customer experience.",
+      "security_title": "Cybersecurity",
+      "security_desc": "Protecting systems, data, and compliance with security standards.",
+      "automation_title": "Automation & RPA",
+      "automation_desc": "Automating repetitive work to reduce errors and boost productivity."
+    }
   },
   "services": {
     "title": "Services & Capabilities",
     "subtitle": "Comprehensive IT outsourcing solutions",
     "tech_title": "Technology Stack",
     "tech_subtitle": "Modern tools and frameworks we master",
-    "contact_cta": "Discuss Your Project"
+    "contact_cta": "Discuss your project",
+    "contact_cta_form_badge": "Google Forms"
   },
   "team": {
     "title": "About Us",
@@ -89,7 +113,7 @@
     "years": "years experience",
     "culture": {
       "section_title": "FGS Culture",
-      "intro_headline": "People are FGS's core asset",
+      "intro_headline": "People are FGS Software's core asset",
       "intro_body": "We invest in every team member's growth—because we believe when the team grows, the product truly grows.",
       "innovation_title": "Innovation",
       "innovation_body": "We keep learning, innovating, and applying advanced technology in practice.",

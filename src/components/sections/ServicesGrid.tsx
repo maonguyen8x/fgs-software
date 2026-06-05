@@ -1,7 +1,7 @@
-import Link from "next/link";
 import * as LucideIcons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ConsultationFormLink } from "@/components/services/ConsultationFormLink";
 import { Badge } from "@/components/ui/badge";
 import type { Locale } from "@/i18n/routing";
 import { getLocalizedField } from "@/lib/i18n-content";
@@ -21,8 +21,9 @@ interface Service {
 interface ServicesGridProps {
   services: Service[];
   locale: Locale;
-  contactHref: string;
+  consultationHref: string;
   learnMoreLabel: string;
+  formBadgeLabel: string;
 }
 
 function getIcon(name: string): LucideIcon {
@@ -30,7 +31,13 @@ function getIcon(name: string): LucideIcon {
   return icons[name] ?? LucideIcons.Code2;
 }
 
-export function ServicesGrid({ services, locale, contactHref, learnMoreLabel }: ServicesGridProps) {
+export function ServicesGrid({
+  services,
+  locale,
+  consultationHref,
+  learnMoreLabel,
+  formBadgeLabel,
+}: ServicesGridProps) {
   return (
     <div className="page-grid">
       {services.map((service) => {
@@ -54,12 +61,12 @@ export function ServicesGrid({ services, locale, contactHref, learnMoreLabel }: 
                   </Badge>
                 ))}
               </div>
-              <Link
-                href={contactHref}
-                className="inline-block text-sm font-medium text-primary-600 hover:underline dark:text-primary-300"
-              >
-                {learnMoreLabel} →
-              </Link>
+              <ConsultationFormLink
+                href={consultationHref}
+                label={learnMoreLabel}
+                badgeLabel={formBadgeLabel}
+                variant="inline"
+              />
             </CardContent>
           </Card>
         );

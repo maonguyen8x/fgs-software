@@ -92,12 +92,12 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
   if (items.length === 0) return null;
 
   return (
-    <section className="relative overflow-visible pb-14 pt-8 md:pb-16 md:pt-10">
+    <section className="relative overflow-visible py-3">
       <div className="container-narrow">
         <div className="overflow-visible rounded-3xl border border-slate-200/80 bg-white px-3 py-4 shadow-sm md:px-6 md:py-6">
-          <div className="mb-6 text-center md:mb-7">
-            <h2 className="text-2xl font-bold text-heading md:text-4xl">{title}</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-theme">{t("timeline_hint")}</p>
+          <div className="text-center">
+            <h2 className="about-section-title md:text-3xl">{title}</h2>
+            <p className="mx-auto max-w-2xl py-3 text-sm text-muted-theme">{t("timeline_hint")}</p>
           </div>
           <ol className="relative mx-auto max-w-5xl overflow-visible py-2">
           <div className="pointer-events-none absolute bottom-0 left-1/2 top-0 hidden -translate-x-1/2 md:block">

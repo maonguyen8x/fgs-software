@@ -20,11 +20,11 @@ export function ActivitiesSection({ title, items, locale }: ActivitiesSectionPro
   if (items.length === 0) return null;
 
   return (
-    <PageSection muted>
-      <div className="mb-8 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-primary-600">{t("activities_badge")}</p>
-        <h2 className="mt-2 text-2xl font-bold text-heading md:text-3xl">{title}</h2>
-        <p className="mx-auto mt-2 max-w-xl text-sm text-muted-theme">{t("activities_subtitle")}</p>
+    <PageSection muted tight>
+      <div className="text-center">
+        <p className="py-3 text-sm font-semibold uppercase tracking-widest text-primary-600">{t("activities_badge")}</p>
+        <h2 className="about-section-title !py-3">{title}</h2>
+        <p className="mx-auto max-w-xl py-3 text-sm text-muted-theme">{t("activities_subtitle")}</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:gap-8">

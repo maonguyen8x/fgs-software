@@ -69,29 +69,31 @@ export function AdminUserMenu({ initialName, className }: AdminUserMenuProps) {
         onMouseLeave={() => setMenuOpen(false)}
       >
         <div
-          className="group flex cursor-pointer items-center gap-2.5 py-1"
+          className="group flex cursor-pointer items-center gap-2 rounded-full bg-slate-100/95 py-1 pl-1 pr-3 shadow-sm transition-all duration-200 hover:bg-slate-200/90 dark:bg-slate-800/90 dark:hover:bg-slate-700/90"
           role="button"
           tabIndex={0}
           aria-haspopup="true"
           aria-expanded={menuOpen}
         >
           {avatarSrc ? (
-            <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full ring-2 ring-primary-100">
+            <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full ring-2 ring-primary-600 ring-offset-1 ring-offset-slate-100 transition-shadow group-hover:ring-primary-500 dark:ring-offset-slate-800">
               <Image
                 src={avatarSrc}
                 alt=""
-                width={36}
-                height={36}
-                className="h-9 w-9 object-cover"
+                width={32}
+                height={32}
+                className="h-8 w-8 object-cover"
                 unoptimized={avatarSrc.startsWith("/uploads/")}
               />
             </span>
           ) : (
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-100 text-sm font-bold text-primary-700">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-50 text-sm font-bold text-primary-700 ring-2 ring-primary-600 ring-offset-1 ring-offset-slate-100 dark:ring-offset-slate-800">
               {displayName.charAt(0).toUpperCase()}
             </span>
           )}
-          <span className="hidden max-w-[160px] items-center gap-1.5 truncate text-sm font-semibold text-slate-800 md:inline-flex">{displayName}</span>
+          <span className="hidden max-w-[180px] truncate text-sm font-semibold text-slate-700 md:inline-block dark:text-slate-200">
+            {displayName}
+          </span>
         </div>
 
         {menuOpen && (

@@ -5,7 +5,6 @@ import { Link } from "@/i18n/navigation";
 import { getCachedFounders } from "@/lib/cache/queries";
 import { getLocalizedField } from "@/lib/i18n-content";
 import type { Locale } from "@/i18n/routing";
-import { PageSection } from "@/components/layout/PageSection";
 import { ArrowLeft, User } from "lucide-react";
 import { ScrollToTopButton } from "@/components/layout/ScrollToTopButton";
 
@@ -30,70 +29,80 @@ export default async function LeaderDetailPage({
 
   return (
     <div className="bg-linear-to-b from-sky-50/40 via-white to-white dark:from-slate-950 dark:to-slate-900">
-      <PageSection className="!py-6">
-        <Link
-          href="/team"
-          className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-600 hover:text-primary-800"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          {t("back_to_team")}
-        </Link>
-      </PageSection>
+      <section className="team-flow-section">
+        <div className="team-page-inner">
+          <Link
+            href="/team"
+            className="mb-6 inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-600 transition-colors hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {t("back_to_team")}
+          </Link>
 
-      <PageSection>
-        <article className="mx-auto max-w-3xl text-left">
-          <div className="flex flex-col gap-6 md:flex-row md:items-start">
-            <div className="relative mx-0 h-36 w-36 shrink-0 overflow-hidden rounded-2xl bg-slate-100 ring-2 ring-primary-100 dark:bg-slate-800">
-              {avatarSrc ? (
-                <Image
-                  src={avatarSrc}
-                  alt={member.name}
-                  fill
-                  className="object-cover"
-                  sizes="144px"
-                  unoptimized={avatarSrc.startsWith("/uploads/")}
-                />
-              ) : (
-                <span className="flex h-full items-center justify-center text-primary-300">
-                  <User className="h-16 w-16" />
-                </span>
-              )}
-            </div>
-            <div className="min-w-0 flex-1">
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{member.name}</h1>
-              <p className="mt-2 text-lg font-medium text-primary-600">{role}</p>
-              {slogan && (
-                <p className="mt-4 text-base italic text-slate-500 dark:text-slate-400">&ldquo;{slogan}&rdquo;</p>
-              )}
-            </div>
-          </div>
-
-          {bio && (
-            <div className="mt-8 rounded-2xl border border-slate-200/90 bg-white p-6 text-left shadow-sm dark:border-slate-700 dark:bg-slate-900">
-              <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">{t("bio_heading")}</h2>
-              <p className="mt-3 whitespace-pre-line text-base leading-relaxed text-slate-700 dark:text-slate-300">
-                {bio}
-              </p>
-            </div>
-          )}
-
-          {member.skills.length > 0 && (
-            <div className="mt-6 text-left">
-              <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">{t("skills_heading")}</h2>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {member.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-800 dark:bg-primary-950 dark:text-primary-200"
-                  >
-                    {skill}
+          <article className="team-page-panel px-6 py-6 md:px-8 md:py-8 lg:px-10 lg:py-10">
+            <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
+              <div className="relative mx-0 h-32 w-32 shrink-0 overflow-hidden rounded-2xl bg-slate-100 ring-2 ring-primary-100 md:h-40 md:w-40 dark:bg-slate-800">
+                {avatarSrc ? (
+                  <Image
+                    src={avatarSrc}
+                    alt={member.name}
+                    fill
+                    className="object-cover"
+                    sizes="160px"
+                    unoptimized={avatarSrc.startsWith("/uploads/")}
+                  />
+                ) : (
+                  <span className="flex h-full items-center justify-center text-primary-300">
+                    <User className="h-16 w-16" />
                   </span>
-                ))}
+                )}
+              </div>
+              <div className="min-w-0 flex-1 text-left">
+                <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl dark:text-white">
+                  {member.name}
+                </h1>
+                <p className="mt-2 text-lg font-semibold text-primary-600 md:text-xl dark:text-primary-400">
+                  {role}
+                </p>
+                {slogan && (
+                  <p className="mt-4 text-base italic leading-relaxed text-slate-500 md:text-lg dark:text-slate-400">
+                    &ldquo;{slogan}&rdquo;
+                  </p>
+                )}
               </div>
             </div>
-          )}
-        </article>
-      </PageSection>
+
+            {bio && (
+              <div className="mt-8 rounded-2xl border border-slate-200/80 bg-white p-5 md:p-6 dark:border-slate-600/80 dark:bg-white">
+                <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+                  {t("bio_heading")}
+                </h2>
+                <p className="mt-3 whitespace-pre-line text-base leading-relaxed text-slate-700 md:text-lg dark:text-slate-700">
+                  {bio}
+                </p>
+              </div>
+            )}
+
+            {member.skills.length > 0 && (
+              <div className="mt-8 text-left">
+                <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+                  {t("skills_heading")}
+                </h2>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {member.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="rounded-full bg-primary-50 px-3 py-1.5 text-sm font-medium text-primary-800 dark:bg-primary-100 dark:text-primary-900"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </article>
+        </div>
+      </section>
       <ScrollToTopButton />
     </div>
   );

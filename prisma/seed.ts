@@ -241,13 +241,40 @@ async function main() {
           title: "Vision",
           titleJa: "ビジョン",
           titleVi: "Tầm nhìn",
-          content: "To be the most trusted IT outsourcing partner for Japanese companies in Southeast Asia.",
-          contentJa: "東南アジアで日本企業に最も信頼されるITアウトソーシングパートナーになる。",
-          contentVi: "Trở thành đối tác outsourcing IT đáng tin cậy nhất cho doanh nghiệp Nhật Bản tại Đông Nam Á.",
+          content:
+            "To become a trusted technology partner, accompanying Japanese businesses on their digital transformation and sustainable growth journey.",
+          contentJa:
+            "信頼されるテクノロジーパートナーとして、日本企業のデジタル変革と持続可能な成長の旅に伴走する。",
+          contentVi:
+            "Trở thành đối tác công nghệ tin cậy, đồng hành cùng doanh nghiệp Nhật Bản trong hành trình chuyển đổi số và phát triển bền vững.",
         },
       ],
     });
   }
+
+  await prisma.aboutContent.upsert({
+    where: { section: "vision" },
+    update: {
+      content:
+        "To become a trusted technology partner, accompanying Japanese businesses on their digital transformation and sustainable growth journey.",
+      contentJa:
+        "信頼されるテクノロジーパートナーとして、日本企業のデジタル変革と持続可能な成長の旅に伴走する。",
+      contentVi:
+        "Trở thành đối tác công nghệ tin cậy, đồng hành cùng doanh nghiệp Nhật Bản trong hành trình chuyển đổi số và phát triển bền vững.",
+    },
+    create: {
+      section: "vision",
+      title: "Vision",
+      titleJa: "ビジョン",
+      titleVi: "Tầm nhìn",
+      content:
+        "To become a trusted technology partner, accompanying Japanese businesses on their digital transformation and sustainable growth journey.",
+      contentJa:
+        "信頼されるテクノロジーパートナーとして、日本企業のデジタル変革と持続可能な成長の旅に伴走する。",
+      contentVi:
+        "Trở thành đối tác công nghệ tin cậy, đồng hành cùng doanh nghiệp Nhật Bản trong hành trình chuyển đổi số và phát triển bền vững.",
+    },
+  });
 
   const teamCount = await prisma.teamMember.count();
   if (teamCount === 0) {

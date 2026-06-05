@@ -67,17 +67,41 @@
     "activities_badge": "Hoạt động nội bộ",
     "activities_subtitle": "Hình ảnh và khoảnh khắc từ đội ngũ FGS Software",
     "branches_title": "Chi nhánh",
+    "hq_address_label": "Trụ sở chính",
+    "hq_address": "7 Vùng Trung 9, Phường Ngũ Hành Sơn, Đà Nẵng, Việt Nam",
+    "map_alt": "Bản đồ Việt Nam",
     "founders_title": "Đội ngũ sáng lập",
     "map_title": "Vị trí",
     "maps_link": "Mở Google Maps — {city}",
-    "why_japan_title": "Vì sao khách hàng Nhật chọn chúng tôi"
+    "why_japan_title": "Vì sao khách hàng Nhật chọn chúng tôi",
+    "tech_focus": {
+      "title": "Công nghệ trọng tâm",
+      "subtitle": "Các hướng công nghệ FGS Software ưu tiên phát triển để tạo giá trị bền vững cho doanh nghiệp",
+      "ai_title": "AI & Machine Learning",
+      "ai_desc": "Ứng dụng trí tuệ nhân tạo vào quy trình nghiệp vụ, phân tích dữ liệu và hỗ trợ ra quyết định.",
+      "iot_title": "IoT",
+      "iot_desc": "Kết nối thiết bị, thu thập dữ liệu thời gian thực và tối ưu vận hành từ xa.",
+      "bigdata_title": "Big Data",
+      "bigdata_desc": "Xử lý khối lượng dữ liệu lớn, báo cáo thông minh và insight phục vụ chiến lược.",
+      "blockchain_title": "Blockchain",
+      "blockchain_desc": "Minh bạch giao dịch, xác thực dữ liệu và giải pháp tin cậy cho hệ sinh thái số.",
+      "cloud_title": "Cloud",
+      "cloud_desc": "Hạ tầng linh hoạt, mở rộng theo nhu cầu và triển khai an toàn trên nền tảng đám mây.",
+      "dx_title": "Digital Transformation (DX)",
+      "dx_desc": "Tái thiết kế quy trình, số hóa vận hành và nâng cao trải nghiệm khách hàng.",
+      "security_title": "Cybersecurity",
+      "security_desc": "Bảo vệ hệ thống, dữ liệu và tuân thủ tiêu chuẩn an toàn thông tin.",
+      "automation_title": "Automation & RPA",
+      "automation_desc": "Tự động hóa tác vụ lặp lại, giảm sai sót và tăng năng suất đội ngũ."
+    }
   },
   "services": {
     "title": "Dịch vụ & Năng lực",
     "subtitle": "Giải pháp outsourcing IT toàn diện",
     "tech_title": "Công nghệ sử dụng",
     "tech_subtitle": "Công cụ và framework hiện đại chúng tôi thành thạo",
-    "contact_cta": "Thảo luận dự án"
+    "contact_cta": "Thảo luận dự án",
+    "contact_cta_form_badge": "Google Forms"
   },
   "team": {
     "title": "Về chúng tôi",
@@ -89,7 +113,7 @@
     "years": "năm kinh nghiệm",
     "culture": {
       "section_title": "Văn hóa FGS",
-      "intro_headline": "Con người là tài sản cốt lõi của FGS",
+      "intro_headline": "Con người là tài sản cốt lõi của FGS Software",
       "intro_body": "Chúng tôi đầu tư vào sự trưởng thành của từng thành viên — vì chúng tôi tin rằng đội ngũ phát triển, sản phẩm mới thực sự phát triển.",
       "innovation_title": "Innovation",
       "innovation_body": "Luôn học hỏi, đổi mới và ứng dụng công nghệ tiên tiến vào thực tiễn.",

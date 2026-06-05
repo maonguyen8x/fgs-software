@@ -67,17 +67,41 @@
     "activities_badge": "社内活動",
     "activities_subtitle": "チームや会社イベントの写真",
     "branches_title": "拠点",
+    "hq_address_label": "本社",
+    "hq_address": "7 Vung Trung 9, Ngu Hanh Son Ward, Da Nang, Vietnam",
+    "map_alt": "ベトナム地図",
     "founders_title": "創業チーム",
     "map_title": "所在地",
     "maps_link": "Google Mapsで開く — {city}",
-    "why_japan_title": "日本のお客様に選ばれる理由"
+    "why_japan_title": "日本のお客様に選ばれる理由",
+    "tech_focus": {
+      "title": "重点技術領域",
+      "subtitle": "FGS Softwareが企業価値創出のために注力する戦略的テクノロジー領域",
+      "ai_title": "AI・機械学習",
+      "ai_desc": "業務プロセスへのAI実装、データ分析、意思決定支援。",
+      "iot_title": "IoT",
+      "iot_desc": "デバイス連携、リアルタイムデータ収集、遠隔運用の最適化。",
+      "bigdata_title": "ビッグデータ",
+      "bigdata_desc": "大規模データ処理、分析、戦略立案のためのインサイト。",
+      "blockchain_title": "ブロックチェーン",
+      "blockchain_desc": "透明な取引、データ検証、信頼できるデジタル基盤。",
+      "cloud_title": "クラウド",
+      "cloud_desc": "柔軟なインフラ、安全なデプロイ、スケーラブルな基盤。",
+      "dx_title": "デジタルトランスフォーメーション（DX）",
+      "dx_desc": "プロセス再設計、業務のデジタル化、顧客体験の向上。",
+      "security_title": "サイバーセキュリティ",
+      "security_desc": "システム・データ保護とセキュリティ標準への準拠。",
+      "automation_title": "自動化・RPA",
+      "automation_desc": "反復作業の自動化による品質向上と生産性向上。"
+    }
   },
   "services": {
     "title": "サービス・技術力",
     "subtitle": "包括的なITアウトソーシングソリューション",
     "tech_title": "技術スタック",
     "tech_subtitle": "習得している最新のツールとフレームワーク",
-    "contact_cta": "プロジェクトを相談する"
+    "contact_cta": "プロジェクト相談",
+    "contact_cta_form_badge": "Google Forms"
   },
   "team": {
     "title": "私たちについて",
@@ -89,7 +113,7 @@
     "years": "年の経験",
     "culture": {
       "section_title": "FGSの文化",
-      "intro_headline": "人こそがFGSの核心資産",
+      "intro_headline": "人こそがFGS Softwareの核心資産",
       "intro_body": "メンバー一人ひとりの成長に投資します。チームが成長してこそ、プロダクトも本当に成長すると信じているからです。",
       "innovation_title": "Innovation",
       "innovation_body": "学び続け、革新し、先端技術を実務に活かします。",

@@ -1,12 +1,12 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import Link from "next/link";
 import { getCachedServices, getCachedTechStack } from "@/lib/cache/queries";
+import { CONSULTATION_FORM_URL } from "@/config/consultation-form";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ScrollToTopButton } from "@/components/layout/ScrollToTopButton";
 import { PageSection } from "@/components/layout/PageSection";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { TechStackSection } from "@/components/sections/TechStackSection";
-import { Button } from "@/components/ui/button";
+import { ConsultationFormLink } from "@/components/services/ConsultationFormLink";
 import type { Locale } from "@/i18n/routing";
 import { fetchPageBlockMap } from "@/lib/cache/safe-page-blocks";
 import { getPageBlockSubtitle, getPageBlockTitle } from "@/lib/page-content";
@@ -48,8 +48,9 @@ export default async function ServicesPage({
         <ServicesGrid
           services={services}
           locale={loc}
-          contactHref={`/${locale}/contact`}
+          consultationHref={CONSULTATION_FORM_URL}
           learnMoreLabel={t("contact_cta")}
+          formBadgeLabel={t("contact_cta_form_badge")}
         />
       </PageSection>
 
@@ -61,9 +62,12 @@ export default async function ServicesPage({
       />
 
       <PageSection className="text-center">
-        <Button asChild size="lg" className="cursor-pointer">
-          <Link href={`/${locale}/contact`}>{t("contact_cta")}</Link>
-        </Button>
+        <ConsultationFormLink
+          label={t("contact_cta")}
+          badgeLabel={t("contact_cta_form_badge")}
+          href={CONSULTATION_FORM_URL}
+          variant="button"
+        />
       </PageSection>
       <ScrollToTopButton />
     </div>

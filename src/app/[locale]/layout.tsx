@@ -1,15 +1,15 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { getServerSession } from "next-auth";
 import { DEFAULT_TIME_ZONE } from "@/config/i18n";
 import { notFound } from "next/navigation";
-import { authOptions } from "@/lib/auth";
+import { SessionProvider } from "@/components/providers/SessionProvider";
 import { Toaster } from "sonner";
 import { Header } from "@/components/layout/Header";
 import { parseHeaderNavConfig } from "@/lib/header-nav";
 import { Footer } from "@/components/layout/Footer";
 import { routing, type Locale } from "@/i18n/routing";
-import { getSettingsMapSafe } from "@/lib/settings-safe";
+import { getCachedLayoutSettings } from "@/lib/cache/layout-settings";
+import { NavigationProgress } from "@/components/layout/NavigationProgress";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 import { getSettingValue } from "@/lib/i18n-content";
@@ -21,7 +21,8 @@ import { SiteExperienceShell } from "@/components/layout/SiteExperienceShell";
 import { HydrationNotice } from "@/components/errors/HydrationNotice";
 import { resolveLogoDisplay } from "@/lib/brand-logo";
 
-export const revalidate = 300;
+/** Layout shell is cached via getCachedLayoutSettings; pages control their own revalidation. */
+export const revalidate = 120;
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -39,8 +40,7 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
   const messages = await getMessages();
-  const adminSession = await getServerSession(authOptions);
-  const settings = await getSettingsMapSafe();
+  const settings = await getCachedLayoutSettings();
   const companyName = settings.company_name ?? "FGS Software";
   const chatbotEnabled = (settings.chatbot_enabled ?? "true") !== "false";
   const assistantName =
@@ -61,17 +61,18 @@ export default async function LocaleLayout({
       <HydrationNotice />
       <BrandThemeStyle settings={settings} />
       <ThemeShell settings={settings}>
-        <LocaleCookieSync locale={locale as Locale} />
-        <VisitTracker />
-        <div className={fontClass}>
-          <SiteExperienceShell locale={locale as Locale} initialSettings={settings}>
-            <Header
-              companyName={companyName}
-              logoUrl={logoUrl}
-              logoMode={logoMode}
-              navConfig={parseHeaderNavConfig(settings.header_nav_json)}
-              adminSession={adminSession}
-            />
+        <SessionProvider>
+          <NavigationProgress />
+          <LocaleCookieSync locale={locale as Locale} />
+          <VisitTracker />
+          <div className={fontClass}>
+            <SiteExperienceShell locale={locale as Locale} initialSettings={settings}>
+              <Header
+                companyName={companyName}
+                logoUrl={logoUrl}
+                logoMode={logoMode}
+                navConfig={parseHeaderNavConfig(settings.header_nav_json)}
+              />
             <main className="min-h-screen bg-theme">{children}</main>
             <Footer
               companyName={companyName}
@@ -94,7 +95,8 @@ export default async function LocaleLayout({
               contactHref={`/${locale}/contact`}
             />
           )}
-        </div>
+          </div>
+        </SessionProvider>
       </ThemeShell>
     </NextIntlClientProvider>
   );
