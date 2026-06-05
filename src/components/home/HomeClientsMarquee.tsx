@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { UploadImage } from "@/components/ui/UploadImage";
 import type { Partner } from "@prisma/client";
 import { getLocalizedField } from "@/lib/i18n-content";
 import type { Locale } from "@/i18n/routing";
@@ -14,19 +14,16 @@ interface HomeClientsMarqueeProps {
 
 function ClientBlock({ partner, locale }: { partner: Partner; locale: Locale }) {
   const name = getLocalizedField(partner, "name", locale) || partner.name;
-  const isLocalLogo = partner.logoUrl?.startsWith("/") ?? false;
-
   const inner = (
     <article className="clients-marquee-card group mx-3 flex h-44 w-[260px] shrink-0 flex-col overflow-hidden rounded-2xl border border-theme bg-surface shadow-md transition-shadow hover:shadow-lg md:h-52 md:w-[300px]">
-      <div className="relative min-h-0 flex-1 w-full bg-slate-100 dark:bg-slate-800">
+      <div className="relative min-h-0 flex-1 w-full bg-white dark:bg-slate-900">
         {partner.logoUrl ? (
-          <Image
+          <UploadImage
             src={partner.logoUrl}
             alt={name}
             fill
-            className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
+            className="object-contain object-center p-4 transition-transform duration-500 group-hover:scale-[1.03]"
             sizes="300px"
-            unoptimized={isLocalLogo}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-primary-100 to-primary-200 dark:from-primary-950 dark:to-primary-900">

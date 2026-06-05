@@ -22,7 +22,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   try {
     const data = schema.parse(await request.json());
     const row = await prisma.partner.update({ where: { id }, data });
-    afterAdminMutation(CACHE_TAGS.partners);
+    await afterAdminMutation(CACHE_TAGS.partners);
     return NextResponse.json(row);
   } catch (e) {
     if (e instanceof z.ZodError) return NextResponse.json({ error: e.errors }, { status: 400 });
@@ -35,6 +35,6 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
   if (error) return error;
   const { id } = await params;
   await prisma.partner.delete({ where: { id } });
-  afterAdminMutation(CACHE_TAGS.partners);
+  await afterAdminMutation(CACHE_TAGS.partners);
   return NextResponse.json({ success: true });
 }

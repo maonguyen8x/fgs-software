@@ -21,7 +21,7 @@ export async function POST(request: Request) {
   try {
     const data = schema.parse(await request.json());
     const row = await prisma.partner.create({ data });
-    afterAdminMutation(CACHE_TAGS.partners);
+    await afterAdminMutation(CACHE_TAGS.partners);
     return NextResponse.json(row, { status: 201 });
   } catch (e) {
     if (e instanceof z.ZodError) return NextResponse.json({ error: e.errors }, { status: 400 });

@@ -55,6 +55,16 @@ export async function redisSet(key: string, value: unknown, ttlSeconds: number):
   }
 }
 
+export async function redisDel(key: string): Promise<void> {
+  const redis = await getClient();
+  if (!redis) return;
+  try {
+    await redis.del(key);
+  } catch (error) {
+    logger.warn("Redis del failed", { key, error: String(error) });
+  }
+}
+
 export async function redisInvalidatePrefix(prefix: string): Promise<void> {
   const redis = await getClient();
   if (!redis) return;

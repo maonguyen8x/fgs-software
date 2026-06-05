@@ -11,9 +11,18 @@ interface ImageUploadFieldProps {
   onChange: (url: string) => void;
   label?: string;
   hint?: string;
+  objectFit?: "cover" | "contain";
+  previewHeightClass?: string;
 }
 
-export function ImageUploadField({ value, onChange, label, hint }: ImageUploadFieldProps) {
+export function ImageUploadField({
+  value,
+  onChange,
+  label,
+  hint,
+  objectFit = "cover",
+  previewHeightClass = "h-40",
+}: ImageUploadFieldProps) {
   const [uploading, setUploading] = useState(false);
   const preview = value?.split("?")[0] ?? "";
 
@@ -42,8 +51,13 @@ export function ImageUploadField({ value, onChange, label, hint }: ImageUploadFi
       {label ? <p className="text-sm font-medium text-heading">{label}</p> : null}
       {preview ? (
         <div className="relative inline-block overflow-hidden rounded-xl">
-          <div className="relative h-40 w-64">
-            <UploadImage src={preview} alt="" fill className="object-cover" />
+          <div className={cn("relative w-64 bg-white", previewHeightClass)}>
+            <UploadImage
+              src={preview}
+              alt=""
+              fill
+              className={objectFit === "contain" ? "object-contain p-3" : "object-cover"}
+            />
           </div>
           <button
             type="button"

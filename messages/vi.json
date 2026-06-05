@@ -301,6 +301,40 @@
         "save_failed": "Lưu thất bại"
       }
     },
+    "partners": {
+      "title": "Khách hàng & Đối tác",
+      "subtitle": "Quản lý tên công ty và logo hiển thị trên marquee trang chủ.",
+      "add": "Thêm đối tác",
+      "hint_public": "Thay đổi sẽ hiển thị trên website sau khi lưu. Trên production, có thể cần vài giây để làm mới cache.",
+      "empty": "Chưa có đối tác. Hãy thêm khách hàng hoặc đối tác đầu tiên.",
+      "col_logo": "Logo",
+      "col_name": "Tên công ty",
+      "col_website": "Website",
+      "col_order": "Thứ tự",
+      "col_status": "Trạng thái",
+      "col_actions": "Thao tác",
+      "visible": "Hiển thị",
+      "hidden": "Ẩn",
+      "edit": "Sửa",
+      "delete_confirm": "Xóa đối tác \"{name}\"?",
+      "delete_success": "Đã xóa đối tác",
+      "delete_failed": "Xóa đối tác thất bại",
+      "new_title": "Thêm đối tác",
+      "edit_title": "Sửa đối tác",
+      "form": {
+        "logo": "Logo công ty",
+        "logo_hint": "Nên dùng PNG/SVG nền trong suốt. Logo hiển thị trên marquee trang chủ.",
+        "website": "URL website",
+        "order": "Thứ tự hiển thị",
+        "order_hint": "Số nhỏ hơn hiển thị trước trong marquee.",
+        "visible": "Hiển thị trên website công khai",
+        "save": "Lưu",
+        "saving": "Đang lưu...",
+        "save_success": "Lưu thành công",
+        "save_failed": "Lưu thất bại",
+        "name_required": "Vui lòng nhập tên công ty"
+      }
+    },
     "login": {
       "title": "FGS Admin",
       "subtitle": "Chỉ dành cho quản trị viên",
@@ -483,7 +517,7 @@
         "hint_logos": "Thêm logo và tên tại mục Quản lý danh sách khách hàng (Clients & Partners). Thứ tự = thứ tự hiển thị trên marquee.",
         "save": "Lưu tiêu đề",
         "saving": "Đang lưu...",
-        "save_success": "Đã lưu",
+        "save_success": "Lưu thành công",
         "save_failed": "Lưu thất bại"
       },
       "team_page": {

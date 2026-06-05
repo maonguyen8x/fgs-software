@@ -301,6 +301,40 @@
         "save_failed": "Failed to save"
       }
     },
+    "partners": {
+      "title": "Clients & Partners",
+      "subtitle": "Manage company names and logos shown in the homepage marquee.",
+      "add": "Add partner",
+      "hint_public": "Changes appear on the public homepage after save. On production, allow a few seconds for cache refresh.",
+      "empty": "No partners yet. Add your first client or partner.",
+      "col_logo": "Logo",
+      "col_name": "Company name",
+      "col_website": "Website",
+      "col_order": "Order",
+      "col_status": "Status",
+      "col_actions": "Actions",
+      "visible": "Visible",
+      "hidden": "Hidden",
+      "edit": "Edit",
+      "delete_confirm": "Delete partner \"{name}\"?",
+      "delete_success": "Partner deleted",
+      "delete_failed": "Failed to delete partner",
+      "new_title": "Add partner",
+      "edit_title": "Edit partner",
+      "form": {
+        "logo": "Company logo",
+        "logo_hint": "PNG or SVG with transparent background recommended. Displayed on the homepage marquee.",
+        "website": "Website URL",
+        "order": "Display order",
+        "order_hint": "Lower numbers appear first in the marquee.",
+        "visible": "Show on public website",
+        "save": "Save",
+        "saving": "Saving...",
+        "save_success": "Saved successfully",
+        "save_failed": "Failed to save",
+        "name_required": "Company name is required"
+      }
+    },
     "login": {
       "title": "FGS Admin",
       "subtitle": "Authorized personnel only",

@@ -30,6 +30,6 @@ export async function PUT(request: Request) {
     )
   );
 
-  afterAdminMutation(CACHE_TAGS.settings);
+  await afterAdminMutation(CACHE_TAGS.settings);
   return NextResponse.json({ success: true });
 }

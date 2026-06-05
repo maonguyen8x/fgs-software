@@ -301,6 +301,40 @@
         "save_failed": "保存に失敗しました"
       }
     },
+    "partners": {
+      "title": "クライアント＆パートナー",
+      "subtitle": "トップページのマーキーに表示する社名とロゴを管理します。",
+      "add": "パートナーを追加",
+      "hint_public": "保存後、公開サイトに反映されます。本番環境ではキャッシュ更新に数秒かかる場合があります。",
+      "empty": "パートナーがまだありません。最初のクライアントを追加してください。",
+      "col_logo": "ロゴ",
+      "col_name": "会社名",
+      "col_website": "Webサイト",
+      "col_order": "順序",
+      "col_status": "状態",
+      "col_actions": "操作",
+      "visible": "表示",
+      "hidden": "非表示",
+      "edit": "編集",
+      "delete_confirm": "パートナー「{name}」を削除しますか？",
+      "delete_success": "パートナーを削除しました",
+      "delete_failed": "削除に失敗しました",
+      "new_title": "パートナーを追加",
+      "edit_title": "パートナーを編集",
+      "form": {
+        "logo": "会社ロゴ",
+        "logo_hint": "透過PNG/SVGを推奨。トップページのマーキーに表示されます。",
+        "website": "WebサイトURL",
+        "order": "表示順",
+        "order_hint": "数字が小さいほど先に表示されます。",
+        "visible": "公開サイトに表示",
+        "save": "保存",
+        "saving": "保存中...",
+        "save_success": "保存しました",
+        "save_failed": "保存に失敗しました",
+        "name_required": "会社名を入力してください"
+      }
+    },
     "login": {
       "title": "FGS Admin",
       "subtitle": "管理者専用",
