@@ -59,7 +59,9 @@
     "values_title": "Giá trị cốt lõi",
     "timeline_title": "Lịch sử hình thành",
     "timeline_badge": "Hành trình phát triển",
-    "timeline_hint": "Di chuột hoặc chạm vào từng mốc thời gian trên đường timeline để xem chi tiết",
+    "timeline_hint": "Di chuột hoặc chạm vào từng mốc thời gian trên đường timeline để xem hình ảnh",
+    "timeline_title_label": "Tiêu đề",
+    "timeline_description_label": "Mô tả",
     "timeline_step": "Cột mốc {step}",
     "timeline_placeholder": "Sắp cập nhật",
     "timeline_members": "{count} thành viên",
@@ -141,6 +143,7 @@
     "view_details": "Xem chi tiết",
     "back_to_list": "Quay lại danh sách sản phẩm",
     "gallery_title": "Hình ảnh sản phẩm",
+    "video_title": "Video sản phẩm",
     "challenge": "Thách thức",
     "solution": "Giải pháp",
     "result": "Kết quả",
@@ -334,6 +337,21 @@
         "save_failed": "Lưu thất bại",
         "name_required": "Vui lòng nhập tên công ty"
       }
+    },
+    "timeline": {
+      "date_label": "Thời gian (YYYY-MM)",
+      "date_hint": "Hiển thị trên timeline trang Giới thiệu.",
+      "title_section": "Tiêu đề",
+      "description_section": "Mô tả",
+      "member_count": "Số thành viên tại mốc này",
+      "images": "Hình ảnh mốc thời gian",
+      "images_hint": "Ảnh tùy chọn — hiện khi di chuột vào mốc trên website.",
+      "order": "Thứ tự hiển thị",
+      "visible": "Hiển thị trên website",
+      "save": "Lưu",
+      "saving": "Đang lưu...",
+      "save_success": "Lưu thành công",
+      "save_failed": "Lưu thất bại"
     },
     "login": {
       "title": "FGS Admin",
@@ -714,6 +732,7 @@
         "formats": "JPG, PNG, WebP, GIF — tối đa 5MB",
         "preview_full": "Ảnh gốc (toàn bộ)",
         "crop_title": "Chỉnh vùng cắt (kéo/zoom để căn ảnh)",
+        "crop_hint": "Kéo ảnh để di chuyển, kéo góc khung hoặc dùng thanh zoom để phóng to/thu nhỏ. Ảnh xuất ra chất lượng cao.",
         "cancel": "Hủy",
         "apply": "Áp dụng ảnh",
         "uploading": "Đang tải lên...",

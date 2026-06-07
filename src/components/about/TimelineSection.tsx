@@ -139,8 +139,8 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
 
                 <div
                   className={cn(
-                    "relative mx-auto w-fit",
-                    alignRight ? "md:order-3 md:ml-1" : "md:order-1 md:mr-1"
+                    "relative mx-auto flex w-fit flex-col items-center",
+                    alignRight ? "md:order-3 md:ml-1 md:items-start" : "md:order-1 md:mr-1 md:items-end"
                   )}
                 >
                   <button
@@ -171,11 +171,33 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
                     </span>
                   </button>
 
+                  <div className={cn("mt-3 max-w-xs text-center md:max-w-sm", alignRight ? "md:text-left" : "md:text-right")}>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-primary-600">{t("timeline_title_label")}</p>
+                    <h3 className="mt-0.5 text-base font-bold leading-snug text-heading md:text-lg">
+                      {titleLabel || t("timeline_placeholder")}
+                    </h3>
+                    {item.descriptionText ? (
+                      <>
+                        <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                          {t("timeline_description_label")}
+                        </p>
+                        <p className="mt-0.5 whitespace-pre-line text-sm leading-relaxed text-muted-theme">
+                          {item.descriptionText}
+                        </p>
+                      </>
+                    ) : null}
+                    {item.memberCount > 0 ? (
+                      <p className="mt-2 text-xs font-semibold text-primary-700">
+                        {t("timeline_members", { count: item.memberCount })}
+                      </p>
+                    ) : null}
+                  </div>
+
                   <div
                     className={cn(
                       "pointer-events-none absolute top-1/2 z-30 hidden w-[450px] max-w-[calc(100vw-2rem)] -translate-y-1/2 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl backdrop-blur md:block",
                       alignRight ? "left-[calc(100%+0.55rem)]" : "right-[calc(100%+0.55rem)]",
-                      isHovered ? "opacity-100" : "opacity-0"
+                      isHovered && item.images.length > 0 ? "opacity-100" : "opacity-0"
                     )}
                     style={popupOffset}
                   >
@@ -185,15 +207,19 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
                         alignRight ? "-left-2 border-r-0 border-t-0" : "-right-2 border-l-0 border-b-0"
                       )}
                     />
-                    <h3 className="text-lg font-bold text-heading">{titleLabel || t("timeline_placeholder")}</h3>
-                    {item.descriptionText ? (
-                      <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-muted-theme">{item.descriptionText}</p>
-                    ) : null}
-                    {item.memberCount > 0 ? (
-                      <p className="mt-3 text-xs font-semibold text-primary-700">
-                        {t("timeline_members", { count: item.memberCount })}
-                      </p>
-                    ) : null}
+                    {item.images.length > 0 && (
+                      <div className="grid grid-cols-2 gap-2">
+                        {item.images.slice(0, 4).map((src, imgIndex) => (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            key={`${src}-${imgIndex}`}
+                            src={src}
+                            alt=""
+                            className="aspect-video w-full rounded-lg object-cover"
+                          />
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </li>

@@ -59,7 +59,9 @@
     "values_title": "Core Values",
     "timeline_title": "Company History",
     "timeline_badge": "Our journey",
-    "timeline_hint": "Hover or tap each date on the timeline to see details",
+    "timeline_hint": "Hover or tap each date on the timeline to see images",
+    "timeline_title_label": "Title",
+    "timeline_description_label": "Description",
     "timeline_step": "Milestone {step}",
     "timeline_placeholder": "To be announced",
     "timeline_members": "{count, plural, one {# member} other {# members}}",
@@ -141,6 +143,7 @@
     "view_details": "View Details",
     "back_to_list": "Back to products",
     "gallery_title": "Product gallery",
+    "video_title": "Product video",
     "challenge": "Challenge",
     "solution": "Solution",
     "result": "Result",
@@ -334,6 +337,21 @@
         "save_failed": "Failed to save",
         "name_required": "Company name is required"
       }
+    },
+    "timeline": {
+      "date_label": "Date (YYYY-MM)",
+      "date_hint": "Shown on the public About page timeline.",
+      "title_section": "Title",
+      "description_section": "Description",
+      "member_count": "Team members at this milestone",
+      "images": "Milestone images",
+      "images_hint": "Optional photos shown when hovering a milestone.",
+      "order": "Display order",
+      "visible": "Visible on public site",
+      "save": "Save",
+      "saving": "Saving...",
+      "save_success": "Saved successfully",
+      "save_failed": "Failed to save"
     },
     "login": {
       "title": "FGS Admin",
@@ -714,6 +732,7 @@
         "formats": "JPG, PNG, WebP, GIF — max 5MB",
         "preview_full": "Original image (full)",
         "crop_title": "Crop area (drag/zoom to position)",
+        "crop_hint": "Drag to move, drag corner handles or use the zoom slider. Output is high quality.",
         "cancel": "Cancel",
         "apply": "Apply photo",
         "uploading": "Uploading...",

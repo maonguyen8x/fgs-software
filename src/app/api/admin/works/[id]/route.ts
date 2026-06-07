@@ -22,6 +22,8 @@ const schema = z.object({
   duration: z.string().optional(),
   demoUrl: z.string().optional(),
   githubUrl: z.string().optional(),
+  videoUrl: z.string().optional(),
+  videoSource: z.enum(["upload", "youtube", "dailymotion"]).optional(),
   order: z.number().optional(),
   isVisible: z.boolean().optional(),
   featured: z.boolean().optional(),
@@ -33,6 +35,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   const { id } = await params;
   const data = schema.parse(await request.json());
   const work = await prisma.work.update({ where: { id }, data });
-  afterAdminMutation(CACHE_TAGS.works);
+  await afterAdminMutation(CACHE_TAGS.works);
   return NextResponse.json(work);
 }

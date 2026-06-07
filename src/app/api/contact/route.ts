@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { sendContactEmails } from "@/lib/email";
+import { getDefaultAdminEmail, sendContactEmails } from "@/lib/email";
 import { getSettingsMap } from "@/lib/settings";
 import { apiSuccess, apiValidationError, apiServerError } from "@/lib/api/response";
 import { logger } from "@/lib/logger";
@@ -32,13 +32,17 @@ export async function POST(request: Request) {
     };
 
     const settings = await getSettingsMap();
-    const adminEmail = settings.admin_email ?? process.env.ADMIN_EMAIL ?? "contact@fgs-software.com";
+    const adminEmail = settings.admin_email?.trim() || getDefaultAdminEmail();
 
-    await prisma.message.create({ data });
+    const message = await prisma.message.create({ data });
 
-    await sendContactEmails(data, adminEmail, settings.admin_email_cc);
+    const emailResult = await sendContactEmails(data, adminEmail, settings.admin_email_cc);
 
-    return apiSuccess({ success: true });
+    return apiSuccess({
+      success: true,
+      messageId: message.id,
+      emailSent: emailResult.adminSent,
+    });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return apiValidationError();

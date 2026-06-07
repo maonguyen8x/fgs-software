@@ -56,8 +56,23 @@ export function resolveDatabaseUrl() {
   if (DB_HOST && DB_PORT && DB_USERNAME && DB_PASSWORD && DB_NAME) {
     const url = `postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?schema=${DB_SCHEMA}`;
     process.env.DATABASE_URL = url;
+    if (!process.env.DIRECT_URL || process.env.DIRECT_URL.includes("${")) {
+      process.env.DIRECT_URL = url;
+    }
     return url;
   }
 
   return DATABASE_URL;
+}
+
+/** Ensure DIRECT_URL is set (Prisma schema requires it). */
+export function resolveDirectUrl() {
+  resolveDatabaseUrl();
+  const { DATABASE_URL, DIRECT_URL } = process.env;
+  if (DIRECT_URL && !DIRECT_URL.includes("${")) return DIRECT_URL;
+  if (DATABASE_URL && !DATABASE_URL.includes("${")) {
+    process.env.DIRECT_URL = DATABASE_URL;
+    return DATABASE_URL;
+  }
+  return DIRECT_URL;
 }

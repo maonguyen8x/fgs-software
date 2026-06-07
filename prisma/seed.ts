@@ -21,7 +21,7 @@ async function main() {
 
   const settings: { key: string; value: string }[] = [
     { key: "company_name", value: "FGS Software" },
-    { key: "admin_email", value: process.env.ADMIN_EMAIL ?? "contact@fgs-software.com" },
+    { key: "admin_email", value: process.env.ADMIN_EMAIL ?? "contact.fgssoftware@gmail.com" },
     { key: "admin_email_cc", value: "" },
     { key: "address", value: "Da Nang, Vietnam" },
     { key: "phone", value: "+84 xxx xxx xxx" },

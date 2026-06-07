@@ -84,6 +84,8 @@ model Work {
   duration      String?
   demoUrl       String?
   githubUrl     String?
+  videoUrl      String?
+  videoSource   String?
   order         Int      @default(0)
   isVisible     Boolean  @default(true)
   featured      Boolean  @default(false)

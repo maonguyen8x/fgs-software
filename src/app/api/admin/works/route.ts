@@ -24,6 +24,8 @@ const schema = z.object({
   duration: z.string().optional(),
   demoUrl: z.string().optional(),
   githubUrl: z.string().optional(),
+  videoUrl: z.string().optional(),
+  videoSource: z.enum(["upload", "youtube", "dailymotion"]).optional(),
   order: z.number().default(0),
   isVisible: z.boolean().default(true),
   featured: z.boolean().default(false),
@@ -36,7 +38,7 @@ export async function POST(request: Request) {
     const body = schema.parse(await request.json());
     const slug = body.slug || slugify(body.title, { lower: true, strict: true });
     const work = await prisma.work.create({ data: { ...body, slug } });
-    afterAdminMutation(CACHE_TAGS.works);
+    await afterAdminMutation(CACHE_TAGS.works);
     return NextResponse.json(work, { status: 201 });
   } catch (e) {
     if (e instanceof z.ZodError) return NextResponse.json({ error: e.errors }, { status: 400 });

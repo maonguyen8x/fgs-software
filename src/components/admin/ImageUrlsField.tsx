@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { UploadImage } from "@/components/ui/UploadImage";
 import { Plus, Trash2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,9 +13,10 @@ interface ImageUrlsFieldProps {
   urls: string[];
   onChange: (urls: string[]) => void;
   hint?: string;
+  objectFit?: "cover" | "contain";
 }
 
-export function ImageUrlsField({ label, urls, onChange, hint }: ImageUrlsFieldProps) {
+export function ImageUrlsField({ label, urls, onChange, hint, objectFit = "contain" }: ImageUrlsFieldProps) {
   const [uploading, setUploading] = useState(false);
 
   const uploadFiles = async (files: FileList | File[]) => {
@@ -71,8 +72,15 @@ export function ImageUrlsField({ label, urls, onChange, hint }: ImageUrlsFieldPr
         <ul className="grid gap-3 sm:grid-cols-2">
           {urls.map((url, index) => (
             <li key={`${url}-${index}`} className="rounded-lg border bg-slate-50 p-2">
-              <div className="relative mb-2 aspect-video overflow-hidden rounded-md bg-white">
-                <Image src={url} alt="" fill className="object-cover" sizes="240px" unoptimized />
+              <div className="relative mb-2 flex min-h-[140px] items-center justify-center overflow-hidden rounded-md bg-white p-2">
+                <UploadImage
+                  src={url}
+                  alt=""
+                  width={480}
+                  height={360}
+                  className={objectFit === "contain" ? "h-auto max-h-36 w-full object-contain" : "h-36 w-full object-cover"}
+                  sizes="240px"
+                />
               </div>
               <div className="flex gap-2">
                 <Input

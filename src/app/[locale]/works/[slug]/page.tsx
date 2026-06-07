@@ -47,6 +47,7 @@ export default async function WorkDetailPage({
             demo: t("demo"),
             github: t("github"),
             gallery: t("gallery_title"),
+            video: t("video_title"),
           }}
         />
       </div>

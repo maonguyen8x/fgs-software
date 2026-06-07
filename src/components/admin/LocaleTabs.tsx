@@ -13,9 +13,19 @@ interface LocaleFieldProps {
   onChange: (field: string, value: string) => void;
   multiline?: boolean;
   required?: boolean;
+  /** e.g. "Tiêu đề" / "Mô tả" — shown above tabs so fields are distinguishable */
+  sectionTitle?: string;
 }
 
-export function LocaleTabs({ prefix, labels, values, onChange, multiline, required }: LocaleFieldProps) {
+export function LocaleTabs({
+  prefix,
+  labels,
+  values,
+  onChange,
+  multiline,
+  required,
+  sectionTitle,
+}: LocaleFieldProps) {
   const [activeTab, setActiveTab] = useState<"en" | "ja" | "vi">("en");
 
   const fields = [
@@ -32,7 +42,10 @@ export function LocaleTabs({ prefix, labels, values, onChange, multiline, requir
   };
 
   return (
-    <div>
+    <div className="rounded-xl border border-slate-100 bg-slate-50/40 p-4">
+      {sectionTitle ? (
+        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary-700">{sectionTitle}</p>
+      ) : null}
       <div className="flex flex-wrap gap-1 border-b border-theme" role="tablist">
         {fields.map((field) => (
           <button

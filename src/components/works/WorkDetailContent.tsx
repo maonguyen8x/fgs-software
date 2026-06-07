@@ -6,6 +6,7 @@ import { getLocalizedField } from "@/lib/i18n-content";
 import type { Locale } from "@/i18n/routing";
 import type { Work } from "@prisma/client";
 import { WorkDetailGallery } from "@/components/works/WorkDetailGallery";
+import { WorkVideoPlayer } from "@/components/works/WorkVideoPlayer";
 
 const CATEGORY_LABELS: Record<string, string> = {
   web: "Web",
@@ -28,6 +29,7 @@ interface WorkDetailContentProps {
     demo: string;
     github: string;
     gallery: string;
+    video: string;
   };
 }
 
@@ -77,6 +79,16 @@ export function WorkDetailContent({ work, locale, images, labels }: WorkDetailCo
           <p className="mt-5 text-base text-slate-500">
             <span className="font-semibold text-slate-700">{labels.duration}:</span> {work.duration}
           </p>
+        )}
+
+        {work.videoUrl && (
+          <>
+            <SectionDivider />
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-primary-600">
+              {labels.video}
+            </h2>
+            <WorkVideoPlayer work={work} title={title} />
+          </>
         )}
 
         {images.length > 0 && (

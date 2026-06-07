@@ -140,7 +140,12 @@ export function FounderForm({ initial }: FounderFormProps) {
       <div>
         <Label>{t("avatar")}</Label>
         <div className="mt-2">
-          <AvatarImageEditor value={form.avatar} onChange={(url) => update("avatar", url)} />
+          <AvatarImageEditor
+            value={form.avatar}
+            onChange={(url) => update("avatar", url)}
+            aspectRatio={5 / 6}
+            outputMaxWidth={600}
+          />
         </div>
       </div>
 

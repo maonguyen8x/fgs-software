@@ -25,7 +25,7 @@ export async function POST(request: Request) {
   try {
     const data = schema.parse(await request.json());
     const item = await prisma.timelineMilestone.create({ data });
-    afterAdminMutation(CACHE_TAGS.timeline);
+    await afterAdminMutation(CACHE_TAGS.timeline);
     return NextResponse.json(item, { status: 201 });
   } catch (e) {
     if (e instanceof z.ZodError) return NextResponse.json({ error: e.errors }, { status: 400 });

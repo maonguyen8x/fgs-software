@@ -59,7 +59,9 @@
     "values_title": "コアバリュー",
     "timeline_title": "沿革",
     "timeline_badge": "歩み",
-    "timeline_hint": "タイムライン上の各日付にカーソルを合わせるかタップして詳細を表示",
+    "timeline_hint": "タイムライン上の各日付にカーソルを合わせて画像を表示",
+    "timeline_title_label": "タイトル",
+    "timeline_description_label": "説明",
     "timeline_step": "マイルストーン {step}",
     "timeline_placeholder": "近日公開",
     "timeline_members": "{count}名",
@@ -141,6 +143,7 @@
     "view_details": "詳細を見る",
     "back_to_list": "製品一覧に戻る",
     "gallery_title": "製品ギャラリー",
+    "video_title": "製品動画",
     "challenge": "課題",
     "solution": "解決策",
     "result": "結果",
@@ -334,6 +337,21 @@
         "save_failed": "保存に失敗しました",
         "name_required": "会社名を入力してください"
       }
+    },
+    "timeline": {
+      "date_label": "日付 (YYYY-MM)",
+      "date_hint": "会社概要ページのタイムラインに表示されます。",
+      "title_section": "タイトル",
+      "description_section": "説明",
+      "member_count": "この時点のメンバー数",
+      "images": "マイルストーン画像",
+      "images_hint": "任意 — ホバー時に表示されます。",
+      "order": "表示順",
+      "visible": "公開サイトに表示",
+      "save": "保存",
+      "saving": "保存中...",
+      "save_success": "保存しました",
+      "save_failed": "保存に失敗しました"
     },
     "login": {
       "title": "FGS Admin",

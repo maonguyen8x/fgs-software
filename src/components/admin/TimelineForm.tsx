@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RequiredLabel } from "@/components/ui/RequiredLabel";
 import { Label } from "@/components/ui/label";
 import { LocaleTabs } from "./LocaleTabs";
 import { ImageUrlsField } from "./ImageUrlsField";
-import { toast } from "sonner";
+import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
+import { publishPublicSiteUpdate } from "@/lib/admin-public-sync";
 
 interface TimelineFormProps {
   initial?: {
@@ -28,6 +30,7 @@ interface TimelineFormProps {
 }
 
 export function TimelineForm({ initial }: TimelineFormProps) {
+  const t = useTranslations("admin.timeline");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -72,10 +75,11 @@ export function TimelineForm({ initial }: TimelineFormProps) {
     });
     setLoading(false);
     if (!res.ok) {
-      toast.error("Failed to save");
+      showAdminErrorToast(t("save_failed"));
       return;
     }
-    toast.success("Saved");
+    showAdminSuccessToast(t("save_success"));
+    publishPublicSiteUpdate(router);
     router.push("/admin/timeline");
     router.refresh();
   };
@@ -83,27 +87,32 @@ export function TimelineForm({ initial }: TimelineFormProps) {
   const tabLabels = { en: "English", ja: "日本語", vi: "Tiếng Việt" };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl space-y-4 rounded-xl border bg-white p-6 shadow-sm">
-      <div>
-        <RequiredLabel required>Date (YYYY-MM)</RequiredLabel>
+    <form onSubmit={handleSubmit} className="max-w-2xl space-y-5 rounded-2xl border bg-white p-6 shadow-sm md:p-8">
+      <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4">
+        <RequiredLabel required>{t("date_label")}</RequiredLabel>
         <Input
-          className="mt-1 font-mono"
+          className="mt-1 max-w-xs font-mono"
           placeholder="2026-05"
           pattern="\d{4}-\d{2}"
           value={form.milestoneDate}
           onChange={(e) => update("milestoneDate", e.target.value)}
           required
         />
+        <p className="mt-1 text-xs text-slate-500">{t("date_hint")}</p>
       </div>
+
       <LocaleTabs
         prefix="title"
+        sectionTitle={t("title_section")}
         labels={tabLabels}
         values={{ title: form.title, titleJa: form.titleJa, titleVi: form.titleVi }}
         onChange={update}
         required
       />
+
       <LocaleTabs
         prefix="description"
+        sectionTitle={t("description_section")}
         labels={tabLabels}
         values={{
           description: form.description,
@@ -113,8 +122,9 @@ export function TimelineForm({ initial }: TimelineFormProps) {
         onChange={update}
         multiline
       />
+
       <div>
-        <Label>Team members at this milestone</Label>
+        <Label>{t("member_count")}</Label>
         <Input
           type="number"
           min={0}
@@ -123,25 +133,32 @@ export function TimelineForm({ initial }: TimelineFormProps) {
           onChange={(e) => update("memberCount", e.target.value)}
         />
       </div>
+
       <ImageUrlsField
-        label="Milestone images"
+        label={t("images")}
+        hint={t("images_hint")}
         urls={form.images}
         onChange={(images) => setForm((f) => ({ ...f, images }))}
+        objectFit="contain"
       />
+
       <div>
-        <Label>Order</Label>
+        <Label>{t("order")}</Label>
         <Input type="number" className="mt-1 w-32" value={form.order} onChange={(e) => update("order", e.target.value)} />
       </div>
+
       <label className="flex items-center gap-2 text-sm">
         <input
           type="checkbox"
+          className="accent-primary-600"
           checked={form.isVisible}
           onChange={(e) => setForm((f) => ({ ...f, isVisible: e.target.checked }))}
         />
-        Visible
+        {t("visible")}
       </label>
+
       <Button type="submit" disabled={loading} className="cursor-pointer">
-        {loading ? "Saving..." : "Save"}
+        {loading ? t("saving") : t("save")}
       </Button>
     </form>
   );

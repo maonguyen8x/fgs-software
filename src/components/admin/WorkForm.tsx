@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { LocaleTabs } from "./LocaleTabs";
 import { ImageUploadField } from "./ImageUploadField";
 import { ImageUrlsField } from "./ImageUrlsField";
+import { WorkVideoField } from "./WorkVideoField";
+import type { VideoSource } from "@/lib/video-embed";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 
 interface WorkFormProps {
@@ -29,6 +31,8 @@ interface WorkFormProps {
     duration?: string | null;
     demoUrl?: string | null;
     githubUrl?: string | null;
+    videoUrl?: string | null;
+    videoSource?: string | null;
     order: number;
     isVisible: boolean;
     featured: boolean;
@@ -55,6 +59,8 @@ export function WorkForm({ initial }: WorkFormProps) {
     duration: initial?.duration ?? "",
     demoUrl: initial?.demoUrl ?? "",
     githubUrl: initial?.githubUrl ?? "",
+    videoUrl: initial?.videoUrl ?? "",
+    videoSource: (initial?.videoSource as VideoSource | "") ?? "",
     order: initial?.order?.toString() ?? "0",
     isVisible: initial?.isVisible ?? true,
     featured: initial?.featured ?? false,
@@ -82,6 +88,8 @@ export function WorkForm({ initial }: WorkFormProps) {
       duration: form.duration || undefined,
       demoUrl: form.demoUrl || undefined,
       githubUrl: form.githubUrl || undefined,
+      videoUrl: form.videoUrl || undefined,
+      videoSource: form.videoSource || undefined,
       order: parseInt(form.order, 10) || 0,
       isVisible: form.isVisible,
       featured: form.featured,
@@ -161,17 +169,37 @@ export function WorkForm({ initial }: WorkFormProps) {
         <div className="md:col-span-2">
           <ImageUploadField
             label="Ảnh đại diện sản phẩm"
-            hint="Hiển thị trên danh sách Sản phẩm và đầu trang chi tiết"
+            hint="Hiển thị đầy đủ trên danh sách và trang chi tiết — không cắt mép"
             value={form.thumbnail}
             onChange={(url) => update("thumbnail", url)}
+            objectFit="contain"
+            previewHeightClass="h-48"
           />
         </div>
         <div className="md:col-span-2">
           <ImageUrlsField
             label="Thư viện hình ảnh sản phẩm"
-            hint="Chọn nhiều ảnh cùng lúc — hiển thị trên trang chi tiết khi khách bấm Xem chi tiết."
+            hint="Ảnh hiển thị full trên trang chi tiết, không bị che khuất."
             urls={form.gallery}
             onChange={(gallery) => setForm((f) => ({ ...f, gallery }))}
+            objectFit="contain"
+          />
+        </div>
+        <div className="md:col-span-2">
+          <WorkVideoField
+            videoUrl={form.videoUrl}
+            videoSource={form.videoSource}
+            onChange={(url, source) => setForm((f) => ({ ...f, videoUrl: url, videoSource: source }))}
+            labels={{
+              title: "Video sản phẩm",
+              tabUpload: "Upload từ máy",
+              tabYoutube: "YouTube",
+              tabDailymotion: "Dailymotion",
+              urlPlaceholder: "Dán link video...",
+              uploadHint: "MP4 / WebM — tối ưu dung lượng bằng cách dùng YouTube/Dailymotion",
+              preview: "Xem trước",
+              remove: "Xóa video",
+            }}
           />
         </div>
         <div>
