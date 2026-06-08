@@ -172,19 +172,13 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
                   </button>
 
                   <div className={cn("mt-3 max-w-xs text-center md:max-w-sm", alignRight ? "md:text-left" : "md:text-right")}>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-primary-600">{t("timeline_title_label")}</p>
-                    <h3 className="mt-0.5 text-base font-bold leading-snug text-heading md:text-lg">
+                    <h3 className="text-base font-bold leading-snug text-heading md:text-lg">
                       {titleLabel || t("timeline_placeholder")}
                     </h3>
                     {item.descriptionText ? (
-                      <>
-                        <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                          {t("timeline_description_label")}
-                        </p>
-                        <p className="mt-0.5 whitespace-pre-line text-sm leading-relaxed text-muted-theme">
-                          {item.descriptionText}
-                        </p>
-                      </>
+                      <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-muted-theme">
+                        {item.descriptionText}
+                      </p>
                     ) : null}
                     {item.memberCount > 0 ? (
                       <p className="mt-2 text-xs font-semibold text-primary-700">

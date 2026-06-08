@@ -432,6 +432,7 @@
         "hero_slides": "Hero trang chủ",
         "clients_section": "Marquee khách hàng",
         "team_page": "Trang Giới thiệu",
+        "about_branch": "Chi nhánh (Giới thiệu)",
         "site_notice": "Thông báo trang chủ",
         "header_nav": "Menu header",
         "locale_panel": "Đa ngôn ngữ",
@@ -575,6 +576,22 @@
         "save": "Lưu trang Về chúng tôi",
         "saving": "Đang lưu...",
         "save_success": "Đã lưu cài đặt trang Về chúng tôi",
+        "save_failed": "Lưu thất bại"
+      },
+      "about_branch": {
+        "title": "Chi nhánh trang Giới thiệu",
+        "subtitle": "Địa chỉ trụ sở hiển thị cạnh bản đồ Việt Nam — chỉnh theo từng ngôn ngữ.",
+        "manage_branches": "Quản lý chi nhánh",
+        "address_vi": "Địa chỉ (Tiếng Việt)",
+        "address_en": "Địa chỉ (English)",
+        "address_ja": "Địa chỉ (日本語)",
+        "address_vi_placeholder": "7 Vùng Trung 9, Phường Ngũ Hành Sơn, Đà Nẵng, Việt Nam",
+        "address_en_placeholder": "7 Vung Trung 9, Ngu Hanh Son Ward, Da Nang, Vietnam",
+        "address_ja_placeholder": "ベトナム・ダナン市・五行山区 Vung Trung 9-7",
+        "hint": "Nội dung hiển thị tại mục Chi nhánh trên trang Giới thiệu. Để trống sẽ dùng bản dịch mặc định trong file ngôn ngữ.",
+        "save": "Lưu địa chỉ chi nhánh",
+        "saving": "Đang lưu...",
+        "save_success": "Đã lưu địa chỉ chi nhánh",
         "save_failed": "Lưu thất bại"
       },
       "site_notice": {

@@ -13,6 +13,7 @@ import { fetchAboutPageData } from "@/lib/cache/safe-about-data";
 import { fetchPageBlockMap } from "@/lib/cache/safe-page-blocks";
 import { getPageBlockSubtitle, getPageBlockTitle } from "@/lib/page-content";
 import { getSettingsMapSafe } from "@/lib/settings-safe";
+import { resolveAboutBranchHqAddress } from "@/lib/about-branch-copy";
 
 export default async function AboutPage({
   params,
@@ -57,6 +58,7 @@ export default async function AboutPage({
         title={getPageBlockTitle(blocks, "branches_section", loc, t("branches_title"))}
         branches={branches}
         locale={loc}
+        hqAddress={resolveAboutBranchHqAddress(settings, loc, t("hq_address"))}
       />
 
       <PageSection muted tight className="!pt-3">

@@ -531,6 +531,9 @@ async function main() {
     { key: "site_notice_title_en", value: "" },
     { key: "site_notice_message_vi", value: "" },
     { key: "site_notice_message_en", value: "" },
+    { key: "about_branch_hq_address", value: "7 Vung Trung 9, Ngu Hanh Son Ward, Da Nang, Vietnam" },
+    { key: "about_branch_hq_address_vi", value: "7 Vùng Trung 9, Phường Ngũ Hành Sơn, Đà Nẵng, Việt Nam" },
+    { key: "about_branch_hq_address_ja", value: "ベトナム・ダナン市・五行山区 Vung Trung 9-7" },
   ];
 
   const pageBlocks = [

@@ -432,6 +432,7 @@
         "hero_slides": "Homepage hero scenes",
         "clients_section": "Clients marquee",
         "team_page": "About Us page",
+        "about_branch": "Branches (About)",
         "site_notice": "Homepage notice",
         "header_nav": "Header navigation",
         "locale_panel": "Multilingual",
@@ -575,6 +576,22 @@
         "save": "Save About Us page",
         "saving": "Saving...",
         "save_success": "About Us page settings saved",
+        "save_failed": "Save failed"
+      },
+      "about_branch": {
+        "title": "About page — Branches",
+        "subtitle": "Headquarters address shown next to the Vietnam map — edit per language.",
+        "manage_branches": "Manage branches",
+        "address_vi": "Address (Vietnamese)",
+        "address_en": "Address (English)",
+        "address_ja": "Address (Japanese)",
+        "address_vi_placeholder": "7 Vùng Trung 9, Phường Ngũ Hành Sơn, Đà Nẵng, Việt Nam",
+        "address_en_placeholder": "7 Vung Trung 9, Ngu Hanh Son Ward, Da Nang, Vietnam",
+        "address_ja_placeholder": "ベトナム・ダナン市・五行山区 Vung Trung 9-7",
+        "hint": "Shown in the Branches section on the About page. If empty, the default translation from language files is used.",
+        "save": "Save branch address",
+        "saving": "Saving...",
+        "save_success": "Branch address saved",
         "save_failed": "Save failed"
       },
       "site_notice": {
