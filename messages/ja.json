@@ -293,7 +293,8 @@
       "hidden": "非表示",
       "edit": "編集",
       "form": {
-        "avatar": "プロフィール写真",
+        "avatar": "ポートレート写真",
+        "avatar_hint": "正面の写真をアップロード — 3:4の枠に頭と上半身が入るよう調整。サイト表示用の高画質出力。",
         "experience": "経験年数",
         "skills": "スキル",
         "skills_placeholder": "例: React, Node.js",
@@ -741,7 +742,8 @@
       "skills": "スキル",
       "skills_placeholder": "例: React, Node.js, TypeScript",
       "skills_hint": "Enter またはカンマ (,) でタグを追加",
-      "avatar": "プロフィール写真",
+      "avatar": "ポートレート写真",
+      "avatar_hint": "3:4の枠で頭と上半身が見えるよう調整 — チーム / About Us ページに表示されます。",
       "order": "表示順",
       "visible": "サイトに表示",
       "sync_team": "チームページにも表示",
@@ -765,11 +767,13 @@
         "formats": "JPG, PNG, WebP, GIF — 最大5MB",
         "preview_full": "元画像（全体）",
         "crop_title": "切り抜き範囲（ドラッグ/ズームで調整）",
+        "crop_hint": "3:4のポートレート枠に頭と上半身が入るようドラッグ/ズーム。720pxの高画質でサイトに表示されます。",
         "cancel": "キャンセル",
         "apply": "写真を適用",
         "uploading": "アップロード中...",
         "uploaded": "写真をアップロードしました",
-        "change_photo": "写真を変更"
+        "change_photo": "写真を変更",
+        "remove_photo": "写真を削除"
       }
     }
   },

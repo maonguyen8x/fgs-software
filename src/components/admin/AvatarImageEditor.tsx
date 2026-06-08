@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Upload, ZoomIn, ZoomOut, X } from "lucide-react";
+import { Trash2, Upload, ZoomIn, ZoomOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
@@ -10,7 +10,7 @@ import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 interface AvatarImageEditorProps {
   value?: string | null;
   onChange: (url: string) => void;
-  /** Width / height — default 1 (square). Founders use 5/6 for leadership cards. */
+  /** Width / height — default 1 (square). Team/founders use 3/4 for head + upper-body portraits. */
   aspectRatio?: number;
   outputMaxWidth?: number;
   jpegQuality?: number;
@@ -28,8 +28,12 @@ function inferMimeFromName(name: string): string {
 }
 
 function getCropDimensions(aspectRatio: number) {
-  const maxW = 280;
-  const cropW = maxW;
+  if (aspectRatio < 1) {
+    const cropH = 380;
+    const cropW = Math.round(cropH * aspectRatio);
+    return { cropW, cropH };
+  }
+  const cropW = 280;
   const cropH = Math.round(cropW / aspectRatio);
   return { cropW, cropH };
 }
@@ -245,23 +249,30 @@ export function AvatarImageEditor({
     <div className="space-y-3">
       {preview && !source && (
         <div className="flex flex-wrap items-start gap-4">
-          <div className="relative inline-block overflow-hidden rounded-2xl border border-theme bg-slate-50 dark:bg-slate-900">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={preview}
-              alt=""
-              className="object-cover object-top"
-              style={{ width: aspectRatio >= 1 ? 144 : 120, height: aspectRatio >= 1 ? 144 : Math.round(120 / aspectRatio) }}
-            />
+          <div className="relative shrink-0 pt-1 pr-1">
+            <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-slate-50 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={preview}
+                alt=""
+                className="block object-cover object-top"
+                style={{
+                  width: aspectRatio >= 1 ? 144 : Math.round(200 * aspectRatio),
+                  height: aspectRatio >= 1 ? 144 : 200,
+                }}
+              />
+            </div>
             <button
               type="button"
-              className="absolute -right-2 -top-2 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-red-500 text-white shadow"
+              aria-label={t("remove_photo")}
+              title={t("remove_photo")}
+              className="absolute right-0 top-0 z-10 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-red-200/90 bg-white text-red-600 shadow-md transition-all duration-200 hover:border-red-400 hover:bg-red-500 hover:text-white hover:shadow-lg dark:border-red-900/50 dark:bg-slate-900 dark:text-red-400 dark:hover:bg-red-600 dark:hover:text-white"
               onClick={() => {
                 setPreview("");
                 onChange("");
               }}
             >
-              <X className="h-4 w-4" />
+              <Trash2 className="h-4 w-4" />
             </button>
           </div>
           <div className="relative">

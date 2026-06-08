@@ -293,7 +293,8 @@
       "hidden": "Hidden",
       "edit": "Edit",
       "form": {
-        "avatar": "Avatar photo",
+        "avatar": "Portrait photo",
+        "avatar_hint": "Upload a front-facing photo — frame head and upper body in the 3:4 crop. High-quality output for the public site.",
         "experience": "Years of experience",
         "skills": "Skills",
         "skills_placeholder": "e.g. React, Node.js",
@@ -743,7 +744,8 @@
       "skills": "Skills",
       "skills_placeholder": "e.g. React, Node.js, TypeScript",
       "skills_hint": "Press Enter or comma (,) to add a tag",
-      "avatar": "Profile photo",
+      "avatar": "Portrait photo",
+      "avatar_hint": "Frame head and upper body in the 3:4 crop — shown on Team / About Us.",
       "order": "Display order",
       "visible": "Visible on website",
       "sync_team": "Also show on Team page",
@@ -767,12 +769,13 @@
         "formats": "JPG, PNG, WebP, GIF — max 5MB",
         "preview_full": "Original image (full)",
         "crop_title": "Crop area (drag/zoom to position)",
-        "crop_hint": "Drag to move, drag corner handles or use the zoom slider. Output is high quality.",
+        "crop_hint": "Drag/zoom to place head and upper body in the 3:4 portrait frame. Output at 720px for a sharp public display.",
         "cancel": "Cancel",
         "apply": "Apply photo",
         "uploading": "Uploading...",
         "uploaded": "Photo uploaded",
-        "change_photo": "Change photo"
+        "change_photo": "Change photo",
+        "remove_photo": "Remove photo"
       }
     }
   },

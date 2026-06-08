@@ -751,6 +751,15 @@
   }
 }
 
+@keyframes admin-nav-slide {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(420%);
+  }
+}
+
 @keyframes map-marker-pulse {
   0% {
     transform: translate(-50%, -50%) scale(0.6);

@@ -8,6 +8,7 @@ import { RequiredLabel } from "@/components/ui/RequiredLabel";
 import { Label } from "@/components/ui/label";
 import { LocaleTabs } from "./LocaleTabs";
 import { AvatarImageEditor } from "./AvatarImageEditor";
+import { TEAM_PORTRAIT_ASPECT, TEAM_PORTRAIT_OUTPUT_WIDTH } from "@/lib/portrait-image";
 import { SkillsTagInput } from "./SkillsTagInput";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 import { useTranslations } from "next-intl";
@@ -118,8 +119,14 @@ export function TeamForm({ initial }: TeamFormProps) {
       />
       <div>
         <Label>{t("avatar")}</Label>
+        <p className="mt-1 text-xs text-slate-500">{t("avatar_hint")}</p>
         <div className="mt-2">
-          <AvatarImageEditor value={form.avatar} onChange={(url) => update("avatar", url)} />
+          <AvatarImageEditor
+            value={form.avatar}
+            onChange={(url) => update("avatar", url)}
+            aspectRatio={TEAM_PORTRAIT_ASPECT}
+            outputMaxWidth={TEAM_PORTRAIT_OUTPUT_WIDTH}
+          />
         </div>
       </div>
       <div>

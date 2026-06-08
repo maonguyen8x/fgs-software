@@ -293,7 +293,8 @@
       "hidden": "Ẩn",
       "edit": "Sửa",
       "form": {
-        "avatar": "Ảnh đại diện",
+        "avatar": "Ảnh chân dung",
+        "avatar_hint": "Tải ảnh thẳng mặt — căn sao cho thấy đầu và khoảng nửa thân trên trong khung 3:4. Xuất ảnh chất lượng cao.",
         "experience": "Số năm kinh nghiệm",
         "skills": "Kỹ năng",
         "skills_placeholder": "VD: React, Node.js",
@@ -743,7 +744,8 @@
       "skills": "Kỹ năng",
       "skills_placeholder": "VD: React, Node.js, TypeScript",
       "skills_hint": "Nhấn Enter hoặc dấu phẩy (,) để thêm từ khóa",
-      "avatar": "Ảnh đại diện",
+      "avatar": "Ảnh chân dung",
+      "avatar_hint": "Căn ảnh trong khung để thấy rõ đầu và khoảng nửa thân trên — hiển thị trên trang Đội ngũ / About Us.",
       "order": "Thứ tự hiển thị",
       "visible": "Hiển thị trên website",
       "sync_team": "Hiển thị thêm tại trang Đội ngũ",
@@ -767,12 +769,13 @@
         "formats": "JPG, PNG, WebP, GIF — tối đa 5MB",
         "preview_full": "Ảnh gốc (toàn bộ)",
         "crop_title": "Chỉnh vùng cắt (kéo/zoom để căn ảnh)",
-        "crop_hint": "Kéo ảnh để di chuyển, kéo góc khung hoặc dùng thanh zoom để phóng to/thu nhỏ. Ảnh xuất ra chất lượng cao.",
+        "crop_hint": "Kéo/zoom để đặt đầu và nửa thân trên vào khung chân dung 3:4. Kéo góc hoặc thanh zoom để chỉnh. Ảnh xuất 720px — sắc nét trên website.",
         "cancel": "Hủy",
         "apply": "Áp dụng ảnh",
         "uploading": "Đang tải lên...",
         "uploaded": "Đã tải ảnh lên",
-        "change_photo": "Đổi ảnh"
+        "change_photo": "Đổi ảnh",
+        "remove_photo": "Xóa ảnh"
       }
     }
   },

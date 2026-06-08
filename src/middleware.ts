@@ -38,6 +38,12 @@ function notFoundResponse(request: NextRequest): NextResponse {
   return NextResponse.rewrite(new URL("/error-ui/404", request.url));
 }
 
+function forwardWithPathname(request: NextRequest, pathname: string): NextResponse {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", pathname);
+  return NextResponse.next({ request: { headers: requestHeaders } });
+}
+
 export async function middleware(request: NextRequest) {
   try {
     const { pathname } = request.nextUrl;
@@ -67,14 +73,14 @@ export async function middleware(request: NextRequest) {
         if (pathname === "/admin/login" && isDefaultAdminLoginDisabled()) {
           return notFoundResponse(request);
         }
-        return NextResponse.next();
+        return forwardWithPathname(request, pathname);
       }
       if (pathname.startsWith("/admin")) {
         const token = await getToken({
           req: request,
           secret: process.env.NEXTAUTH_SECRET,
         });
-        if (token) return NextResponse.next();
+        if (token) return forwardWithPathname(request, pathname);
       }
       return notFoundResponse(request);
     }
@@ -86,7 +92,7 @@ export async function middleware(request: NextRequest) {
       pathname.startsWith("/_next") ||
       pathname.match(/\.(ico|png|jpg|jpeg|svg|webp|css|js)$/)
     ) {
-      return NextResponse.next();
+      return forwardWithPathname(request, pathname);
     }
 
     const siteDefaultLocale = await resolveMiddlewareDefaultLocale(request);

@@ -49,3 +49,5 @@ next-env.d.ts
 # prisma
 /prisma/*.db
 /prisma/*.db-journal
+backup_new.sql
+backup.sql

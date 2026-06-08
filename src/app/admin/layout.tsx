@@ -9,6 +9,9 @@ import { getAdminBranding } from "@/lib/admin/branding-settings";
 import { AdminCrossTabRefresh } from "@/components/admin/AdminCrossTabRefresh";
 import { AdminTopBar } from "@/components/admin/AdminTopBar";
 import { AdminSessionProvider } from "@/components/providers/AdminSessionProvider";
+import { AdminMainScroll } from "@/components/admin/AdminMainScroll";
+import { AdminNavProgress } from "@/components/admin/AdminNavProgress";
+import { AdminPageSkeleton } from "@/components/admin/AdminPageSkeleton";
 
 export default async function AdminLayout({
   children,
@@ -34,9 +37,13 @@ export default async function AdminLayout({
           {session && <AdminTopBar initialName={session.user?.name ?? undefined} />}
           <main
             data-admin-scroll-root
-            className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain bg-slate-100/80"
+            className="relative min-h-0 flex-1 overflow-y-auto overscroll-y-contain bg-slate-100/80"
           >
-            {children}
+            <Suspense fallback={null}>
+              <AdminMainScroll />
+            </Suspense>
+            <AdminNavProgress />
+            <Suspense fallback={<AdminPageSkeleton />}>{children}</Suspense>
           </main>
         </div>
         <Suspense fallback={null}>

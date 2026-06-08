@@ -7,6 +7,10 @@ import { getLocalizedField } from "@/lib/i18n-content";
 import type { Locale } from "@/i18n/routing";
 import { ArrowLeft, User } from "lucide-react";
 import { ScrollToTopButton } from "@/components/layout/ScrollToTopButton";
+import {
+  TEAM_PORTRAIT_DETAIL_FRAME_CLASS,
+  TEAM_PORTRAIT_DETAIL_IMAGE_CLASS,
+} from "@/lib/portrait-image";
 
 export default async function LeaderDetailPage({
   params,
@@ -41,14 +45,14 @@ export default async function LeaderDetailPage({
 
           <article className="team-page-panel px-6 py-6 md:px-8 md:py-8 lg:px-10 lg:py-10">
             <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
-              <div className="relative mx-0 h-32 w-32 shrink-0 overflow-hidden rounded-2xl bg-slate-100 ring-2 ring-primary-100 md:h-40 md:w-40 dark:bg-slate-800">
+              <div className={`${TEAM_PORTRAIT_DETAIL_FRAME_CLASS} mx-auto shrink-0 ring-2 ring-primary-100 md:mx-0`}>
                 {avatarSrc ? (
                   <UploadImage
                     src={avatarSrc}
                     alt={member.name}
                     fill
-                    className="object-cover"
-                    sizes="160px"
+                    className={TEAM_PORTRAIT_DETAIL_IMAGE_CLASS}
+                    sizes="(max-width: 768px) 280px, 300px"
                   />
                 ) : (
                   <span className="flex h-full items-center justify-center text-primary-300">

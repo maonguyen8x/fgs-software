@@ -10,6 +10,7 @@ import { RequiredLabel } from "@/components/ui/RequiredLabel";
 import { BlueCheckbox } from "@/components/ui/BlueCheckbox";
 import { LocaleTabs } from "./LocaleTabs";
 import { AvatarImageEditor } from "./AvatarImageEditor";
+import { TEAM_PORTRAIT_ASPECT, TEAM_PORTRAIT_OUTPUT_WIDTH } from "@/lib/portrait-image";
 import { SkillsTagInput } from "./SkillsTagInput";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 import { sanitizeAvatarUrl } from "@/lib/admin/founder-update";
@@ -139,12 +140,13 @@ export function FounderForm({ initial }: FounderFormProps) {
 
       <div>
         <Label>{t("avatar")}</Label>
+        <p className="mt-1 text-xs text-slate-500">{t("avatar_hint")}</p>
         <div className="mt-2">
           <AvatarImageEditor
             value={form.avatar}
             onChange={(url) => update("avatar", url)}
-            aspectRatio={5 / 6}
-            outputMaxWidth={600}
+            aspectRatio={TEAM_PORTRAIT_ASPECT}
+            outputMaxWidth={TEAM_PORTRAIT_OUTPUT_WIDTH}
           />
         </div>
       </div>

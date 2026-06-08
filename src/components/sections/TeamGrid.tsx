@@ -8,6 +8,12 @@ import { Badge } from "@/components/ui/badge";
 import type { Locale } from "@/i18n/routing";
 import { getLocalizedField } from "@/lib/i18n-content";
 import { cn } from "@/lib/utils";
+import {
+  TEAM_PORTRAIT_CARD_FRAME_CLASS,
+  TEAM_PORTRAIT_CARD_IMAGE_CLASS,
+  TEAM_PORTRAIT_DETAIL_FRAME_CLASS,
+  TEAM_PORTRAIT_DETAIL_IMAGE_CLASS,
+} from "@/lib/portrait-image";
 
 interface TeamMember {
   id: string;
@@ -55,7 +61,7 @@ export function TeamGrid({
             >
               <button
                 type="button"
-                className="relative block aspect-square w-full cursor-pointer overflow-hidden rounded-t-2xl bg-slate-100 dark:bg-slate-800"
+                className={cn(TEAM_PORTRAIT_CARD_FRAME_CLASS, "block w-full cursor-pointer rounded-t-2xl")}
                 onClick={() => setSelected(member)}
                 aria-label={`View ${member.name}`}
               >
@@ -64,8 +70,8 @@ export function TeamGrid({
                     src={avatarSrc}
                     alt={member.name}
                     fill
-                    className="object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
-                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className={TEAM_PORTRAIT_CARD_IMAGE_CLASS}
+                    sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 320px"
                   />
                 ) : (
                   <span className="flex h-full items-center justify-center text-5xl font-bold text-primary-300">
@@ -141,13 +147,14 @@ export function TeamGrid({
               <X className="h-5 w-5" />
             </button>
 
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-2xl bg-slate-100 dark:bg-slate-800">
+            <div className={cn(TEAM_PORTRAIT_DETAIL_FRAME_CLASS, "w-full rounded-t-2xl")}>
               {selected.avatar ? (
                 <UploadImage
                   src={selected.avatar.split("?")[0]}
                   alt={selected.name}
                   fill
-                  className="object-cover"
+                  className={TEAM_PORTRAIT_DETAIL_IMAGE_CLASS}
+                  sizes="512px"
                 />
               ) : (
                 <span className="flex h-full items-center justify-center text-6xl font-bold text-primary-300">
