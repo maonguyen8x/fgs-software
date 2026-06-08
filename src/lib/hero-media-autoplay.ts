@@ -9,6 +9,8 @@ export async function playHeroMutedVideo(video: HTMLVideoElement): Promise<boole
   video.muted = true;
   video.defaultMuted = true;
   video.playsInline = true;
+  video.controls = false;
+  video.removeAttribute("controls");
   video.setAttribute("playsinline", "");
   video.setAttribute("webkit-playsinline", "");
 

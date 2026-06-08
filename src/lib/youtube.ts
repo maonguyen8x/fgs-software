@@ -47,7 +47,6 @@ export function buildYouTubeBackgroundEmbedUrl(videoId: string, origin?: string)
     modestbranding: "1",
     playsinline: "1",
     loop: "1",
-    playlist: videoId,
     disablekb: "1",
     iv_load_policy: "3",
     fs: "0",
@@ -55,7 +54,11 @@ export function buildYouTubeBackgroundEmbedUrl(videoId: string, origin?: string)
     enablejsapi: "0",
     autohide: "1",
     showinfo: "0",
+    start: "0",
   });
-  if (origin) params.set("origin", origin);
+  if (origin) {
+    params.set("origin", origin);
+    params.set("widget_referrer", origin);
+  }
   return `https://www.youtube-nocookie.com/embed/${videoId}?${params.toString()}`;
 }

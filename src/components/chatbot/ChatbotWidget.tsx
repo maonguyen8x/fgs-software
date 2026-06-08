@@ -44,7 +44,7 @@ function getSessionId(): string {
 
 function TypingIndicator() {
   return (
-    <div className="flex items-center gap-1 rounded-2xl rounded-bl-md bg-white/90 px-4 py-3 shadow-sm ring-1 ring-slate-200/80">
+    <div className="nova-chat-bubble-assistant flex items-center gap-1 rounded-2xl rounded-bl-md px-4 py-3">
       {[0, 1, 2].map((i) => (
         <span
           key={i}
@@ -77,7 +77,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
           "max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed shadow-sm",
           isUser
             ? "rounded-br-md bg-primary-600 text-white"
-            : "rounded-bl-md bg-white/95 text-slate-700 ring-1 ring-slate-200/80"
+            : "nova-chat-bubble-assistant rounded-bl-md text-slate-700"
         )}
       >
         <p className="whitespace-pre-wrap">{message.content}</p>
@@ -259,10 +259,10 @@ export function ChatbotWidget({
             onClick={() => setOpen(true)}
             onMouseDown={stopBubble}
             onPointerDown={stopBubble}
-            className="nova-chat-launcher fixed bottom-6 right-6 z-[200] flex h-[4.25rem] w-[4.25rem] cursor-pointer items-center justify-center rounded-full shadow-2xl shadow-violet-400/30 ring-2 ring-white/90 transition-shadow hover:shadow-violet-500/40"
+            className="nova-chat-launcher fixed bottom-6 right-6 z-[200] flex h-[4.25rem] w-[4.25rem] cursor-pointer items-center justify-center rounded-full p-0"
             aria-label={t("open")}
           >
-            <NovaLauncherIcon size={46} />
+            <NovaLauncherIcon size={68} />
           </motion.button>
         )}
       </AnimatePresence>
@@ -284,17 +284,13 @@ export function ChatbotWidget({
             onPointerDown={stopBubble}
             onClick={stopBubble}
             className={cn(
-              "fixed bottom-6 right-6 z-[200] flex w-[min(100vw-2rem,400px)] flex-col overflow-hidden rounded-3xl shadow-2xl shadow-primary-900/20 ring-1 ring-white/20",
+              "nova-chat-panel fixed bottom-6 right-6 z-[200] w-[min(100vw-2rem,400px)]",
               minimized ? "h-auto" : "h-[min(85vh,640px)]"
             )}
-            style={{
-              background:
-                "linear-gradient(165deg, rgba(255,255,255,0.98) 0%, rgba(239,246,255,0.95) 50%, rgba(219,234,254,0.9) 100%)",
-              backdropFilter: "blur(20px)",
-            }}
           >
+            <div className="nova-chat-panel__inner">
             {/* Header */}
-            <div className="relative overflow-hidden border-b border-white/60 bg-gradient-to-r from-primary-600 via-primary-500 to-primary-700 px-4 py-4 text-white">
+            <div className="nova-chat-panel__header relative px-4 py-4 text-white">
               <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
               <div className="absolute -bottom-4 left-1/4 h-20 w-20 rounded-full bg-primary-300/20 blur-xl" />
               <div className="relative flex items-center justify-between gap-3">
@@ -337,7 +333,7 @@ export function ChatbotWidget({
                 {/* Messages */}
                 <div
                   ref={scrollRef}
-                  className="flex-1 space-y-4 overflow-y-auto px-4 py-4 scrollbar-thin"
+                  className="nova-chat-panel__messages flex-1 space-y-4 overflow-y-auto px-4 py-4 scrollbar-thin"
                 >
                   {messages.map((msg) => (
                     <MessageBubble key={msg.id} message={msg} />
@@ -354,13 +350,13 @@ export function ChatbotWidget({
 
                 {/* Quick actions */}
                 {messages.length <= 2 && !loading && (
-                  <div className="flex flex-wrap gap-2 border-t border-slate-200/60 bg-white/40 px-4 py-3">
+                  <div className="nova-chat-panel__footer flex flex-wrap gap-2 px-4 py-3">
                     {quickActions.map((q) => (
                       <button
                         key={q.key}
                         type="button"
                         onClick={() => void sendMessage(quickPrompts[q.key])}
-                        className="cursor-pointer rounded-full border border-primary-200/80 bg-white/80 px-3 py-1.5 text-xs font-medium text-primary-700 shadow-sm transition-all hover:border-primary-400 hover:bg-primary-50 hover:shadow"
+                        className="cursor-pointer rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium text-primary-700 shadow-sm transition-all duration-300 hover:bg-primary-50 hover:text-primary-800 hover:shadow-md"
                       >
                         {q.label}
                       </button>
@@ -370,11 +366,11 @@ export function ChatbotWidget({
 
                 {/* Input — div (not form) avoids accidental full-page GET submit / reload */}
                 <div
-                  className="border-t border-slate-200/60 bg-white/60 p-4"
+                  className="nova-chat-panel__footer p-4"
                   role="group"
                   aria-label={t("placeholder")}
                 >
-                  <div className="flex items-end gap-2 rounded-2xl bg-white p-2 shadow-inner ring-1 ring-slate-200/80">
+                  <div className="nova-chat-input-wrap relative flex items-end gap-2 rounded-2xl p-2">
                     <textarea
                       ref={inputRef}
                       rows={1}
@@ -401,7 +397,7 @@ export function ChatbotWidget({
                       type="button"
                       disabled={!input.trim() || loading}
                       onClick={handleSend}
-                      className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-primary-600 text-white transition-all hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-40"
+                      className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 text-white shadow-md shadow-primary-600/25 transition-all duration-300 hover:shadow-lg hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-40"
                       aria-label={t("send")}
                     >
                       <Send className="h-4 w-4" />
@@ -417,6 +413,7 @@ export function ChatbotWidget({
                 </div>
               </>
             )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

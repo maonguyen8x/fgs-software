@@ -17,8 +17,20 @@ export function HeroFileVideoBackground({ src, posterUrl, alt, isActive }: HeroF
   const mounted = useMounted();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [motionVisible, setMotionVisible] = useState(false);
+  const [videoMounted, setVideoMounted] = useState(false);
   const isLocalPoster = posterUrl.startsWith("/");
-  const showVideo = mounted && isActive;
+  const showVideo = mounted && isActive && videoMounted;
+
+  useEffect(() => {
+    if (!mounted || !isActive) {
+      setVideoMounted(false);
+      setMotionVisible(false);
+      return;
+    }
+
+    const timer = window.setTimeout(() => setVideoMounted(true), 180);
+    return () => window.clearTimeout(timer);
+  }, [mounted, isActive, src]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -41,6 +53,9 @@ export function HeroFileVideoBackground({ src, posterUrl, alt, isActive }: HeroF
     video.addEventListener("playing", onPlaying);
     video.addEventListener("pause", onPause);
 
+    video.controls = false;
+    video.removeAttribute("controls");
+
     const unbindAutoplay = bindHeroVideoAutoplay(video, true);
 
     return () => {
@@ -60,7 +75,7 @@ export function HeroFileVideoBackground({ src, posterUrl, alt, isActive }: HeroF
         alt={alt}
         fill
         quality={95}
-        className={`hero-media-sharp hero-media-fill transition-opacity duration-700 ${
+        className={`hero-media-sharp hero-media-fill hero-media-poster-cover transition-opacity duration-700 ${
           motionVisible ? "opacity-0" : "opacity-100"
         } ${posterAnimates ? "hero-ken-burns" : ""}`}
         sizes="100vw"
@@ -68,25 +83,30 @@ export function HeroFileVideoBackground({ src, posterUrl, alt, isActive }: HeroF
         priority={isActive}
       />
       {showVideo && (
-        <video
-          ref={videoRef}
-          className={`hero-media-sharp hero-slide-video hero-media-fill transition-opacity duration-700 ${
-            motionVisible ? "hero-slide-video--live opacity-100" : "opacity-0"
+        <div
+          className={`hero-file-video-player absolute inset-0 overflow-hidden ${
+            motionVisible ? "hero-file-video-player--live" : ""
           }`}
-          src={src}
-          muted
-          loop
-          playsInline
-          controls={false}
-          controlsList="nodownload nofullscreen noremoteplayback"
-          disablePictureInPicture
-          disableRemotePlayback
-          preload="auto"
           aria-hidden
-          tabIndex={-1}
-        />
+        >
+          <video
+            ref={videoRef}
+            className="hero-media-sharp hero-slide-video hero-media-fill"
+            src={src}
+            muted
+            loop
+            playsInline
+            controls={false}
+            controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
+            disablePictureInPicture
+            disableRemotePlayback
+            poster={posterUrl}
+            preload="metadata"
+            aria-hidden
+            tabIndex={-1}
+          />
+        </div>
       )}
-      <div className="hero-media-ui-mask pointer-events-none absolute inset-0 z-2" aria-hidden />
     </div>
   );
 }
