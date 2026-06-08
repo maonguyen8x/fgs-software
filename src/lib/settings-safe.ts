@@ -4,6 +4,7 @@ const FALLBACK_SETTINGS: Record<string, string> = {
   company_name: "FGS Software",
   chatbot_enabled: "true",
   chatbot_name: "Nova",
+  chatbot_position: "right",
   hero_typewriter_enabled: "true",
   page_header_about_bg: "#e0f2fe",
   page_header_services_bg: "#dcfce7",

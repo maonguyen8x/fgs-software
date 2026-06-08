@@ -36,6 +36,7 @@ const fields = [
   { key: "chatbot_name", labelKey: "chatbot_name" },
   { key: "chatbot_name_ja", labelKey: "chatbot_name_ja" },
   { key: "chatbot_name_vi", labelKey: "chatbot_name_vi" },
+  { key: "chatbot_position", labelKey: "chatbot_position" },
   { key: "page_header_about_bg", labelKey: "page_header_about_bg" },
   { key: "page_header_services_bg", labelKey: "page_header_services_bg" },
   { key: "page_header_team_bg", labelKey: "page_header_team_bg" },
@@ -67,7 +68,13 @@ const sections = [
   {
     id: "chatbot",
     titleKey: "section_chatbot",
-    keys: ["chatbot_enabled", "chatbot_name", "chatbot_name_ja", "chatbot_name_vi"],
+    keys: [
+      "chatbot_enabled",
+      "chatbot_position",
+      "chatbot_name",
+      "chatbot_name_ja",
+      "chatbot_name_vi",
+    ],
   },
   {
     id: "pageHeaderColors",
@@ -118,7 +125,8 @@ export function SettingsForm({ settings }: { settings: Record<string, string> })
       {sections.map((section) => (
         <div
           key={section.id}
-          className="rounded-xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900"
+          id={`settings-${section.id}`}
+          className="scroll-mt-28 rounded-xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900"
         >
           <h2 className="mb-4 text-lg font-semibold text-primary-700 dark:text-primary-400">
             {t(section.titleKey)}
@@ -154,6 +162,29 @@ export function SettingsForm({ settings }: { settings: Record<string, string> })
                               { value: "false", label: t("chatbot_off") },
                             ]}
                             onChange={(v) => patchValues({ chatbot_enabled: v })}
+                          />
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  if (key === "chatbot_position") {
+                    const position = values.chatbot_position?.trim() || "right";
+                    return (
+                      <div key={key}>
+                        <Label>{t(labelKey)}</Label>
+                        <p className="mt-1 text-xs text-slate-500">{t("chatbot_position_hint")}</p>
+                        <div className="mt-2">
+                          <BlueRadioGroup
+                            name="chatbot_position"
+                            value={position}
+                            options={[
+                              { value: "right", label: t("chatbot_position_right") },
+                              { value: "left", label: t("chatbot_position_left") },
+                              { value: "top", label: t("chatbot_position_top") },
+                              { value: "bottom", label: t("chatbot_position_bottom") },
+                            ]}
+                            onChange={(v) => patchValues({ chatbot_position: v })}
                           />
                         </div>
                       </div>

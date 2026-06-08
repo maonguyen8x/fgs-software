@@ -12,6 +12,10 @@ export function publishPublicSiteUpdate(
   if (options?.defaultLocale && isValidLocale(options.defaultLocale)) {
     writeSiteDefaultLocaleCookie(options.defaultLocale);
   }
-  notifySiteSettingsChange();
+  notifySiteSettingsChange(
+    options?.defaultLocale && isValidLocale(options.defaultLocale)
+      ? { defaultLocale: options.defaultLocale }
+      : undefined
+  );
   router?.refresh();
 }

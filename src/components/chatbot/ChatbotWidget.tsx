@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
 import { API_ROUTES } from "@/config/api-routes";
 import { useMounted } from "@/hooks/use-mounted";
 import { NovaLauncherIcon } from "@/components/chatbot/NovaLauncherIcon";
+import { dedupeChatHistory, dedupeConsecutiveChatMessages } from "@/lib/chat/dedupe-messages";
+import type { ChatbotPosition } from "@/lib/chatbot-position";
 
 interface ChatMessage {
   id: string;
@@ -29,7 +31,11 @@ interface ChatbotWidgetProps {
   companyName: string;
   assistantName?: string;
   contactHref: string;
+  position?: ChatbotPosition;
 }
+
+const NOVA_DRAFT_KEY = "fgs-nova-chat-draft";
+const NOVA_OPEN_KEY = "fgs-nova-chat-open";
 
 function getSessionId(): string {
   if (typeof window === "undefined") return "";
@@ -56,17 +62,21 @@ function TypingIndicator() {
   );
 }
 
-function MessageBubble({ message }: { message: ChatMessage }) {
+function MessageBubble({ message, compact }: { message: ChatMessage; compact?: boolean }) {
   const isUser = message.role === "user";
   return (
     <motion.div
       initial={false}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      className={cn("flex gap-2.5", isUser ? "flex-row-reverse" : "flex-row")}
+      className={cn(
+        "flex gap-2.5",
+        compact && "nova-chat-bubble-row--compact",
+        isUser ? "flex-row-reverse" : "flex-row"
+      )}
     >
       <div
         className={cn(
-          "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
+          "nova-chat-bubble-avatar flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
           isUser ? "bg-primary-600 text-white" : "bg-gradient-to-br from-primary-500 to-primary-700 text-white shadow-md"
         )}
       >
@@ -76,7 +86,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
         className={cn(
           "max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed shadow-sm",
           isUser
-            ? "rounded-br-md bg-primary-600 text-white"
+            ? "nova-chat-bubble-user rounded-br-md bg-primary-600 text-white"
             : "nova-chat-bubble-assistant rounded-bl-md text-slate-700"
         )}
       >
@@ -90,6 +100,7 @@ export function ChatbotWidget({
   companyName,
   assistantName = "Nova",
   contactHref,
+  position = "right",
 }: ChatbotWidgetProps) {
   const t = useTranslations("chatbot");
   const locale = useLocale();
@@ -110,13 +121,46 @@ export function ChatbotWidget({
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    try {
+      const draft = sessionStorage.getItem(NOVA_DRAFT_KEY);
+      if (draft) setInput(draft);
+      if (sessionStorage.getItem(NOVA_OPEN_KEY) === "1") setOpen(true);
+    } catch {
+      /* ignore */
+    }
+  }, [mounted]);
+
+  useEffect(() => {
+    if (!mounted) return;
+    try {
+      sessionStorage.setItem(NOVA_OPEN_KEY, open ? "1" : "0");
+    } catch {
+      /* ignore */
+    }
+  }, [open, mounted]);
+
+  useEffect(() => {
+    if (!mounted) return;
+    try {
+      if (input.trim()) {
+        sessionStorage.setItem(NOVA_DRAFT_KEY, input);
+      } else {
+        sessionStorage.removeItem(NOVA_DRAFT_KEY);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, [input, mounted]);
+
+  useEffect(() => {
     if (!open) return;
     const sessionId = getSessionId();
     fetch(`${API_ROUTES.chat}?sessionId=${sessionId}`)
       .then((r) => r.json())
       .then((data) => {
         if (data.messages?.length) {
-          setMessages(data.messages);
+          setMessages(dedupeChatHistory(data.messages));
           setHasGreeted(true);
         }
       })
@@ -157,8 +201,13 @@ export function ChatbotWidget({
         role: "user",
         content: trimmed,
       };
-      setMessages((prev) => [...prev, userMsg]);
+      setMessages((prev) => dedupeConsecutiveChatMessages([...prev, userMsg]));
       setInput("");
+      try {
+        sessionStorage.removeItem(NOVA_DRAFT_KEY);
+      } catch {
+        /* ignore */
+      }
       setLoading(true);
 
       try {
@@ -177,9 +226,11 @@ export function ChatbotWidget({
           const msg =
             code === "SERVICE_UNAVAILABLE"
               ? t("error_disabled")
-              : code === "AI_UNAVAILABLE"
-                ? t("error_ai")
-                : code === "VALIDATION_ERROR" || res.status === 400
+              : code === "AI_QUOTA_EXCEEDED"
+                ? t("error_ai_quota")
+                : code === "AI_UNAVAILABLE"
+                  ? t("error_ai")
+                  : code === "VALIDATION_ERROR" || res.status === 400
                   ? t("error_invalid")
                   : res.status >= 500
                     ? t("error_server")
@@ -222,9 +273,14 @@ export function ChatbotWidget({
     [loading, locale, t]
   );
 
-  const handleSend = () => {
-    void sendMessage(input);
-  };
+  const handleSend = useCallback(
+    (e?: React.SyntheticEvent) => {
+      e?.preventDefault();
+      e?.stopPropagation();
+      void sendMessage(input);
+    },
+    [input, sendMessage]
+  );
 
   const quickActions = [
     { key: "services", label: t("quick.services") },
@@ -232,6 +288,8 @@ export function ChatbotWidget({
     { key: "japan", label: t("quick.japan") },
     { key: "contact", label: t("quick.contact") },
   ];
+
+  const isEdgePosition = position === "top" || position === "bottom";
 
   const quickPrompts: Record<string, string> = {
     services: t("prompts.services"),
@@ -245,7 +303,11 @@ export function ChatbotWidget({
   };
 
   const widget = (
-    <div data-nova-chat-root className="contents">
+    <div
+      data-nova-chat-root
+      className={cn("nova-chat-root", `nova-chat-root--${position}`)}
+      aria-live="polite"
+    >
       {/* Launcher */}
       <AnimatePresence>
         {mounted && !open && (
@@ -259,7 +321,7 @@ export function ChatbotWidget({
             onClick={() => setOpen(true)}
             onMouseDown={stopBubble}
             onPointerDown={stopBubble}
-            className="nova-chat-launcher fixed bottom-6 right-6 z-[200] flex h-[4.25rem] w-[4.25rem] cursor-pointer items-center justify-center rounded-full p-0"
+            className="nova-chat-launcher flex h-[4.25rem] w-[4.25rem] cursor-pointer items-center justify-center rounded-full p-0"
             aria-label={t("open")}
           >
             <NovaLauncherIcon size={68} />
@@ -276,32 +338,43 @@ export function ChatbotWidget({
               opacity: 1,
               y: 0,
               scale: 1,
-              height: minimized ? "auto" : undefined,
             }}
             exit={{ opacity: 0, y: 24, scale: 0.92 }}
             transition={{ type: "spring", damping: 26, stiffness: 320 }}
             onMouseDown={stopBubble}
             onPointerDown={stopBubble}
-            onClick={stopBubble}
             className={cn(
-              "nova-chat-panel fixed bottom-6 right-6 z-[200] w-[min(100vw-2rem,400px)]",
-              minimized ? "h-auto" : "h-[min(85vh,640px)]"
+              "nova-chat-panel",
+              `nova-chat-panel--${position}`,
+              minimized && "nova-chat-panel--minimized"
             )}
           >
             <div className="nova-chat-panel__inner">
             {/* Header */}
-            <div className="nova-chat-panel__header relative px-4 py-4 text-white">
+            <div
+              className={cn(
+                "nova-chat-panel__header relative shrink-0 px-4 text-white",
+                isEdgePosition ? "py-2" : "py-3"
+              )}
+            >
               <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
               <div className="absolute -bottom-4 left-1/4 h-20 w-20 rounded-full bg-primary-300/20 blur-xl" />
               <div className="relative flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-white/20 shadow-inner backdrop-blur-sm">
-                    <Sparkles className="h-5 w-5" />
+                  <div
+                    className={cn(
+                      "nova-chat-panel__avatar relative flex items-center justify-center rounded-2xl bg-white/20 shadow-inner backdrop-blur-sm",
+                      isEdgePosition ? "h-8 w-8" : "h-10 w-10"
+                    )}
+                  >
+                    <Sparkles className={isEdgePosition ? "h-4 w-4" : "h-5 w-5"} />
                     <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-primary-600 bg-emerald-400" />
                   </div>
                   <div>
-                    <p className="font-semibold tracking-tight">{assistantName}</p>
-                    <p className="text-xs text-primary-100">{t("subtitle", { company: companyName })}</p>
+                    <p className="nova-chat-panel__title font-semibold tracking-tight">{assistantName}</p>
+                    {!isEdgePosition && (
+                      <p className="text-xs text-primary-100">{t("subtitle", { company: companyName })}</p>
+                    )}
                   </div>
                 </div>
                 <div className="flex gap-1">
@@ -333,14 +406,14 @@ export function ChatbotWidget({
                 {/* Messages */}
                 <div
                   ref={scrollRef}
-                  className="nova-chat-panel__messages flex-1 space-y-4 overflow-y-auto px-4 py-4 scrollbar-thin"
+                  className="nova-chat-panel__messages min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-y-contain px-4 py-3 scrollbar-thin"
                 >
                   {messages.map((msg) => (
-                    <MessageBubble key={msg.id} message={msg} />
+                    <MessageBubble key={msg.id} message={msg} compact={isEdgePosition} />
                   ))}
                   {loading && (
-                    <div className="flex gap-2.5">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-700 text-white">
+                    <div className={cn("flex gap-2.5", isEdgePosition && "nova-chat-bubble-row--compact")}>
+                      <div className="nova-chat-bubble-avatar flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-700 text-white">
                         <Bot className="h-4 w-4" />
                       </div>
                       <TypingIndicator />
@@ -350,13 +423,21 @@ export function ChatbotWidget({
 
                 {/* Quick actions */}
                 {messages.length <= 2 && !loading && (
-                  <div className="nova-chat-panel__footer flex flex-wrap gap-2 px-4 py-3">
+                  <div
+                    className={cn(
+                      "nova-chat-panel__footer flex gap-2",
+                      isEdgePosition ? "flex-nowrap overflow-x-auto px-2.5 py-1.5" : "flex-wrap px-4 py-3"
+                    )}
+                  >
                     {quickActions.map((q) => (
                       <button
                         key={q.key}
                         type="button"
                         onClick={() => void sendMessage(quickPrompts[q.key])}
-                        className="cursor-pointer rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium text-primary-700 shadow-sm transition-all duration-300 hover:bg-primary-50 hover:text-primary-800 hover:shadow-md"
+                        className={cn(
+                          "nova-chat-quick-action cursor-pointer rounded-full bg-white/90 font-medium text-primary-700 shadow-sm transition-all duration-300 hover:bg-primary-50 hover:text-primary-800 hover:shadow-md",
+                          isEdgePosition ? "shrink-0 px-2.5 py-1 text-[11px]" : "px-3 py-1.5 text-xs"
+                        )}
                       >
                         {q.label}
                       </button>
@@ -364,24 +445,23 @@ export function ChatbotWidget({
                   </div>
                 )}
 
-                {/* Input — div (not form) avoids accidental full-page GET submit / reload */}
+                {/* div (not form) — prevents accidental page reload on Enter/submit */}
                 <div
-                  className="nova-chat-panel__footer p-4"
+                  className="nova-chat-panel__footer nova-chat-panel__footer--input"
                   role="group"
                   aria-label={t("placeholder")}
                 >
-                  <div className="nova-chat-input-wrap relative flex items-end gap-2 rounded-2xl p-2">
+                  <div className="nova-chat-input-wrap flex items-end gap-2">
                     <textarea
                       ref={inputRef}
                       rows={1}
-                      name="nova-message"
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
-                      onKeyDown={(e) => {
+                      onKeyDownCapture={(e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
                           e.preventDefault();
                           e.stopPropagation();
-                          handleSend();
+                          handleSend(e);
                         }
                       }}
                       placeholder={t("placeholder")}
@@ -390,14 +470,14 @@ export function ChatbotWidget({
                       enterKeyHint="send"
                       data-lpignore="true"
                       data-1p-ignore="true"
-                      className="max-h-24 min-h-[40px] flex-1 resize-none bg-transparent px-2 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none"
+                      className="nova-chat-input-field max-h-20 min-h-[40px] flex-1 resize-none bg-transparent px-1 py-2 text-sm leading-relaxed text-slate-800 placeholder:text-slate-400/90 focus:outline-none"
                       disabled={loading}
                     />
                     <button
                       type="button"
                       disabled={!input.trim() || loading}
-                      onClick={handleSend}
-                      className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 text-white shadow-md shadow-primary-600/25 transition-all duration-300 hover:shadow-lg hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-40"
+                      onClick={(e) => handleSend(e)}
+                      className="nova-chat-send-btn flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center disabled:cursor-not-allowed disabled:opacity-40"
                       aria-label={t("send")}
                     >
                       <Send className="h-4 w-4" />
@@ -405,7 +485,7 @@ export function ChatbotWidget({
                   </div>
                   <Link
                     href={contactHref}
-                    className="mt-3 flex items-center justify-center gap-1 text-xs font-medium text-primary-600 transition-colors hover:text-primary-800"
+                    className="nova-chat-handoff-link mt-2 flex items-center justify-center gap-1 text-xs font-medium text-primary-600 transition-colors hover:text-primary-800"
                   >
                     {t("human_handoff")}
                     <ArrowRight className="h-3 w-3" />

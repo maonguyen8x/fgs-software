@@ -1,4 +1,5 @@
 import { logger } from "@/lib/logger";
+import { isQuotaRelatedError } from "@/lib/chat/quota-error";
 import type { ChatTurn } from "../ai";
 
 /** Legacy model IDs mapped to current free-tier models (Google AI Studio, 2026). */
@@ -13,10 +14,11 @@ const GEMINI_MODEL_ALIASES: Record<string, string> = {
 
 const GEMINI_FALLBACK_MODELS = [
   "gemini-2.5-flash-lite",
-  "gemini-flash-latest",
+  "gemini-2.5-flash",
 ] as const;
 
-export const DEFAULT_GEMINI_MODEL = "gemini-2.5-flash";
+/** Lite model has higher free-tier quota; flash often returns 429 on free keys. */
+export const DEFAULT_GEMINI_MODEL = "gemini-2.5-flash-lite";
 
 export function normalizeGeminiModel(model: string): string {
   const trimmed = model.trim();
@@ -27,7 +29,8 @@ async function requestGemini(
   apiKey: string,
   model: string,
   systemPrompt: string,
-  messages: ChatTurn[]
+  messages: ChatTurn[],
+  useThinkingBudgetZero = true
 ): Promise<string> {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
@@ -36,16 +39,21 @@ async function requestGemini(
     parts: [{ text: m.content }],
   }));
 
+  const generationConfig: Record<string, unknown> = {
+    temperature: 0.45,
+    maxOutputTokens: 2048,
+  };
+  if (useThinkingBudgetZero) {
+    generationConfig.thinkingConfig = { thinkingBudget: 0 };
+  }
+
   const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: systemPrompt }] },
       contents,
-      generationConfig: {
-        temperature: 0.45,
-        maxOutputTokens: 1024,
-      },
+      generationConfig,
     }),
   });
 
@@ -79,17 +87,39 @@ export async function generateGeminiReply(
 ): Promise<string> {
   const primary = normalizeGeminiModel(model);
   const models = [
-    primary,
-    ...GEMINI_FALLBACK_MODELS.filter((m) => m !== primary),
+    ...new Set([
+      DEFAULT_GEMINI_MODEL,
+      ...GEMINI_FALLBACK_MODELS,
+      primary,
+    ]),
   ];
   let lastError: Error | null = null;
+  let sawQuota = false;
 
   for (const candidate of models) {
     try {
-      return await requestGemini(apiKey, candidate, systemPrompt, messages);
+      return await requestGemini(apiKey, candidate, systemPrompt, messages, true);
     } catch (error) {
-      lastError = error instanceof Error ? error : new Error(String(error));
+      const err = error instanceof Error ? error : new Error(String(error));
+      lastError = err;
+      if (isQuotaRelatedError(err.message)) {
+        sawQuota = true;
+        continue;
+      }
+      try {
+        return await requestGemini(apiKey, candidate, systemPrompt, messages, false);
+      } catch (fallbackError) {
+        lastError =
+          fallbackError instanceof Error ? fallbackError : new Error(String(fallbackError));
+        if (isQuotaRelatedError(lastError.message)) sawQuota = true;
+      }
     }
+  }
+
+  if (sawQuota) {
+    throw new Error(
+      "Gemini quota exceeded — free tier limit reached. Wait a few minutes or upgrade billing at Google AI Studio."
+    );
   }
 
   throw lastError ?? new Error("Gemini service unavailable");

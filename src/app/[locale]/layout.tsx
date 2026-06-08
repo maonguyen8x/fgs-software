@@ -20,6 +20,7 @@ import { VisitTracker } from "@/components/analytics/VisitTracker";
 import { SiteExperienceShell } from "@/components/layout/SiteExperienceShell";
 import { HydrationNotice } from "@/components/errors/HydrationNotice";
 import { resolveLogoDisplay } from "@/lib/brand-logo";
+import { parseChatbotPosition } from "@/lib/chatbot-position";
 
 /** Layout shell is cached via getCachedLayoutSettings; pages control their own revalidation. */
 export const revalidate = 120;
@@ -93,6 +94,7 @@ export default async function LocaleLayout({
               companyName={companyName}
               assistantName={assistantName}
               contactHref={`/${locale}/contact`}
+              position={parseChatbotPosition(settings.chatbot_position)}
             />
           )}
           </div>

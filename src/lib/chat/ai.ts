@@ -9,6 +9,7 @@ import {
   resolveAiProviderCandidates,
   type ResolvedAiProvider,
 } from "@/lib/ai/resolve-provider";
+import { isQuotaRelatedError } from "@/lib/chat/quota-error";
 
 export interface ChatTurn {
   role: "user" | "assistant";
@@ -27,6 +28,13 @@ export class AiChatUnavailableError extends Error {
   constructor(message = "AI providers unavailable") {
     super(message);
     this.name = "AiChatUnavailableError";
+  }
+}
+
+export class AiChatQuotaExceededError extends Error {
+  constructor(message = "AI quota exceeded") {
+    super(message);
+    this.name = "AiChatQuotaExceededError";
   }
 }
 
@@ -87,6 +95,13 @@ export async function generateChatReply({
   }
 
   logger.error("All AI providers failed", { errors });
+
+  const allQuotaFailures =
+    errors.length > 0 && errors.every((entry) => isQuotaRelatedError(entry));
+  if (allQuotaFailures) {
+    throw new AiChatQuotaExceededError(errors.join("; "));
+  }
+
   throw new AiChatUnavailableError(errors.join("; "));
 }
 

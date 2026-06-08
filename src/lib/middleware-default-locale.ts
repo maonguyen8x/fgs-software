@@ -9,16 +9,10 @@ function localeFromPathname(pathname: string): Locale | null {
 }
 
 /**
- * Prefer cookie / URL locale so middleware does not block every navigation on an internal API fetch.
- * Falls back to DB only on first visit without cookie.
+ * Admin Settings is the source of truth — read DB default on each public request so
+ * changing "Ngôn ngữ mặc định website" takes effect without waiting on a stale cookie.
  */
 export async function resolveMiddlewareDefaultLocale(request: NextRequest): Promise<Locale> {
-  const fromCookie = request.cookies.get(SITE_DEFAULT_LOCALE_COOKIE)?.value;
-  if (isValidLocale(fromCookie)) return fromCookie;
-
-  const fromPath = localeFromPathname(request.nextUrl.pathname);
-  if (fromPath) return fromPath;
-
   try {
     const url = new URL("/api/public/default-locale", request.nextUrl.origin);
     const res = await fetch(url, {
@@ -32,6 +26,12 @@ export async function resolveMiddlewareDefaultLocale(request: NextRequest): Prom
   } catch {
     /* ignore */
   }
+
+  const fromCookie = request.cookies.get(SITE_DEFAULT_LOCALE_COOKIE)?.value;
+  if (isValidLocale(fromCookie)) return fromCookie;
+
+  const fromPath = localeFromPathname(request.nextUrl.pathname);
+  if (fromPath) return fromPath;
 
   return defaultLocale;
 }

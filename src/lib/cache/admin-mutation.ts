@@ -19,6 +19,7 @@ export async function afterAdminMutation(...tags: CacheTag[]): Promise<void> {
   }
 
   if (tags.includes(CACHE_TAGS.settings)) {
+    revalidatePath("/");
     for (const locale of locales) {
       revalidatePath(`/${locale}`, "layout");
     }

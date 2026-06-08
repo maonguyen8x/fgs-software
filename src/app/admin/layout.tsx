@@ -22,7 +22,7 @@ export default async function AdminLayout({
     <AdminSessionProvider session={session}>
     <AdminIntlShell>
       <AdminCrossTabRefresh />
-      <div className="flex min-h-screen bg-surface-muted">
+      <div className="flex h-screen min-h-0 overflow-hidden bg-surface-muted">
         {session && (
           <AdminSidebar
             userName={session.user?.name ?? "Admin"}
@@ -30,9 +30,14 @@ export default async function AdminLayout({
             logoMode={branding.logoMode}
           />
         )}
-        <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           {session && <AdminTopBar initialName={session.user?.name ?? undefined} />}
-          <main className="flex-1 overflow-auto bg-slate-100/80">{children}</main>
+          <main
+            data-admin-scroll-root
+            className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain bg-slate-100/80"
+          >
+            {children}
+          </main>
         </div>
         <Suspense fallback={null}>
           <AdminLoginSuccessToast />

@@ -15,6 +15,7 @@ import { AdminPanelSkeleton } from "@/components/admin/AdminPanelSkeleton";
 import { AdminSettingsLocaleSwitcher } from "@/components/admin/AdminSettingsLocaleSwitcher";
 import { AdminPageShell } from "@/components/admin/AdminPageShell";
 import { AdminContentBlock } from "@/components/admin/AdminContentBlock";
+import { AdminSettingsSectionNav } from "@/components/admin/AdminSettingsSectionNav";
 
 const AiProvidersPanel = dynamic(
   () => import("@/components/admin/AiProvidersPanel").then((m) => m.AiProvidersPanel),
@@ -36,43 +37,46 @@ export default async function AdminSettingsPage() {
       </div>
 
       <div className="space-y-6">
-        <AdminContentBlock>
+        <AdminContentBlock sectionId="settings-logo">
           <LogoSettingsPanel settings={settings} />
         </AdminContentBlock>
 
-        <AdminContentBlock>
+        <AdminContentBlock sectionId="settings-hero-slides">
           <HeroSlidesPanel />
         </AdminContentBlock>
 
-        <AdminContentBlock>
+        <AdminContentBlock sectionId="settings-clients">
           <ClientsSectionSettingsPanel settings={settings} />
         </AdminContentBlock>
 
-        <AdminContentBlock>
+        <AdminContentBlock sectionId="settings-team-page">
           <TeamPageSettingsPanel settings={settings} />
         </AdminContentBlock>
 
-        <AdminContentBlock>
+        <AdminContentBlock sectionId="settings-site-notice">
           <SiteNoticeSettingsPanel settings={settings} />
         </AdminContentBlock>
 
-        <AdminContentBlock>
+        <AdminContentBlock sectionId="settings-header-nav">
           <HeaderNavSettingsPanel settings={settings} />
         </AdminContentBlock>
 
-        <AdminContentBlock>
+        <AdminContentBlock sectionId="settings-locale">
           <LocaleSettingsPanel settings={settings} />
         </AdminContentBlock>
 
-        <AdminContentBlock>
+        <AdminContentBlock sectionId="settings-theme">
           <ThemeSettingsPanel settings={settings} />
         </AdminContentBlock>
 
-        <AdminContentBlock>
+        <AdminContentBlock sectionId="settings-ai-providers">
           <AiProvidersPanel />
         </AdminContentBlock>
 
-        <AdminContentBlock className="border-primary-100/80 bg-linear-to-br from-white to-primary-50/30">
+        <AdminContentBlock
+          sectionId="settings-page-content"
+          className="border-primary-100/80 bg-linear-to-br from-white to-primary-50/30"
+        >
           <p className="text-sm leading-relaxed text-slate-700">{t("page_content_hint")}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             <Button asChild className="cursor-pointer" variant="outline">
@@ -84,10 +88,12 @@ export default async function AdminSettingsPage() {
           </div>
         </AdminContentBlock>
 
-        <AdminContentBlock padding="lg">
+        <AdminContentBlock padding="lg" sectionId="settings-general-form">
           <SettingsForm settings={settings} />
         </AdminContentBlock>
       </div>
+
+      <AdminSettingsSectionNav />
     </AdminPageShell>
   );
 }

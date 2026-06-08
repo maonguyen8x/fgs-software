@@ -61,8 +61,10 @@ export async function resolveAiProviderCandidates(): Promise<ResolvedAiProvider[
   const candidates: ResolvedAiProvider[] = [];
 
   const add = (entry: ResolvedAiProvider | null) => {
-    if (!entry || seen.has(entry.type)) return;
-    seen.add(entry.type);
+    if (!entry) return;
+    const key = `${entry.type}:${entry.source}`;
+    if (seen.has(key)) return;
+    seen.add(key);
     candidates.push(entry);
   };
 

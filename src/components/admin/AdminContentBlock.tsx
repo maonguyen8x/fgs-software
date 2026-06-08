@@ -4,6 +4,7 @@ interface AdminContentBlockProps {
   children: React.ReactNode;
   className?: string;
   padding?: "sm" | "md" | "lg";
+  sectionId?: string;
 }
 
 const paddingMap = {
@@ -17,11 +18,14 @@ export function AdminContentBlock({
   children,
   className,
   padding = "md",
+  sectionId,
 }: AdminContentBlockProps) {
   return (
     <div
+      id={sectionId}
       className={cn(
         "rounded-2xl border border-slate-200/90 bg-white shadow-sm",
+        sectionId && "scroll-mt-28",
         paddingMap[padding],
         className
       )}

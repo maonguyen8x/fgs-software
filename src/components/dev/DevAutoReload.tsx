@@ -28,6 +28,14 @@ export function DevAutoReload() {
         const now = Date.now();
         if (now - lastReloadAtRef.current < RELOAD_COOLDOWN_MS) return;
 
+        try {
+          const novaOpen = sessionStorage.getItem("fgs-nova-chat-open") === "1";
+          const novaDraft = sessionStorage.getItem("fgs-nova-chat-draft")?.trim();
+          if (novaOpen || novaDraft) return;
+        } catch {
+          /* ignore */
+        }
+
         lastReloadAtRef.current = now;
         window.location.reload();
       };

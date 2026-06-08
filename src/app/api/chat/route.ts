@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { AiChatUnavailableError, generateChatReply } from "@/lib/chat/ai";
+import {
+  AiChatQuotaExceededError,
+  AiChatUnavailableError,
+  generateChatReply,
+} from "@/lib/chat/ai";
 import { getSettingsMap } from "@/lib/settings";
 import type { Locale } from "@/i18n/routing";
 import {
@@ -11,6 +15,9 @@ import {
 } from "@/lib/api/response";
 import { logger } from "@/lib/logger";
 import { sanitizeEmail, sanitizeText } from "@/lib/security/sanitize";
+import { dedupeChatHistory } from "@/lib/chat/dedupe-messages";
+
+const DUPLICATE_WINDOW_MS = 60_000;
 
 const chatSchema = z.object({
   sessionId: z.string().uuid(),
@@ -50,9 +57,21 @@ export async function POST(request: Request) {
       },
     });
 
-    await prisma.chatMessage.create({
-      data: { sessionId: body.sessionId, role: "user", content: message },
+    const lastStored = await prisma.chatMessage.findFirst({
+      where: { sessionId: body.sessionId },
+      orderBy: { createdAt: "desc" },
     });
+
+    const isDuplicateUserMessage =
+      lastStored?.role === "user" &&
+      lastStored.content.trim() === message &&
+      Date.now() - lastStored.createdAt.getTime() < DUPLICATE_WINDOW_MS;
+
+    if (!isDuplicateUserMessage) {
+      await prisma.chatMessage.create({
+        data: { sessionId: body.sessionId, role: "user", content: message },
+      });
+    }
 
     const history = await prisma.chatMessage.findMany({
       where: { sessionId: body.sessionId },
@@ -62,7 +81,13 @@ export async function POST(request: Request) {
 
     const turns = history
       .filter((m) => m.role === "user" || m.role === "assistant")
-      .filter((m) => !m.content.includes("AI_UNAVAILABLE") && !m.content.includes("chưa kết nối"))
+      .filter(
+        (m) =>
+          !m.content.includes("AI_UNAVAILABLE") &&
+          !m.content.includes("AI_QUOTA_EXCEEDED") &&
+          !m.content.includes("chưa kết nối") &&
+          !m.content.includes("hết số lượng")
+      )
       .map((m) => ({
         role: m.role as "user" | "assistant",
         content: m.content,
@@ -72,6 +97,14 @@ export async function POST(request: Request) {
     try {
       reply = await generateChatReply({ locale, messages: turns, assistantName });
     } catch (error) {
+      if (error instanceof AiChatQuotaExceededError) {
+        logger.error("Chat AI quota exceeded", { error: error.message });
+        return apiError(
+          "AI request quota exceeded for this period.",
+          503,
+          "AI_QUOTA_EXCEEDED"
+        );
+      }
       if (error instanceof AiChatUnavailableError) {
         logger.error("Chat AI unavailable", { error: error.message });
         return apiError(
@@ -112,15 +145,17 @@ export async function GET(request: Request) {
       take: 50,
     });
 
+    const visible = messages
+      .filter((m) => m.role === "user" || m.role === "assistant")
+      .map((m) => ({
+        id: m.id,
+        role: m.role as "user" | "assistant",
+        content: m.content,
+        createdAt: m.createdAt,
+      }));
+
     return apiSuccess({
-      messages: messages
-        .filter((m) => m.role === "user" || m.role === "assistant")
-        .map((m) => ({
-          id: m.id,
-          role: m.role,
-          content: m.content,
-          createdAt: m.createdAt,
-        })),
+      messages: dedupeChatHistory(visible),
     });
   } catch (error) {
     logger.error("Chat history API error", { error: String(error) });

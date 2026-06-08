@@ -13,7 +13,6 @@ import {
   ArrowDownToLine,
   ArrowUpFromLine,
   CheckCircle2,
-  Download,
   Plus,
   Save,
   Sparkles,
@@ -21,6 +20,14 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { maskSecretForInput } from "@/lib/ai/mask-secret";
+import {
+  AI_DEFAULT_MODELS,
+  AI_MODEL_PRESETS,
+  AI_PROVIDER_TYPES,
+  getProviderLabel,
+  isPresetModel,
+  type AiProviderType,
+} from "@/lib/ai/provider-presets";
 
 interface AiProviderRow {
   id: string;
@@ -32,11 +39,7 @@ interface AiProviderRow {
   order: number;
 }
 
-const PROVIDER_TYPES = [
-  { value: "openai", label: "OpenAI" },
-  { value: "gemini", label: "Google Gemini" },
-  { value: "anthropic", label: "Anthropic Claude" },
-];
+const CUSTOM_MODEL = "__custom__";
 
 export function AiProvidersPanel() {
   const t = useTranslations("admin.settings.ai_providers");
@@ -44,6 +47,7 @@ export function AiProvidersPanel() {
   const [providers, setProviders] = useState<AiProviderRow[]>([]);
   const [activeProvider, setActiveProvider] = useState<string>("auto");
   const [loading, setLoading] = useState(false);
+  const [customModels, setCustomModels] = useState<Record<string, boolean>>({});
 
   const load = useCallback(async () => {
     const res = await fetch("/api/admin/ai-providers");
@@ -52,17 +56,51 @@ export function AiProvidersPanel() {
       providers?: AiProviderRow[];
       activeProvider?: string;
     };
-    if (Array.isArray(data)) {
-      setProviders(data);
-      return;
-    }
-    setProviders(data.providers ?? []);
-    setActiveProvider(data.activeProvider ?? "auto");
+    const rows = Array.isArray(data) ? data : (data.providers ?? []);
+    setProviders(rows);
+    setActiveProvider(Array.isArray(data) ? "auto" : (data.activeProvider ?? "auto"));
+    setCustomModels(
+      Object.fromEntries(
+        rows.map((p) => [p.id, !isPresetModel(p.providerType, p.model)])
+      )
+    );
   }, []);
 
   useEffect(() => {
     void load();
   }, [load]);
+
+  const patchProvider = (idx: number, patch: Partial<AiProviderRow>) => {
+    setProviders((list) => {
+      const next = [...list];
+      next[idx] = { ...next[idx], ...patch };
+      return next;
+    });
+  };
+
+  const handleTypeChange = (idx: number, providerType: string) => {
+    const type = providerType as AiProviderType;
+    const defaultModel = AI_DEFAULT_MODELS[type] ?? "";
+    patchProvider(idx, {
+      providerType,
+      displayName: getProviderLabel(providerType),
+      model: defaultModel,
+    });
+    const id = providers[idx]?.id;
+    if (id) {
+      setCustomModels((prev) => ({ ...prev, [id]: false }));
+    }
+  };
+
+  const handleModelSelect = (idx: number, value: string) => {
+    const id = providers[idx].id;
+    if (value === CUSTOM_MODEL) {
+      setCustomModels((prev) => ({ ...prev, [id]: true }));
+      return;
+    }
+    setCustomModels((prev) => ({ ...prev, [id]: false }));
+    patchProvider(idx, { model: value });
+  };
 
   const handleSyncFromEnv = async () => {
     setLoading(true);
@@ -118,8 +156,8 @@ export function AiProvidersPanel() {
     const sendingNewKey = rawKey.length > 0 && !rawKey.includes("•");
     const payload = {
       providerType: p.providerType,
-      displayName: p.displayName,
-      model: p.model,
+      displayName: getProviderLabel(p.providerType),
+      model: p.model.trim(),
       isEnabled: p.isEnabled,
       order: p.order,
       ...(sendingNewKey ? { apiKey: rawKey } : {}),
@@ -142,6 +180,7 @@ export function AiProvidersPanel() {
       next[index] = {
         ...next[index],
         ...saved,
+        displayName: getProviderLabel(saved.providerType),
         apiKey: sendingNewKey
           ? maskSecretForInput(rawKey)
           : maskSecretForInput(saved.apiKey ?? next[index].apiKey),
@@ -163,17 +202,19 @@ export function AiProvidersPanel() {
   };
 
   const addProvider = () => {
+    const id = `new-${Date.now()}`;
     setProviders((list) => [
       ...list,
       {
-        id: `new-${Date.now()}`,
-        providerType: "openai",
-        displayName: t("new_provider_name"),
-        model: "gpt-4o-mini",
+        id,
+        providerType: "gemini",
+        displayName: getProviderLabel("gemini"),
+        model: AI_DEFAULT_MODELS.gemini,
         isEnabled: true,
         order: list.length,
       },
     ]);
+    setCustomModels((prev) => ({ ...prev, [id]: false }));
   };
 
   return (
@@ -226,14 +267,17 @@ export function AiProvidersPanel() {
       <div className="space-y-4">
         {providers.map((p, idx) => {
           const isActive = activeProvider === p.providerType;
+          const type = p.providerType as AiProviderType;
+          const presets = AI_MODEL_PRESETS[type] ?? [];
+          const useCustomModel = customModels[p.id] ?? !isPresetModel(p.providerType, p.model);
+          const modelSelectValue = useCustomModel ? CUSTOM_MODEL : p.model;
+
           return (
             <div
               key={p.id}
               className={cn(
-                "rounded-xl border bg-white p-4 transition-shadow",
-                isActive
-                  ? "border-primary-400 ring-2 ring-primary-100 shadow-md"
-                  : "border-slate-200/80"
+                "rounded-xl border bg-white p-4 shadow-sm transition-shadow",
+                isActive ? "border-primary-400 ring-2 ring-primary-100" : "border-slate-200/80"
               )}
             >
               {isActive && (
@@ -242,77 +286,68 @@ export function AiProvidersPanel() {
                   {t("active_nova")}
                 </span>
               )}
-              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+
+              <div className="grid gap-4 md:grid-cols-2">
                 <div>
                   <Label>{t("type")}</Label>
                   <AdminSelect
                     value={p.providerType}
-                    onChange={(e) => {
-                      const next = [...providers];
-                      next[idx] = { ...p, providerType: e.target.value };
-                      setProviders(next);
-                    }}
+                    onChange={(e) => handleTypeChange(idx, e.target.value)}
                   >
-                    {PROVIDER_TYPES.map((opt) => (
+                    {AI_PROVIDER_TYPES.map((opt) => (
                       <option key={opt.value} value={opt.value}>
                         {opt.label}
                       </option>
                     ))}
                   </AdminSelect>
                 </div>
-                <div>
-                  <Label>{t("display_name")}</Label>
-                  <Input
-                    className="mt-1"
-                    value={p.displayName}
-                    onChange={(e) => {
-                      const next = [...providers];
-                      next[idx] = { ...p, displayName: e.target.value };
-                      setProviders(next);
-                    }}
-                  />
-                </div>
+
                 <div>
                   <Label>{t("model")}</Label>
-                  <Input
-                    className="mt-1"
-                    value={p.model}
-                    onChange={(e) => {
-                      const next = [...providers];
-                      next[idx] = { ...p, model: e.target.value };
-                      setProviders(next);
-                    }}
-                  />
+                  <AdminSelect
+                    value={modelSelectValue}
+                    onChange={(e) => handleModelSelect(idx, e.target.value)}
+                  >
+                    {presets.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                    <option value={CUSTOM_MODEL}>{t("model_custom")}</option>
+                  </AdminSelect>
+                  {useCustomModel && (
+                    <Input
+                      className="mt-2"
+                      value={p.model}
+                      placeholder={t("model_custom_placeholder")}
+                      onChange={(e) => patchProvider(idx, { model: e.target.value })}
+                    />
+                  )}
                 </div>
+
                 <div className="md:col-span-2">
                   <Label>{t("api_key")}</Label>
                   <SecretInput
                     className="mt-1"
                     placeholder={t("api_key_placeholder")}
                     value={p.apiKey ?? ""}
-                    onChange={(e) => {
-                      const next = [...providers];
-                      next[idx] = { ...p, apiKey: e.target.value };
-                      setProviders(next);
-                    }}
+                    onChange={(e) => patchProvider(idx, { apiKey: e.target.value })}
                   />
                 </div>
-                <div className="flex items-end gap-4">
-                  <label className="flex items-center gap-2 text-sm">
+
+                <div className="flex items-center md:col-span-2">
+                  <label className="flex cursor-pointer items-center gap-2 text-sm">
                     <input
                       type="checkbox"
                       checked={p.isEnabled}
-                      onChange={(e) => {
-                        const next = [...providers];
-                        next[idx] = { ...p, isEnabled: e.target.checked };
-                        setProviders(next);
-                      }}
+                      onChange={(e) => patchProvider(idx, { isEnabled: e.target.checked })}
                     />
                     {t("enabled")}
                   </label>
                 </div>
               </div>
-              <div className="mt-3 flex flex-wrap gap-2">
+
+              <div className="mt-4 flex flex-wrap gap-2 border-t border-slate-100 pt-3">
                 <Button
                   type="button"
                   size="sm"
