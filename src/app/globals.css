@@ -691,14 +691,169 @@
     @apply py-3 text-center text-lg font-bold uppercase tracking-wide text-primary-700 md:text-xl dark:text-primary-500;
   }
 
+  .vietnam-branch-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 0.75rem;
+    overflow-x: clip;
+  }
+
+  @media (min-width: 1024px) {
+    .vietnam-branch-layout {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: center;
+      gap: 10px;
+    }
+  }
+
+  .vietnam-branch-address {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    border: 1px solid rgb(226 232 240 / 0.85);
+    background: linear-gradient(135deg, rgb(255 255 255 / 0.98) 0%, rgb(248 250 252 / 0.96) 100%);
+    box-shadow:
+      0 1px 2px rgb(15 23 42 / 0.04),
+      0 8px 24px -12px rgb(15 23 42 / 0.12);
+    transition:
+      box-shadow 0.35s ease,
+      border-color 0.35s ease,
+      transform 0.35s ease;
+  }
+
+  .vietnam-branch-address:hover {
+    border-color: rgb(244 63 94 / 0.22);
+    box-shadow:
+      0 2px 4px rgb(15 23 42 / 0.05),
+      0 14px 32px -14px rgb(190 18 60 / 0.18);
+    transform: translateY(-1px);
+  }
+
+  .dark .vietnam-branch-address {
+    border-color: rgb(51 65 85 / 0.75);
+    background: linear-gradient(135deg, rgb(15 23 42 / 0.92) 0%, rgb(30 41 59 / 0.88) 100%);
+  }
+
+  .vietnam-branch-address-accent {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(180deg, #fb7185 0%, #e11d48 55%, #be123c 100%);
+  }
+
+  .vietnam-branch-address-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    padding: 1.15rem 1.25rem 1.15rem 1.4rem;
+  }
+
+  @media (min-width: 768px) {
+    .vietnam-branch-address-body {
+      padding: 1.25rem 1.35rem 1.25rem 1.5rem;
+    }
+  }
+
+  .vietnam-branch-address-icon {
+    display: flex;
+    height: 2.75rem;
+    width: 2.75rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.9rem;
+    background: linear-gradient(145deg, rgb(255 241 242) 0%, rgb(254 226 226) 100%);
+    color: #e11d48;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8);
+  }
+
+  .dark .vietnam-branch-address-icon {
+    background: linear-gradient(145deg, rgb(76 5 25 / 0.55) 0%, rgb(127 29 29 / 0.35) 100%);
+    color: #fb7185;
+  }
+
+  .vietnam-branch-address-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(100 116 139);
+  }
+
+  .dark .vietnam-branch-address-label {
+    color: rgb(148 163 184);
+  }
+
+  .vietnam-branch-address-text {
+    margin-top: 0.4rem;
+    font-size: 0.975rem;
+    font-weight: 600;
+    line-height: 1.55;
+    color: rgb(30 41 59);
+    text-wrap: balance;
+    word-break: break-word;
+  }
+
+  @media (min-width: 768px) {
+    .vietnam-branch-address-text {
+      font-size: 1.02rem;
+    }
+  }
+
+  .dark .vietnam-branch-address-text {
+    color: rgb(241 245 249);
+  }
+
+  .vietnam-map-stage {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 0;
+    background: transparent;
+  }
+
   .vietnam-map-wrap {
+    position: relative;
+    width: min(100%, 13.5rem);
+    max-width: 100%;
+    margin-inline: auto;
+    overflow: hidden;
     background: transparent;
     border: none;
     box-shadow: none;
+    animation: vietnam-map-fade-in 0.65s ease-out both;
+  }
+
+  @media (min-width: 640px) {
+    .vietnam-map-wrap {
+      width: min(100%, 14.5rem);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .vietnam-map-wrap {
+      width: min(100%, 12.5rem);
+      margin-inline: auto;
+    }
   }
 
   .vietnam-map-image {
-    background: transparent;
+    display: block;
+    width: 100%;
+    height: auto;
+    background: transparent !important;
+    object-fit: contain;
+    object-position: center center;
+    pointer-events: none;
+    user-select: none;
   }
 
   .leadership-member-card {
@@ -764,6 +919,32 @@
   transform: translate(-50%, -100%);
   width: 0;
   height: 0;
+  max-width: 100%;
+}
+
+.vietnam-map-marker-label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.35rem);
+  z-index: 14;
+  display: block;
+  max-width: 5.5rem;
+  transform: translateX(-72%) rotate(-28deg);
+  transform-origin: 100% 100%;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  color: #be123c;
+  text-align: right;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.65);
+}
+
+.dark .vietnam-map-marker-label {
+  color: #fb7185;
+  text-shadow: 0 1px 2px rgb(15 23 42 / 0.55);
 }
 
 .vietnam-map-marker-pin {
@@ -875,6 +1056,15 @@
   }
   50% {
     transform: translate(-50%, -100%) translateY(-2px);
+  }
+}
+
+@keyframes vietnam-map-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 

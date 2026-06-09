@@ -92,14 +92,14 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
   if (items.length === 0) return null;
 
   return (
-    <section className="relative overflow-visible py-3">
-      <div className="container-narrow">
-        <div className="overflow-visible rounded-3xl border border-slate-200/80 bg-white px-3 py-4 shadow-sm md:px-6 md:py-6">
+    <section className="relative overflow-x-clip py-3">
+      <div className="container-narrow overflow-x-clip">
+        <div className="overflow-x-clip rounded-3xl border border-slate-200/80 bg-white px-3 py-4 shadow-sm md:px-6 md:py-6">
           <div className="text-center">
             <h2 className="about-section-title md:text-3xl">{title}</h2>
             <p className="mx-auto max-w-2xl py-3 text-sm text-muted-theme">{t("timeline_hint")}</p>
           </div>
-          <ol className="relative mx-auto max-w-5xl overflow-visible py-2">
+          <ol className="relative mx-auto max-w-5xl overflow-x-clip py-2">
           <div className="pointer-events-none absolute bottom-0 left-1/2 top-0 hidden -translate-x-1/2 md:block">
             <span className="block h-full border-l-2 border-dashed border-slate-300" />
             {hoveredIndex !== null && preparedItems[hoveredIndex] ? (
@@ -187,21 +187,20 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
                     ) : null}
                   </div>
 
-                  <div
-                    className={cn(
-                      "pointer-events-none absolute top-1/2 z-30 hidden w-[450px] max-w-[calc(100vw-2rem)] -translate-y-1/2 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl backdrop-blur md:block",
-                      alignRight ? "left-[calc(100%+0.55rem)]" : "right-[calc(100%+0.55rem)]",
-                      isHovered && item.images.length > 0 ? "opacity-100" : "opacity-0"
-                    )}
-                    style={popupOffset}
-                  >
-                    <span
+                  {isHovered && item.images.length > 0 ? (
+                    <div
                       className={cn(
-                        "absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 rotate-45 border border-slate-200 bg-white",
-                        alignRight ? "-left-2 border-r-0 border-t-0" : "-right-2 border-l-0 border-b-0"
+                        "pointer-events-none absolute top-1/2 z-30 hidden w-[min(450px,calc(100vw-2.5rem))] -translate-y-1/2 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl backdrop-blur md:block",
+                        alignRight ? "left-[calc(100%+0.55rem)]" : "right-[calc(100%+0.55rem)]"
                       )}
-                    />
-                    {item.images.length > 0 && (
+                      style={popupOffset}
+                    >
+                      <span
+                        className={cn(
+                          "absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 rotate-45 border border-slate-200 bg-white",
+                          alignRight ? "-left-2 border-r-0 border-t-0" : "-right-2 border-l-0 border-b-0"
+                        )}
+                      />
                       <div className="grid grid-cols-2 gap-2">
                         {item.images.slice(0, 4).map((src, imgIndex) => (
                           // eslint-disable-next-line @next/next/no-img-element
@@ -213,8 +212,8 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
                           />
                         ))}
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  ) : null}
                 </div>
               </li>
             );

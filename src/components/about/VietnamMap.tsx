@@ -1,7 +1,6 @@
 "use client";
 
 import type { CompanyBranch } from "@prisma/client";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { MapPin } from "lucide-react";
 import { getLocalizedField } from "@/lib/i18n-content";
@@ -23,23 +22,9 @@ function DanangMarker({ label, position }: { label: string; position: { left: st
       style={{ left: position.left, top: position.top }}
       aria-label={label}
     >
-      <svg
-        className="pointer-events-none absolute left-[-88px] top-[-88px] h-[140px] w-[200px] overflow-visible"
-        viewBox="0 0 200 140"
-        aria-hidden
-      >
-        <path
-          id="danang-s-curve"
-          d="M 12 118 C 48 108, 62 42, 98 58 S 168 18, 188 8"
-          fill="none"
-          stroke="none"
-        />
-        <text className="fill-rose-700 text-[11px] font-bold dark:fill-rose-300">
-          <textPath href="#danang-s-curve" startOffset="8%">
-            {label}
-          </textPath>
-        </text>
-      </svg>
+      <span className="vietnam-map-marker-label" aria-hidden>
+        {label}
+      </span>
 
       <span className="vietnam-map-marker-ripple vietnam-map-marker-ripple--1" aria-hidden />
       <span className="vietnam-map-marker-ripple vietnam-map-marker-ripple--2" aria-hidden />
@@ -81,38 +66,36 @@ export function VietnamMap({ title, branches, locale, hqAddress }: VietnamMapPro
   const markerPos = toVietnamMapPosition(hq.latitude, hq.longitude);
 
   return (
-    <PageSection muted tight>
+    <PageSection muted tight className="overflow-x-clip">
       <h2 className="about-emphasis-heading">{title}</h2>
 
-      <div className="mt-2.5 flex flex-col items-center gap-[10px] lg:flex-row lg:items-start lg:justify-start">
-        <div className="w-full max-w-md shrink-0 lg:w-auto">
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-900">
-            <div className="flex gap-3">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-950/60">
-                <MapPin className="h-5 w-5" />
-              </span>
-              <div className="min-w-0 text-left">
-                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  {t("hq_address_label")}
-                </p>
-                <p className="mt-1.5 text-base font-semibold leading-relaxed text-slate-800 md:text-lg dark:text-slate-100">
-                  {hqAddress}
-                </p>
-              </div>
+      <div className="vietnam-branch-layout">
+        <article className="vietnam-branch-address">
+          <div className="vietnam-branch-address-accent" aria-hidden />
+          <div className="vietnam-branch-address-body">
+            <span className="vietnam-branch-address-icon">
+              <MapPin className="h-5 w-5" strokeWidth={2.25} />
+            </span>
+            <div className="min-w-0 flex-1 text-left">
+              <p className="vietnam-branch-address-label">{t("hq_address_label")}</p>
+              <p className="vietnam-branch-address-text">{hqAddress}</p>
             </div>
           </div>
-        </div>
+        </article>
 
-        <div className="vietnam-map-wrap relative aspect-[4/5] w-full max-w-[280px] shrink-0 sm:max-w-[300px]">
-          <Image
-            src="/images/vietnam-map.png"
-            alt={t("map_alt")}
-            fill
-            priority
-            className="vietnam-map-image object-contain object-top"
-            sizes="(max-width: 1024px) 85vw, 380px"
-          />
-          <DanangMarker label={cityLabel} position={markerPos} />
+        <div className="vietnam-map-stage">
+          <div className="vietnam-map-wrap">
+            {/* Native img preserves PNG alpha; Next/Image can flatten transparency */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/vietnam-map.png?v=2"
+              alt={t("map_alt")}
+              className="vietnam-map-image"
+              decoding="async"
+              draggable={false}
+            />
+            <DanangMarker label={cityLabel} position={markerPos} />
+          </div>
         </div>
       </div>
     </PageSection>

@@ -33,7 +33,7 @@ export default async function AboutPage({
   const headerLead = headerSubtitle || headerTitle;
 
   return (
-    <div className="bg-linear-to-b from-violet-50/50 via-white to-blue-50/40">
+    <div className="overflow-x-clip bg-linear-to-b from-violet-50/50 via-white to-blue-50/40">
       <PageHeader
         title={headerTitle}
         subtitle={headerLead}
