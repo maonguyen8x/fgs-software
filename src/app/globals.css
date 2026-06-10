@@ -703,9 +703,9 @@
 
   @media (min-width: 1024px) {
     .vietnam-branch-layout {
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
       align-items: center;
-      gap: 10px;
+      gap: 1.25rem;
     }
   }
 
@@ -822,7 +822,7 @@
 
   .vietnam-map-wrap {
     position: relative;
-    width: min(100%, 13.5rem);
+    width: min(100%, 18rem);
     max-width: 100%;
     margin-inline: auto;
     overflow: hidden;
@@ -834,13 +834,13 @@
 
   @media (min-width: 640px) {
     .vietnam-map-wrap {
-      width: min(100%, 14.5rem);
+      width: min(100%, 20rem);
     }
   }
 
   @media (min-width: 1024px) {
     .vietnam-map-wrap {
-      width: min(100%, 12.5rem);
+      width: min(100%, 22rem);
       margin-inline: auto;
     }
   }
@@ -925,13 +925,13 @@
 .vietnam-map-marker-label {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 0.35rem);
+  bottom: calc(100% + 0.45rem);
   z-index: 14;
   display: block;
-  max-width: 5.5rem;
+  max-width: 7rem;
   transform: translateX(-72%) rotate(-28deg);
   transform-origin: 100% 100%;
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0.02em;
@@ -960,9 +960,9 @@
 
 .vietnam-map-marker-pin-icon {
   display: block;
-  width: 1.65rem;
-  height: 2.35rem;
-  filter: drop-shadow(0 4px 10px rgb(190 18 60 / 0.45));
+  width: 2.25rem;
+  height: 3.2rem;
+  filter: drop-shadow(0 4px 12px rgb(190 18 60 / 0.5));
 }
 
 .vietnam-map-marker-pin-core {

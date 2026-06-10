@@ -17,6 +17,13 @@ const schema = z.object({
   isVisible: z.boolean().default(true),
 });
 
+export async function GET() {
+  const { error } = await requireAdminSession();
+  if (error) return error;
+  const rows = await prisma.companyActivity.findMany({ orderBy: { order: "asc" } });
+  return NextResponse.json(rows);
+}
+
 export async function POST(request: Request) {
   const { error } = await requireAdminSession();
   if (error) return error;

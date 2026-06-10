@@ -11,6 +11,7 @@ import { HeroSlidesPanel } from "@/components/admin/HeroSlidesPanel";
 import { ClientsSectionSettingsPanel } from "@/components/admin/ClientsSectionSettingsPanel";
 import { TeamPageSettingsPanel } from "@/components/admin/TeamPageSettingsPanel";
 import { AboutBranchSettingsPanel } from "@/components/admin/AboutBranchSettingsPanel";
+import { AboutActivitiesSettingsPanel } from "@/components/admin/AboutActivitiesSettingsPanel";
 import { SiteNoticeSettingsPanel } from "@/components/admin/SiteNoticeSettingsPanel";
 import { AdminPanelSkeleton } from "@/components/admin/AdminPanelSkeleton";
 import { AdminSettingsLocaleSwitcher } from "@/components/admin/AdminSettingsLocaleSwitcher";
@@ -56,6 +57,10 @@ export default async function AdminSettingsPage() {
 
         <AdminContentBlock sectionId="settings-about-branch">
           <AboutBranchSettingsPanel settings={settings} />
+        </AdminContentBlock>
+
+        <AdminContentBlock sectionId="settings-about-activities">
+          <AboutActivitiesSettingsPanel />
         </AdminContentBlock>
 
         <AdminContentBlock sectionId="settings-site-notice">
