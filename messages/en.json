@@ -239,7 +239,7 @@
   "admin": {
     "sidebar": {
       "dashboard": "Dashboard",
-      "team": "Team",
+      "team": "About Us",
       "founders": "Founders",
       "timeline": "Timeline",
       "activities": "Activities",
@@ -275,8 +275,8 @@
       "close": "Close"
     },
     "team": {
-      "title": "Team",
-      "subtitle": "Manage members and founders (founders appear on the public Team section).",
+      "title": "About Us",
+      "subtitle": "Manage members and founders (founders appear on the public About Us section).",
       "tab_members": "Members",
       "tab_founders": "Founders",
       "add_member": "Add member",
@@ -433,6 +433,7 @@
         "clients_section": "Clients marquee",
         "team_page": "About Us page",
         "about_branch": "Branches (About)",
+        "about_activities": "Activities (About)",
         "site_notice": "Homepage notice",
         "header_nav": "Header navigation",
         "locale_panel": "Multilingual",
@@ -577,6 +578,34 @@
         "saving": "Saving...",
         "save_success": "About Us page settings saved",
         "save_failed": "Save failed"
+      },
+      "about_activities": {
+        "title": "About page — Company activities",
+        "subtitle": "Upload activity photos from your computer. Each image appears on the About page in an alternating layout with its description.",
+        "upload_images": "Upload images from computer",
+        "upload_hint": "Select one or more images (PNG, JPEG, WebP). Each file becomes one activity item.",
+        "replace_image": "Replace",
+        "description_en": "Description (English)",
+        "description_vi": "Description (Vietnamese)",
+        "description_ja": "Description (Japanese)",
+        "description_placeholder": "Describe this activity moment…",
+        "default_title": "Company activity",
+        "order": "Order",
+        "visible": "Visible",
+        "hidden": "Hidden",
+        "save": "Save",
+        "loading": "Loading activities…",
+        "empty": "No activity images yet. Upload photos to show them on the About page.",
+        "upload_success": "Image uploaded",
+        "upload_many_success": "Added {count} activity images",
+        "upload_failed": "Upload failed",
+        "save_success": "Activity saved",
+        "save_failed": "Save failed",
+        "delete_confirm": "Remove this activity image?",
+        "delete_success": "Removed",
+        "delete_failed": "Delete failed",
+        "load_failed": "Could not load activities",
+        "display_hint": "Top-to-bottom order matches the alternating layout on the public About page."
       },
       "about_branch": {
         "title": "About page — Branches",

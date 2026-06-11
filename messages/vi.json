@@ -239,7 +239,7 @@
   "admin": {
     "sidebar": {
       "dashboard": "Bảng điều khiển",
-      "team": "Đội ngũ",
+      "team": "Về chúng tôi",
       "founders": "Nhà sáng lập",
       "timeline": "Timeline",
       "activities": "Hoạt động",
@@ -275,8 +275,8 @@
       "close": "Đóng"
     },
     "team": {
-      "title": "Đội ngũ",
-      "subtitle": "Quản lý thành viên và nhà sáng lập (nhà sáng lập hiển thị trong mục Đội ngũ công khai).",
+      "title": "Về chúng tôi",
+      "subtitle": "Quản lý thành viên và nhà sáng lập (nhà sáng lập hiển thị trong mục Về chúng tôi công khai).",
       "tab_members": "Thành viên",
       "tab_founders": "Nhà sáng lập",
       "add_member": "Thêm thành viên",
@@ -433,6 +433,7 @@
         "clients_section": "Marquee khách hàng",
         "team_page": "Trang Giới thiệu",
         "about_branch": "Chi nhánh (Giới thiệu)",
+        "about_activities": "Hoạt động (Giới thiệu)",
         "site_notice": "Thông báo trang chủ",
         "header_nav": "Menu header",
         "locale_panel": "Đa ngôn ngữ",
@@ -577,6 +578,34 @@
         "saving": "Đang lưu...",
         "save_success": "Đã lưu cài đặt trang Về chúng tôi",
         "save_failed": "Lưu thất bại"
+      },
+      "about_activities": {
+        "title": "Hoạt động công ty — trang Giới thiệu",
+        "subtitle": "Tải lên hình ảnh hoạt động từ máy tính. Mỗi ảnh hiển thị trên trang Giới thiệu theo bố cục so le kèm mô tả.",
+        "upload_images": "Tải ảnh từ máy tính",
+        "upload_hint": "Chọn một hoặc nhiều ảnh (PNG, JPEG, WebP). Mỗi file tạo một mục hoạt động.",
+        "replace_image": "Thay ảnh",
+        "description_en": "Mô tả (English)",
+        "description_vi": "Mô tả (Tiếng Việt)",
+        "description_ja": "Mô tả (日本語)",
+        "description_placeholder": "Mô tả về khoảnh khắc hoạt động này…",
+        "default_title": "Hoạt động công ty",
+        "order": "Thứ tự",
+        "visible": "Đang hiện",
+        "hidden": "Đang ẩn",
+        "save": "Lưu",
+        "loading": "Đang tải danh sách…",
+        "empty": "Chưa có ảnh hoạt động. Tải ảnh lên để hiển thị trên trang Giới thiệu.",
+        "upload_success": "Đã tải ảnh lên",
+        "upload_many_success": "Đã thêm {count} ảnh hoạt động",
+        "upload_failed": "Tải ảnh thất bại",
+        "save_success": "Đã lưu hoạt động",
+        "save_failed": "Lưu thất bại",
+        "delete_confirm": "Xóa ảnh hoạt động này?",
+        "delete_success": "Đã xóa",
+        "delete_failed": "Xóa thất bại",
+        "load_failed": "Không tải được danh sách",
+        "display_hint": "Thứ tự từ trên xuống tương ứng bố cục so le trên trang Giới thiệu công khai."
       },
       "about_branch": {
         "title": "Chi nhánh trang Giới thiệu",

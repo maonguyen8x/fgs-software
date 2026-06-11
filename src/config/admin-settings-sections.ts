@@ -12,6 +12,7 @@ export const ADMIN_SETTINGS_SECTIONS: AdminSettingsSection[] = [
   { id: "settings-clients", labelKey: "clients_section", group: "panels" },
   { id: "settings-team-page", labelKey: "team_page", group: "panels" },
   { id: "settings-about-branch", labelKey: "about_branch", group: "panels" },
+  { id: "settings-about-activities", labelKey: "about_activities", group: "panels" },
   { id: "settings-site-notice", labelKey: "site_notice", group: "panels" },
   { id: "settings-header-nav", labelKey: "header_nav", group: "panels" },
   { id: "settings-locale", labelKey: "locale_panel", group: "panels" },

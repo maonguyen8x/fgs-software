@@ -239,7 +239,7 @@
   "admin": {
     "sidebar": {
       "dashboard": "ダッシュボード",
-      "team": "チーム",
+      "team": "私たちについて",
       "founders": "創業者",
       "timeline": "タイムライン",
       "activities": "活動",
@@ -275,8 +275,8 @@
       "close": "閉じる"
     },
     "team": {
-      "title": "チーム",
-      "subtitle": "メンバーと創業者を管理（創業者は公開チーム欄に表示）。",
+      "title": "私たちについて",
+      "subtitle": "メンバーと創業者を管理（創業者は公開の「私たちについて」欄に表示）。",
       "tab_members": "メンバー",
       "tab_founders": "創業者",
       "add_member": "メンバーを追加",
@@ -433,6 +433,7 @@
         "clients_section": "クライアントマーキー",
         "team_page": "会社概要ページ",
         "about_branch": "拠点（会社概要）",
+        "about_activities": "活動（会社概要）",
         "site_notice": "ホームお知らせ",
         "header_nav": "ヘッダーナビ",
         "locale_panel": "多言語",
@@ -576,6 +577,34 @@
         "saving": "保存中...",
         "save_success": "保存しました",
         "save_failed": "保存に失敗しました"
+      },
+      "about_activities": {
+        "title": "会社概要 — 社内活動",
+        "subtitle": "PCから活動写真をアップロード。各画像は会社概要ページに交互レイアウトで説明文とともに表示されます。",
+        "upload_images": "PCから画像をアップロード",
+        "upload_hint": "1枚以上選択（PNG、JPEG、WebP）。各ファイルが1つの活動項目になります。",
+        "replace_image": "差し替え",
+        "description_en": "説明（英語）",
+        "description_vi": "説明（ベトナム語）",
+        "description_ja": "説明（日本語）",
+        "description_placeholder": "この活動の説明を入力…",
+        "default_title": "会社の活動",
+        "order": "順序",
+        "visible": "表示中",
+        "hidden": "非表示",
+        "save": "保存",
+        "loading": "読み込み中…",
+        "empty": "活動画像がありません。アップロードすると会社概要ページに表示されます。",
+        "upload_success": "画像をアップロードしました",
+        "upload_many_success": "{count}件の活動画像を追加しました",
+        "upload_failed": "アップロードに失敗しました",
+        "save_success": "保存しました",
+        "save_failed": "保存に失敗しました",
+        "delete_confirm": "この活動画像を削除しますか？",
+        "delete_success": "削除しました",
+        "delete_failed": "削除に失敗しました",
+        "load_failed": "一覧を読み込めません",
+        "display_hint": "上からの順序が公開ページの交互レイアウトの表示順になります。"
       },
       "about_branch": {
         "title": "会社概要 — 拠点",

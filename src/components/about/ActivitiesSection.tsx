@@ -14,56 +14,95 @@ interface ActivitiesSectionProps {
   locale: Locale;
 }
 
+type ActivityDisplayItem = {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
+};
+
+function flattenActivities(items: CompanyActivity[], locale: Locale): ActivityDisplayItem[] {
+  const result: ActivityDisplayItem[] = [];
+  for (const item of items) {
+    const title = getLocalizedField(item, "title", locale);
+    const description = getLocalizedField(item, "description", locale);
+    const images = item.images ?? [];
+    if (images.length === 0) {
+      if (title || description) {
+        result.push({ id: item.id, image: "", title, description });
+      }
+      continue;
+    }
+    images.forEach((image, index) => {
+      result.push({
+        id: `${item.id}-${index}`,
+        image,
+        title,
+        description,
+      });
+    });
+  }
+  return result;
+}
+
 export function ActivitiesSection({ title, items, locale }: ActivitiesSectionProps) {
   const t = useTranslations("about");
+  const displayItems = flattenActivities(items, locale);
 
-  if (items.length === 0) return null;
+  if (displayItems.length === 0) return null;
 
   return (
     <PageSection muted tight>
       <div className="text-center">
-        <p className="py-3 text-sm font-semibold uppercase tracking-widest text-primary-600">{t("activities_badge")}</p>
+        <p className="py-3 text-sm font-semibold uppercase tracking-widest text-primary-600">
+          {t("activities_badge")}
+        </p>
         <h2 className="about-section-title !py-3">{title}</h2>
         <p className="mx-auto max-w-xl py-3 text-sm text-muted-theme">{t("activities_subtitle")}</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
-        {items.map((item) => {
-          const titleText = getLocalizedField(item, "title", locale);
-          const description = getLocalizedField(item, "description", locale);
-          const images = item.images ?? [];
-
+      <div className="mx-auto mt-4 max-w-5xl space-y-10 md:space-y-14">
+        {displayItems.map((item, index) => {
+          const reversed = index % 2 === 1;
           return (
             <article
               key={item.id}
-              className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-900"
+              className={cn(
+                "flex flex-col gap-6 md:items-center md:gap-10",
+                reversed ? "md:flex-row-reverse" : "md:flex-row"
+              )}
             >
-              {images.length > 0 && (
-                <div
-                  className={cn(
-                    "grid gap-1",
-                    images.length === 1 && "grid-cols-1",
-                    images.length === 2 && "grid-cols-2",
-                    images.length >= 3 && "grid-cols-2"
-                  )}
-                >
-                  {images.slice(0, 4).map((src, i) => (
-                    <div
-                      key={`${item.id}-${i}`}
-                      className={cn(
-                        "relative aspect-[4/3] bg-slate-100",
-                        images.length >= 3 && i === 0 && "col-span-2 aspect-[21/9]"
-                      )}
-                    >
-                      <Image src={src} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 50vw" unoptimized />
-                    </div>
-                  ))}
+              {item.image && (
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100 shadow-md md:w-[52%]">
+                  <Image
+                    src={item.image}
+                    alt={item.title || item.description || ""}
+                    fill
+                    className="object-cover transition-transform duration-500 hover:scale-[1.02]"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    unoptimized
+                  />
                 </div>
               )}
-              <div className="p-5 md:p-6">
-                {titleText && <h3 className="text-lg font-bold text-heading">{titleText}</h3>}
-                {description && (
-                  <p className="mt-2 text-sm leading-relaxed text-muted-theme whitespace-pre-line">{description}</p>
+
+              <div
+                className={cn(
+                  "flex flex-1 flex-col justify-center text-left md:min-w-0 md:max-w-[48%]",
+                  !item.image && "md:max-w-none"
+                )}
+              >
+                {item.title && (
+                  <h3 className="text-xl font-bold text-heading md:text-2xl">{item.title}</h3>
+                )}
+                {item.description && (
+                  <p
+                    className={cn(
+                      "text-sm leading-relaxed text-muted-theme whitespace-pre-line md:text-base",
+                      item.title && "mt-3"
+                    )}
+                  >
+                    {item.description}
+                  </p>
                 )}
               </div>
             </article>
