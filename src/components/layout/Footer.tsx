@@ -3,9 +3,12 @@
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Linkedin, Github, Facebook, Mail, Phone, MapPin } from "lucide-react";
+import type { HeaderNavConfig } from "@/lib/header-nav";
+import { NAV_ID_INTERNAL_ROUTES } from "@/lib/public-paths";
 
 interface FooterProps {
   companyName: string;
+  navConfig: HeaderNavConfig;
   settings: {
     linkedin_url?: string;
     github_url?: string;
@@ -16,17 +19,22 @@ interface FooterProps {
   };
 }
 
-export function Footer({ companyName, settings }: FooterProps) {
+function hrefForNavId(navConfig: HeaderNavConfig, id: string): string {
+  const item = navConfig.items.find((entry) => entry.id === id && entry.enabled);
+  return item?.href ?? NAV_ID_INTERNAL_ROUTES[id] ?? `/${id}`;
+}
+
+export function Footer({ companyName, navConfig, settings }: FooterProps) {
   const t = useTranslations("nav");
   const tf = useTranslations("footer");
   const year = new Date().getFullYear();
   const links = [
-    { href: "/about", label: t("about") },
-    { href: "/services", label: t("services") },
-    { href: "/team", label: t("team") },
-    { href: "/works", label: t("works") },
-    { href: "/contact", label: t("contact") },
-  ] as const;
+    { id: "about", label: t("about") },
+    { id: "services", label: t("services") },
+    { id: "team", label: t("team") },
+    { id: "works", label: t("works") },
+    { id: "contact", label: t("contact") },
+  ].map((link) => ({ ...link, href: hrefForNavId(navConfig, link.id) }));
 
   const linkClass =
     "text-sm font-semibold text-white/85 transition-colors hover:text-white focus-visible:text-white";
@@ -38,7 +46,7 @@ export function Footer({ companyName, settings }: FooterProps) {
       <div className="container-narrow px-4 py-10 md:px-8">
         <nav aria-label={tf("nav_label")} className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           {links.map((link) => (
-            <Link key={link.href} href={link.href} className={linkClass}>
+            <Link key={link.id} href={link.href} className={linkClass}>
               {link.label}
             </Link>
           ))}

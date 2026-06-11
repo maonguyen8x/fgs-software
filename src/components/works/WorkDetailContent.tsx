@@ -7,6 +7,7 @@ import type { Locale } from "@/i18n/routing";
 import type { Work } from "@prisma/client";
 import { WorkDetailGallery } from "@/components/works/WorkDetailGallery";
 import { WorkVideoPlayer } from "@/components/works/WorkVideoPlayer";
+import { usePublicPath } from "@/components/providers/PublicPathsProvider";
 
 const CATEGORY_LABELS: Record<string, string> = {
   web: "Web",
@@ -34,6 +35,7 @@ interface WorkDetailContentProps {
 }
 
 export function WorkDetailContent({ work, locale, images, labels }: WorkDetailContentProps) {
+  const worksListHref = usePublicPath("/works");
   const title = getLocalizedField(work, "title", locale);
   const summary = getLocalizedField(work, "summary", locale);
   const description = getLocalizedField(work, "description", locale);
@@ -44,7 +46,7 @@ export function WorkDetailContent({ work, locale, images, labels }: WorkDetailCo
   return (
     <div className="mx-auto max-w-4xl">
       <Link
-        href="/works"
+        href={worksListHref}
         className="mb-5 inline-flex w-fit cursor-pointer items-center gap-2 text-sm font-medium text-primary-600 transition-colors hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
       >
         <ArrowLeft className="h-4 w-4" />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/i18n/navigation";
 
 /** Thin top bar while a route transition is in progress — immediate visual feedback on header clicks. */
 export function NavigationProgress() {

@@ -4,7 +4,8 @@ import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { getAdminLoginSecret, isDefaultAdminLoginDisabled } from "@/config/admin";
 import { routing } from "./i18n/routing";
-import { resolveMiddlewareDefaultLocale } from "./lib/middleware-default-locale";
+import { getMiddlewareBootstrap } from "./lib/middleware-bootstrap-cache";
+import { resolvePublicPathMiddlewareWithMaps } from "./lib/middleware-public-paths";
 import { SITE_DEFAULT_LOCALE_COOKIE } from "./lib/site-default-locale-keys";
 
 const ADMIN_PUBLIC_PATHS = [
@@ -95,14 +96,24 @@ export async function middleware(request: NextRequest) {
       return forwardWithPathname(request, pathname);
     }
 
-    const siteDefaultLocale = await resolveMiddlewareDefaultLocale(request);
+    const { defaultLocale: siteDefaultLocale, pathMaps } = await getMiddlewareBootstrap(request);
+    const pathResult = resolvePublicPathMiddlewareWithMaps(request, pathMaps);
+    if (pathResult.kind === "redirect") {
+      return NextResponse.redirect(pathResult.url);
+    }
     const intlMiddleware = createIntlMiddleware({
       locales: routing.locales,
       defaultLocale: siteDefaultLocale,
       localePrefix: routing.localePrefix,
       localeDetection: false,
     });
-    const response = intlMiddleware(request);
+    const intlResponse = intlMiddleware(request);
+    const response =
+      pathResult.kind === "rewrite" ? NextResponse.rewrite(pathResult.url) : intlResponse;
+
+    intlResponse.cookies.getAll().forEach((cookie) => {
+      response.cookies.set(cookie.name, cookie.value, cookie);
+    });
     response.cookies.set(SITE_DEFAULT_LOCALE_COOKIE, siteDefaultLocale, {
       path: "/",
       maxAge: 60 * 60 * 24 * 365,

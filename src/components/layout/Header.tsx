@@ -3,8 +3,7 @@
 import { usePathname } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
-import { useEffect, useState, useTransition } from "react";
-import { useRouter } from "@/i18n/navigation";
+import { useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FgsLogo } from "@/components/brand/FgsLogo";
@@ -18,7 +17,6 @@ import {
 } from "@/lib/header-nav";
 import type { Locale } from "@/i18n/routing";
 import type { LogoDisplayMode } from "@/lib/brand-logo";
-import { HeaderNavPrefetch } from "@/components/layout/HeaderNavPrefetch";
 
 interface HeaderProps {
   companyName: string;
@@ -37,39 +35,17 @@ export function Header({
   navConfig,
 }: HeaderProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const locale = useLocale() as Locale;
   const [open, setOpen] = useState(false);
   const [openSub, setOpenSub] = useState<string | null>(null);
-  const [pendingHref, setPendingHref] = useState<string | null>(null);
-  const [, startTransition] = useTransition();
-
-  useEffect(() => {
-    setPendingHref(null);
-  }, [pathname]);
 
   const items = navConfig.items.filter((item) => item.enabled);
-  const prefetchHrefs = items.flatMap((item) => [
-    item.href,
-    ...(item.children ?? []).filter((c) => c.enabled).map((c) => c.href),
-  ]);
 
   const baseLinkClass =
     "relative inline-block font-semibold tracking-wide transition-colors duration-150";
 
-  const navigate = (href: string, onDone?: () => void) => {
-    setPendingHref(href);
-    startTransition(() => {
-      router.push(href);
-      onDone?.();
-    });
-  };
-
   const renderNavLink = (item: HeaderNavItem, mobile?: boolean) => {
-    const active =
-      isNavHrefActive(pathname, item.href, item.exact) ||
-      pendingHref === item.href ||
-      (pendingHref !== null && !item.exact && pendingHref.startsWith(`${item.href}/`));
+    const active = isNavHrefActive(pathname, item.href, item.exact);
     const style = navItemStyle(item, navConfig.global, active);
     const label = labelForNavItem(item, locale);
     const hasChildren = (item.children ?? []).filter((c) => c.enabled).length > 0;
@@ -120,10 +96,7 @@ export function Header({
                         childActive ? "font-semibold text-primary-600" : "text-muted-theme"
                       )}
                       aria-current={childActive ? "page" : undefined}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate(child.href, () => setOpenSub(null));
-                      }}
+                      onClick={() => setOpenSub(null)}
                     >
                       {labelForNavItem(child, locale)}
                     </Link>
@@ -150,11 +123,8 @@ export function Header({
         )}
         style={style}
         aria-current={active ? "page" : undefined}
-        onClick={(e) => {
-          e.preventDefault();
-          navigate(item.href, () => {
-            if (mobile) setOpen(false);
-          });
+        onClick={() => {
+          if (mobile) setOpen(false);
         }}
       >
         {label}
@@ -164,7 +134,6 @@ export function Header({
 
   return (
     <header className="sticky top-0 z-50 border-b border-theme bg-surface shadow-sm">
-      <HeaderNavPrefetch hrefs={prefetchHrefs} />
       <div className="container-narrow flex h-16 items-center justify-between px-4 md:px-8">
         <FgsLogo href="/" companyName={companyName} size="md" logoUrl={logoUrl} logoMode={logoMode} />
 

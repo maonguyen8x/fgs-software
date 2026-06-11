@@ -12,6 +12,7 @@ import {
   TEAM_PORTRAIT_CARD_FRAME_CLASS,
   TEAM_PORTRAIT_CARD_IMAGE_CLASS,
 } from "@/lib/portrait-image";
+import { usePublicPath } from "@/components/providers/PublicPathsProvider";
 
 interface LeadershipMemberCardProps {
   member: Founder;
@@ -21,7 +22,7 @@ export function LeadershipMemberCard({ member }: LeadershipMemberCardProps) {
   const locale = useLocale() as Locale;
   const role = getLocalizedField(member, "role", locale);
   const avatarSrc = member.avatar?.split("?")[0];
-  const detailHref = `/team/leader/${member.id}`;
+  const detailHref = usePublicPath(`/team/leader/${member.id}`);
 
   return (
     <Link

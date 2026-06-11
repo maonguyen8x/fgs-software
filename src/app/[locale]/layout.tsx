@@ -21,6 +21,8 @@ import { SiteExperienceShell } from "@/components/layout/SiteExperienceShell";
 import { HydrationNotice } from "@/components/errors/HydrationNotice";
 import { resolveLogoDisplay } from "@/lib/brand-logo";
 import { parseChatbotPosition } from "@/lib/chatbot-position";
+import { parsePublicPathMapsFromSettings } from "@/lib/public-paths";
+import { PublicPathsProvider } from "@/components/providers/PublicPathsProvider";
 
 /** Layout shell is cached via getCachedLayoutSettings; pages control their own revalidation. */
 export const revalidate = 120;
@@ -56,6 +58,10 @@ export default async function LocaleLayout({
       : fontFamily === "system"
         ? "font-sans"
         : "";
+  const navConfig = parseHeaderNavConfig(settings.header_nav_json);
+  const publicPathMaps = parsePublicPathMapsFromSettings(settings);
+  const contactPublicPath =
+    navConfig.items.find((item) => item.id === "contact" && item.enabled)?.href ?? "/contact";
 
   return (
     <NextIntlClientProvider messages={messages} timeZone={DEFAULT_TIME_ZONE}>
@@ -68,24 +74,23 @@ export default async function LocaleLayout({
           <VisitTracker />
           <div className={fontClass}>
             <SiteExperienceShell locale={locale as Locale} initialSettings={settings}>
-              <Header
-                companyName={companyName}
-                logoUrl={logoUrl}
-                logoMode={logoMode}
-                navConfig={parseHeaderNavConfig(settings.header_nav_json)}
-              />
-            <main className="min-h-screen bg-theme">{children}</main>
-            <Footer
-              companyName={companyName}
-              settings={{
-                linkedin_url: settings.linkedin_url,
-                github_url: settings.github_url,
-                facebook_url: settings.facebook_url,
-                address: settings.address,
-                phone: settings.phone,
-                admin_email: settings.admin_email,
-              }}
-            />
+              <PublicPathsProvider maps={publicPathMaps}>
+                <Header
+                  companyName={companyName}
+                  logoUrl={logoUrl}
+                  logoMode={logoMode}
+                  navConfig={navConfig}
+                />
+                <main className="min-h-screen bg-theme">{children}</main>
+                <Footer companyName={companyName} navConfig={navConfig} settings={{
+                  linkedin_url: settings.linkedin_url,
+                  github_url: settings.github_url,
+                  facebook_url: settings.facebook_url,
+                  address: settings.address,
+                  phone: settings.phone,
+                  admin_email: settings.admin_email,
+                }} />
+              </PublicPathsProvider>
             <Toaster position="top-right" richColors />
             <GoogleAnalytics gaId={settings.ga_id} />
           </SiteExperienceShell>
@@ -93,7 +98,7 @@ export default async function LocaleLayout({
             <ChatbotWidget
               companyName={companyName}
               assistantName={assistantName}
-              contactHref={`/${locale}/contact`}
+              contactHref={contactPublicPath}
               position={parseChatbotPosition(settings.chatbot_position)}
             />
           )}

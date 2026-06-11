@@ -11,7 +11,6 @@ import { AdminTopBar } from "@/components/admin/AdminTopBar";
 import { AdminSessionProvider } from "@/components/providers/AdminSessionProvider";
 import { AdminMainScroll } from "@/components/admin/AdminMainScroll";
 import { AdminNavProgress } from "@/components/admin/AdminNavProgress";
-import { AdminPageSkeleton } from "@/components/admin/AdminPageSkeleton";
 
 export default async function AdminLayout({
   children,
@@ -43,7 +42,7 @@ export default async function AdminLayout({
               <AdminMainScroll />
             </Suspense>
             <AdminNavProgress />
-            <Suspense fallback={<AdminPageSkeleton />}>{children}</Suspense>
+            {children}
           </main>
         </div>
         <Suspense fallback={null}>

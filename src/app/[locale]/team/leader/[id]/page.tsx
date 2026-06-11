@@ -11,6 +11,11 @@ import {
   TEAM_PORTRAIT_DETAIL_FRAME_CLASS,
   TEAM_PORTRAIT_DETAIL_IMAGE_CLASS,
 } from "@/lib/portrait-image";
+import { getCachedLayoutSettings } from "@/lib/cache/layout-settings";
+import {
+  parsePublicPathMapsFromSettings,
+  resolveInternalToPublic,
+} from "@/lib/public-paths";
 
 export default async function LeaderDetailPage({
   params,
@@ -22,9 +27,17 @@ export default async function LeaderDetailPage({
   const loc = locale as Locale;
   const t = await getTranslations("team.leadership");
 
-  const founders = await getCachedFounders();
+  const [founders, layoutSettings] = await Promise.all([
+    getCachedFounders(),
+    getCachedLayoutSettings(),
+  ]);
   const member = founders.find((f) => f.id === id && f.isVisible);
   if (!member) notFound();
+
+  const teamListHref = resolveInternalToPublic(
+    "/team",
+    parsePublicPathMapsFromSettings(layoutSettings)
+  );
 
   const role = getLocalizedField(member, "role", loc);
   const slogan = getLocalizedField(member, "slogan", loc);
@@ -36,7 +49,7 @@ export default async function LeaderDetailPage({
       <section className="team-flow-section">
         <div className="team-page-inner">
           <Link
-            href="/team"
+            href={teamListHref}
             className="mb-6 inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-600 transition-colors hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
           >
             <ArrowLeft className="h-4 w-4" />
