@@ -82,7 +82,7 @@ export const DEFAULT_HEADER_NAV: HeaderNavConfig = {
       href: "/team",
       labelEn: "About Us",
       labelVi: "Về chúng tôi",
-      labelJa: "私たちについて",
+      labelJa: "メンバー紹介",
       enabled: true,
     },
     {
@@ -109,9 +109,19 @@ export function parseHeaderNavConfig(raw: string | undefined): HeaderNavConfig {
   try {
     const parsed = JSON.parse(raw) as HeaderNavConfig;
     if (!parsed?.items || !Array.isArray(parsed.items)) return DEFAULT_HEADER_NAV;
+    const items = (parsed.items.length > 0 ? parsed.items : DEFAULT_HEADER_NAV.items).map(
+      (item) => {
+        if (item.id !== "team") return item;
+        const ja = item.labelJa?.trim();
+        if (ja === "チーム" || ja === "私たちについて") {
+          return { ...item, labelJa: "メンバー紹介" };
+        }
+        return item;
+      }
+    );
     return {
       global: { ...DEFAULT_HEADER_NAV.global, ...parsed.global },
-      items: parsed.items.length > 0 ? parsed.items : DEFAULT_HEADER_NAV.items,
+      items,
     };
   } catch {
     return DEFAULT_HEADER_NAV;

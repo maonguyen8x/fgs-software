@@ -2,8 +2,15 @@ import nodemailer from "nodemailer";
 import type { Transporter } from "nodemailer";
 import { Resend } from "resend";
 import { logger } from "@/lib/logger";
+import {
+  DEFAULT_CONTACT_INBOX,
+  isEmailConfigActive,
+  resolveContactInboxFromConfig,
+  resolveEmailConfig,
+  type ResolvedEmailConfig,
+} from "@/lib/email/config";
 
-export const DEFAULT_CONTACT_INBOX = "contact.fgssoftware@gmail.com";
+export { DEFAULT_CONTACT_INBOX } from "@/lib/email/config";
 
 export interface ContactEmailData {
   name: string;
@@ -52,15 +59,15 @@ function isPlaceholderApiKey(value: string | undefined): boolean {
   return /x{4,}/i.test(v) || v === "re_xxxxxxxxxxxx" || v === "sk-xxxxxxxx";
 }
 
-function getSmtpTransporter(): Transporter | null {
-  const user = process.env.GMAIL_USER?.trim() || process.env.SMTP_USER?.trim();
-  const pass = process.env.GMAIL_APP_PASSWORD?.trim() || process.env.SMTP_PASSWORD?.trim();
+function getSmtpTransporter(config: ResolvedEmailConfig): Transporter | null {
+  const user = config.gmailUser;
+  const pass = config.gmailAppPassword;
   if (!user || !pass) return null;
 
-  const host = process.env.SMTP_HOST?.trim();
+  const host = config.smtpHost;
   if (host) {
-    const port = Number(process.env.SMTP_PORT || 587);
-    const secure = process.env.SMTP_SECURE === "true" || port === 465;
+    const port = config.smtpPort || 587;
+    const secure = config.smtpSecure || port === 465;
     return nodemailer.createTransport({
       host,
       port,
@@ -75,30 +82,23 @@ function getSmtpTransporter(): Transporter | null {
   });
 }
 
-function getResendClient(): Resend | null {
-  const key = process.env.RESEND_API_KEY?.trim();
+function getResendClient(config: ResolvedEmailConfig): Resend | null {
+  const key = config.resendApiKey;
   if (!key || isPlaceholderApiKey(key)) return null;
   return new Resend(key);
 }
 
-export function isContactEmailConfigured(): boolean {
-  return Boolean(getSmtpTransporter() || getResendClient());
+export function isContactEmailConfigured(settings?: Record<string, string>): boolean {
+  return isEmailConfigActive(resolveEmailConfig(settings));
 }
 
 export function getDefaultAdminEmail(): string {
-  return (
-    process.env.CONTACT_ADMIN_EMAIL?.trim() ||
-    process.env.ADMIN_EMAIL?.trim() ||
-    DEFAULT_CONTACT_INBOX
-  );
+  return resolveEmailConfig().contactInbox || DEFAULT_CONTACT_INBOX;
 }
 
 export function resolveContactInboxEmail(settings?: Record<string, string>): string {
-  return (
-    process.env.CONTACT_ADMIN_EMAIL?.trim() ||
-    settings?.admin_email?.trim() ||
-    getDefaultAdminEmail()
-  );
+  const config = resolveEmailConfig(settings);
+  return resolveContactInboxFromConfig(settings, config);
 }
 
 function parseMailAddress(value: string): string {
@@ -107,12 +107,10 @@ function parseMailAddress(value: string): string {
   return (match?.[1] ?? trimmed).trim();
 }
 
-function getMailFromAddress(): string {
+function getMailFromAddress(config: ResolvedEmailConfig): string {
   const raw =
-    process.env.GMAIL_FROM?.trim() ||
-    process.env.SMTP_FROM?.trim() ||
-    process.env.GMAIL_USER?.trim() ||
-    process.env.SMTP_USER?.trim() ||
+    config.gmailFrom ||
+    config.gmailUser ||
     DEFAULT_CONTACT_INBOX;
   return parseMailAddress(raw);
 }
@@ -124,9 +122,10 @@ function formatMailFrom(email: string): string {
 async function sendViaSmtp(
   data: ContactEmailData,
   adminEmail: string,
+  config: ResolvedEmailConfig,
   adminCc?: string
 ): Promise<ContactEmailResult> {
-  const transporter = getSmtpTransporter();
+  const transporter = getSmtpTransporter(config);
   if (!transporter) {
     return {
       adminSent: false,
@@ -137,7 +136,7 @@ async function sendViaSmtp(
     };
   }
 
-  const from = getMailFromAddress();
+  const from = getMailFromAddress(config);
   const subject = `[FGS Software] Liên hệ mới từ ${data.name}${data.company ? ` — ${data.company}` : ""}`;
   const html = buildContactHtml(data);
 
@@ -184,9 +183,10 @@ async function sendViaSmtp(
 async function sendViaResend(
   data: ContactEmailData,
   adminEmail: string,
+  config: ResolvedEmailConfig,
   adminCc?: string
 ): Promise<ContactEmailResult> {
-  const resend = getResendClient();
+  const resend = getResendClient(config);
   if (!resend) {
     return {
       adminSent: false,
@@ -197,7 +197,7 @@ async function sendViaResend(
     };
   }
 
-  const from = process.env.RESEND_FROM?.trim() || `FGS Software <onboarding@resend.dev>`;
+  const from = config.resendFrom.trim() || `FGS Software <onboarding@resend.dev>`;
   const subject = `[FGS Software] New inquiry from ${data.name}${data.company ? ` — ${data.company}` : ""}`;
   const html = buildContactHtml(data);
 
@@ -252,18 +252,20 @@ async function sendViaResend(
 export async function sendContactEmails(
   data: ContactEmailData,
   adminEmail: string,
-  adminCc?: string
+  adminCc?: string,
+  settings?: Record<string, string>
 ): Promise<ContactEmailResult> {
-  const smtp = getSmtpTransporter();
+  const config = resolveEmailConfig(settings);
+  const smtp = getSmtpTransporter(config);
   if (smtp) {
-    const result = await sendViaSmtp(data, adminEmail, adminCc);
+    const result = await sendViaSmtp(data, adminEmail, config, adminCc);
     if (result.adminSent) return result;
     logger.warn("SMTP failed, trying Resend fallback", { error: result.error });
   }
 
-  const resend = getResendClient();
+  const resend = getResendClient(config);
   if (resend) {
-    return sendViaResend(data, adminEmail, adminCc);
+    return sendViaResend(data, adminEmail, config, adminCc);
   }
 
   logger.warn("No email provider configured — set GMAIL_USER + GMAIL_APP_PASSWORD or RESEND_API_KEY");
@@ -276,8 +278,13 @@ export async function sendContactEmails(
   };
 }
 
-export async function sendPasswordResetEmail(to: string, resetUrl: string): Promise<boolean> {
-  const transporter = getSmtpTransporter();
+export async function sendPasswordResetEmail(
+  to: string,
+  resetUrl: string,
+  settings?: Record<string, string>
+): Promise<boolean> {
+  const config = resolveEmailConfig(settings);
+  const transporter = getSmtpTransporter(config);
   const html = `
     <p>You requested a password reset for your FGS Admin account.</p>
     <p><a href="${escapeHtml(resetUrl)}">Click here to set a new password</a></p>
@@ -286,7 +293,7 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string): Prom
 
   if (transporter) {
     try {
-      const from = getMailFromAddress();
+      const from = getMailFromAddress(config);
       await transporter.sendMail({
         from: formatMailFrom(from),
         to,
@@ -299,13 +306,13 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string): Prom
     }
   }
 
-  const resend = getResendClient();
+  const resend = getResendClient(config);
   if (!resend) {
     logger.warn("No email provider — password reset link logged for development", { resetUrl });
     return false;
   }
 
-  const from = process.env.RESEND_FROM?.trim() || "FGS Software <onboarding@resend.dev>";
+  const from = config.resendFrom.trim() || "FGS Software <onboarding@resend.dev>";
   const result = await resend.emails.send({
     from,
     to: [to],

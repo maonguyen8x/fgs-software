@@ -51,3 +51,4 @@ next-env.d.ts
 /prisma/*.db-journal
 backup_new.sql
 backup.sql
+docs/admin-access.md

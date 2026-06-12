@@ -27,7 +27,6 @@ export default async function ContactPage({
   ]);
   const headerTitle = getPageBlockTitle(blocks, "page_header", loc, t("title"));
   const headerSubtitle = getPageBlockSubtitle(blocks, "page_header", loc, t("subtitle"));
-  const headerLead = headerSubtitle || headerTitle;
   const hq = branches.find((b) => b.isHeadquarters) ?? branches[0];
 
   const address =
@@ -44,9 +43,9 @@ export default async function ContactPage({
     <div className="bg-linear-to-b from-amber-50/45 via-white to-rose-50/35">
       <PageHeader
         title={headerTitle}
-        subtitle={headerLead}
+        subtitle={headerSubtitle}
         variant="contact"
-        promoteSubtitle
+        density="compact"
         backgroundColor={settings.page_header_contact_bg}
       />
 

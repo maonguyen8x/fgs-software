@@ -21,7 +21,10 @@ interface PageHeaderProps {
   title?: string;
   subtitle?: string;
   variant?: PageHeaderVariant;
+  /** @deprecated Use title + subtitle with density instead */
   promoteSubtitle?: boolean;
+  /** Tighter typography — ideal for contact and form pages */
+  density?: "default" | "compact";
   backgroundColor?: string;
   className?: string;
 }
@@ -31,24 +34,47 @@ export function PageHeader({
   subtitle,
   variant = "default",
   promoteSubtitle = false,
+  density = "default",
   backgroundColor,
   className,
 }: PageHeaderProps) {
   const mainText = (promoteSubtitle ? subtitle : title) || title || subtitle || "";
   const secondaryText = promoteSubtitle ? "" : subtitle || "";
+  const isCompact = density === "compact" || variant === "contact";
 
   return (
     <section
       className={cn(
-        "section-padding-compact border-b border-primary-100/60 dark:border-primary-900/40",
+        isCompact ? "section-padding-compact-tight" : "section-padding-compact",
+        "border-b border-primary-100/60 dark:border-primary-900/40",
         backgroundColor ? "" : variantClass[variant],
         className
       )}
       style={backgroundColor ? { backgroundColor } : undefined}
     >
       <div className="container-narrow text-center">
-        <h1 className="page-title text-3xl font-bold tracking-tight md:text-4xl">{mainText}</h1>
-        {secondaryText && <p className="page-subtitle mx-auto mt-3 max-w-2xl text-base md:text-lg">{secondaryText}</p>}
+        <h1
+          className={cn(
+            "page-title tracking-tight",
+            isCompact
+              ? "text-xl font-semibold md:text-2xl"
+              : "text-3xl font-bold md:text-4xl"
+          )}
+        >
+          {mainText}
+        </h1>
+        {secondaryText && (
+          <p
+            className={cn(
+              "page-subtitle mx-auto font-normal leading-relaxed",
+              isCompact
+                ? "mt-2 max-w-md text-sm text-slate-600/90 md:text-[0.9375rem] dark:text-slate-400/90"
+                : "mt-3 max-w-2xl text-base md:text-lg"
+            )}
+          >
+            {secondaryText}
+          </p>
+        )}
       </div>
     </section>
   );

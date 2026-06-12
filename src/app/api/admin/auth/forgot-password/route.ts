@@ -3,6 +3,7 @@ import { randomBytes } from "crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { sendPasswordResetEmail } from "@/lib/email";
+import { getSettingsMap } from "@/lib/settings";
 
 const schema = z.object({ email: z.string().email() });
 
@@ -26,7 +27,8 @@ export async function POST(request: Request) {
 
       const baseUrl = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
       const resetUrl = `${baseUrl}/admin/reset-password?token=${token}`;
-      await sendPasswordResetEmail(user.email, resetUrl);
+      const settings = await getSettingsMap();
+      await sendPasswordResetEmail(user.email, resetUrl, settings);
     }
 
     return NextResponse.json(GENERIC_SUCCESS);

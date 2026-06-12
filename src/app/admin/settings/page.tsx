@@ -23,6 +23,10 @@ const AiProvidersPanel = dynamic(
   () => import("@/components/admin/AiProvidersPanel").then((m) => m.AiProvidersPanel),
   { loading: () => <AdminPanelSkeleton /> }
 );
+const EmailSettingsPanel = dynamic(
+  () => import("@/components/admin/EmailSettingsPanel").then((m) => m.EmailSettingsPanel),
+  { loading: () => <AdminPanelSkeleton /> }
+);
 const SettingsForm = dynamic(
   () => import("@/components/admin/SettingsForm").then((m) => m.SettingsForm),
   { loading: () => <AdminPanelSkeleton /> }
@@ -81,6 +85,10 @@ export default async function AdminSettingsPage() {
 
         <AdminContentBlock sectionId="settings-ai-providers">
           <AiProvidersPanel />
+        </AdminContentBlock>
+
+        <AdminContentBlock sectionId="settings-email">
+          <EmailSettingsPanel />
         </AdminContentBlock>
 
         <AdminContentBlock

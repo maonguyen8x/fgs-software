@@ -551,7 +551,7 @@ async function main() {
     { page: "services", key: "page_header", title: "Services & Capabilities", titleVi: "Dịch vụ & Năng lực", subtitle: "End-to-end IT outsourcing solutions", subtitleVi: "Giải pháp outsourcing IT toàn diện", order: 1 },
     { page: "services", key: "tech_section", title: "Technologies We Use", titleVi: "Công nghệ sử dụng", subtitle: "Modern tools and frameworks we master", subtitleVi: "Công cụ và framework hiện đại chúng tôi thành thạo", order: 2 },
     { page: "works", key: "page_header", title: "Portfolio", titleVi: "Portfolio", subtitle: "Projects we are proud to have delivered", subtitleVi: "Các dự án chúng tôi tự hào đã hoàn thành", order: 1 },
-    { page: "contact", key: "page_header", title: "Contact", titleVi: "Liên hệ", subtitle: "Tell us about your project — we reply within 1–2 business days", subtitleVi: "Mô tả dự án của bạn — chúng tôi phản hồi trong 1–2 ngày làm việc", order: 1 },
+    { page: "contact", key: "page_header", title: "Contact", titleVi: "Liên hệ", titleJa: "お問い合わせ", subtitle: "We typically reply within 1–2 business days", subtitleVi: "Chúng tôi phản hồi trong 1–2 ngày làm việc", subtitleJa: "ご相談をお待ちしています（1〜2営業日以内に返信）", order: 1 },
   ];
 
   for (const block of pageBlocks) {

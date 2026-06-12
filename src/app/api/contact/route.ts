@@ -36,7 +36,12 @@ export async function POST(request: Request) {
 
     const message = await prisma.message.create({ data });
 
-    const emailResult = await sendContactEmails(data, inboxEmail, settings.admin_email_cc);
+    const emailResult = await sendContactEmails(
+      data,
+      inboxEmail,
+      settings.admin_email_cc,
+      settings
+    );
 
     if (!emailResult.adminSent) {
       logger.error("Contact form email not delivered", {

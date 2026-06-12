@@ -18,6 +18,7 @@ export const ADMIN_SETTINGS_SECTIONS: AdminSettingsSection[] = [
   { id: "settings-locale", labelKey: "locale_panel", group: "panels" },
   { id: "settings-theme", labelKey: "theme", group: "panels" },
   { id: "settings-ai-providers", labelKey: "ai_providers", group: "panels" },
+  { id: "settings-email", labelKey: "email", group: "panels" },
   { id: "settings-page-content", labelKey: "page_content", group: "content" },
   { id: "settings-company", labelKey: "company", group: "form" },
   { id: "settings-social", labelKey: "social", group: "form" },
