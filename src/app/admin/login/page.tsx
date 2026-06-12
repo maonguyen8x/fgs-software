@@ -5,6 +5,8 @@ import { isDefaultAdminLoginDisabled } from "@/config/admin";
 import { authOptions } from "@/lib/auth";
 import { AdminLoginForm } from "@/components/admin/AdminLoginForm";
 import { AdminIntlShell } from "@/components/admin/AdminIntlShell";
+import { AdminSessionProvider } from "@/components/providers/AdminSessionProvider";
+import { Toaster } from "sonner";
 
 export default async function AdminLoginPage() {
   if (isDefaultAdminLoginDisabled()) {
@@ -13,14 +15,17 @@ export default async function AdminLoginPage() {
 
   const session = await getServerSession(authOptions);
   if (session) {
-    redirect("/admin/settings");
+    redirect("/admin/settings/site");
   }
 
   return (
     <AdminIntlShell>
-      <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
-        <AdminLoginForm />
-      </Suspense>
+      <AdminSessionProvider>
+        <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+          <AdminLoginForm />
+        </Suspense>
+        <Toaster position="top-right" richColors={false} closeButton />
+      </AdminSessionProvider>
     </AdminIntlShell>
   );
 }

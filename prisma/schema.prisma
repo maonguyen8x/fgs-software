@@ -9,13 +9,18 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String
-  avatar    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  id          String    @id @default(cuid())
+  email       String    @unique
+  password    String
+  name        String
+  avatar      String?
+  role        String    @default("admin")
+  isActive    Boolean   @default(true)
+  lastLoginAt DateTime?
+  totpSecret  String?
+  totpEnabled Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
 }
 
 model PasswordResetToken {

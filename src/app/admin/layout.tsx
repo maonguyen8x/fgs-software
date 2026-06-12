@@ -1,5 +1,9 @@
 import { Suspense } from "react";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
+import { getAdminLoginUrl } from "@/config/admin";
+import { isAdminPublicPath } from "@/config/admin-public-paths";
 import { Toaster } from "sonner";
 import { authOptions } from "@/lib/auth";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
@@ -18,6 +22,12 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
+  const pathname = (await headers()).get("x-pathname") ?? "";
+  if (!session && pathname && !isAdminPublicPath(pathname)) {
+    const loginUrl = getAdminLoginUrl();
+    const qs = new URLSearchParams({ callbackUrl: pathname });
+    redirect(`${loginUrl}?${qs.toString()}`);
+  }
   const branding = session ? await getAdminBranding() : { logoMode: "text" as const, logoUrl: null };
 
   return (
@@ -30,6 +40,7 @@ export default async function AdminLayout({
             userName={session.user?.name ?? "Admin"}
             logoUrl={branding.logoUrl}
             logoMode={branding.logoMode}
+            userRole={session.user?.role}
           />
         )}
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">

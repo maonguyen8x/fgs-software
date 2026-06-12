@@ -4,7 +4,11 @@
  * Example: ADMIN_LOGIN_PATH=fgs-portal-k9m2 → login at /access/fgs-portal-k9m2
  */
 export function getAdminLoginSecret(): string | null {
-  const secret = process.env.ADMIN_LOGIN_PATH?.trim();
+  // Middleware runs on Edge — only NEXT_PUBLIC_* from .env is inlined at build time.
+  // On Vercel dashboard vars, both names work; keep them in sync.
+  const secret =
+    process.env.ADMIN_LOGIN_PATH?.trim() ||
+    process.env.NEXT_PUBLIC_ADMIN_LOGIN_PATH?.trim();
   return secret && secret.length >= 8 ? secret : null;
 }
 

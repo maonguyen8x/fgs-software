@@ -7,11 +7,13 @@ declare module "next-auth" {
       email?: string | null;
       name?: string | null;
       image?: string | null;
+      role?: string;
     };
   }
 
   interface User {
     image?: string | null;
+    role?: string;
   }
 }
 
@@ -20,5 +22,6 @@ declare module "next-auth/jwt" {
     id?: string;
     rememberMe?: boolean;
     picture?: string;
+    role?: string;
   }
 }

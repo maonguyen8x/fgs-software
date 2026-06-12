@@ -11,9 +11,17 @@ import {
   EMAIL_SETTING_KEYS,
   type EmailSettingKey,
 } from "@/lib/email/setting-keys";
-import { getSettingsMap } from "@/lib/settings";
-
 const updateSchema = z.record(z.string());
+
+async function readEmailSettingsFromDb(): Promise<Record<string, string>> {
+  const rows = await prisma.setting.findMany({
+    where: { key: { in: [...EMAIL_SETTING_KEYS] } },
+  });
+  return rows.reduce<Record<string, string>>((acc, row) => {
+    acc[row.key] = row.value;
+    return acc;
+  }, {});
+}
 
 function maskSettingValue(key: EmailSettingKey, value: string): string {
   if (EMAIL_SECRET_KEYS.includes(key)) {
@@ -26,12 +34,12 @@ export async function GET() {
   const { error } = await requireAdminSession();
   if (error) return error;
 
-  const settings = await getSettingsMap();
-  const config = resolveEmailConfig(settings);
+  const stored = await readEmailSettingsFromDb();
+  const config = resolveEmailConfig(stored);
   const values: Record<string, string> = {};
 
   for (const key of EMAIL_SETTING_KEYS) {
-    const raw = settings[key] ?? "";
+    const raw = stored[key] ?? "";
     values[key] = maskSettingValue(key, raw);
   }
 
@@ -54,7 +62,7 @@ export async function PUT(request: Request) {
   if (error) return error;
 
   const body = updateSchema.parse(await request.json());
-  const existing = await getSettingsMap();
+  const existing = await readEmailSettingsFromDb();
 
   const updates: Array<{ key: string; value: string }> = [];
 
@@ -64,9 +72,18 @@ export async function PUT(request: Request) {
 
     if (EMAIL_SECRET_KEYS.includes(key)) {
       if (!incoming || incoming.includes("•")) continue;
+    } else if (!incoming) {
+      continue;
     }
 
     updates.push({ key, value: incoming });
+  }
+
+  if (updates.length === 0) {
+    return NextResponse.json(
+      { error: "No changes to save. Enter at least one field or re-enter secret values." },
+      { status: 400 }
+    );
   }
 
   await Promise.all(
@@ -81,7 +98,8 @@ export async function PUT(request: Request) {
 
   await afterAdminMutation(CACHE_TAGS.settings);
 
-  const config = resolveEmailConfig({ ...existing, ...Object.fromEntries(updates.map((u) => [u.key, u.value])) });
+  const merged = { ...existing, ...Object.fromEntries(updates.map((u) => [u.key, u.value])) };
+  const config = resolveEmailConfig(merged);
 
   return NextResponse.json({
     success: true,

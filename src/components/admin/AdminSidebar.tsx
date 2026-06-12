@@ -21,14 +21,16 @@ import {
   Camera,
   Gem,
   Handshake,
+  ShieldCheck,
 } from "lucide-react";
+import { isSuperAdminRole } from "@/lib/admin-roles";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { FgsLogo } from "@/components/brand/FgsLogo";
 import { getPublicAdminLoginUrl } from "@/config/admin-public";
 import type { LogoDisplayMode } from "@/lib/brand-logo";
 
-const linkKeys = [
+const baseLinkKeys = [
   { href: "/admin/dashboard", key: "dashboard", icon: LayoutDashboard },
   { href: "/admin/team", key: "team", icon: Users },
   { href: "/admin/timeline", key: "timeline", icon: History },
@@ -42,14 +44,24 @@ const linkKeys = [
   { href: "/admin/messages", key: "messages", icon: Mail },
   { href: "/admin/chat", key: "chat", icon: MessageSquare },
   { href: "/admin/pages", key: "pages", icon: Layout },
-  { href: "/admin/settings", key: "settings", icon: Settings },
+  { href: "/admin/settings/site", key: "settings_site", icon: Settings },
+  { href: "/admin/settings/homepage", key: "settings_homepage", icon: Layout },
+  { href: "/admin/settings/about", key: "settings_about", icon: Building2 },
+  { href: "/admin/settings/integrations", key: "settings_integrations", icon: Mail },
+  { href: "/admin/settings/security", key: "settings_security", icon: ShieldCheck },
+  { href: "/admin/settings/company", key: "settings_company", icon: Briefcase },
+] as const;
+
+const superAdminLinks = [
+  { href: "/admin/users", key: "admin_users", icon: ShieldCheck },
 ] as const;
 
 function isAdminLinkActive(pathname: string, href: string): boolean {
   return (
     pathname === href ||
     pathname.startsWith(`${href}/`) ||
-    (href === "/admin/team" && pathname.startsWith("/admin/founders"))
+    (href === "/admin/team" && pathname.startsWith("/admin/founders")) ||
+    (href === "/admin/settings/site" && pathname === "/admin/settings")
   );
 }
 
@@ -57,13 +69,18 @@ export function AdminSidebar({
   userName,
   logoUrl,
   logoMode = "text",
+  userRole,
 }: {
   userName: string;
   logoUrl?: string | null;
   logoMode?: LogoDisplayMode;
+  userRole?: string | null;
 }) {
   const pathname = usePathname();
   const t = useTranslations("admin.sidebar");
+  const linkKeys = isSuperAdminRole(userRole)
+    ? [...baseLinkKeys, ...superAdminLinks]
+    : [...baseLinkKeys];
 
   return (
     <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-theme bg-surface">

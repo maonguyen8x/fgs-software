@@ -10,6 +10,7 @@ import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 import { ArrowDownToLine, CheckCircle2, Mail, Save, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { EMAIL_SETTING_KEYS } from "@/lib/email/setting-keys";
+import { useAdminSettingsDraft } from "@/hooks/useAdminSettingsDraft";
 
 type EmailForm = Record<(typeof EMAIL_SETTING_KEYS)[number], string>;
 
@@ -37,18 +38,27 @@ export function EmailSettingsPanel() {
   const [form, setForm] = useState<EmailForm>(EMPTY_FORM);
   const [status, setStatus] = useState<EmailStatus | null>(null);
   const [loading, setLoading] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  const { clearDraft } = useAdminSettingsDraft({
+    scope: "email",
+    values: form,
+    setValues: setForm,
+    enabled: ready,
+  });
 
   const load = useCallback(async () => {
-    const res = await fetch("/api/admin/email-settings");
+    const res = await fetch("/api/admin/email-settings", { cache: "no-store" });
     if (!res.ok) return;
     const data = (await res.json()) as {
       values?: EmailForm;
       status?: EmailStatus;
     };
     if (data.values) {
-      setForm({ ...EMPTY_FORM, ...data.values });
+      setForm((prev) => ({ ...EMPTY_FORM, ...data.values }));
     }
     if (data.status) setStatus(data.status);
+    setReady(true);
   }, []);
 
   useEffect(() => {
@@ -73,6 +83,7 @@ export function EmailSettingsPanel() {
       return;
     }
     showAdminSuccessToast(t("save_success"));
+    await clearDraft();
     await load();
   };
 

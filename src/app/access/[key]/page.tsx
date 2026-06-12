@@ -22,7 +22,7 @@ export default async function SecretAdminLoginPage({
 
   const session = await getServerSession(authOptions);
   if (session) {
-    redirect("/admin/settings");
+    redirect("/admin/settings/site");
   }
 
   return (

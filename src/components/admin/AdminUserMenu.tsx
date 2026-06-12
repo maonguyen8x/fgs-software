@@ -110,7 +110,7 @@ export function AdminUserMenu({ initialName, className }: AdminUserMenuProps) {
                 {t("profile")}
               </button>
               <Link
-                href="/admin/settings"
+                href="/admin/settings/site"
                 className="flex w-full cursor-pointer items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
                 onClick={() => setMenuOpen(false)}
               >

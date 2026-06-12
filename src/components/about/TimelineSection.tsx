@@ -94,14 +94,14 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
   return (
     <section className="relative overflow-x-clip py-3">
       <div className="container-narrow overflow-x-clip">
-        <div className="overflow-x-clip rounded-3xl border border-slate-200/80 bg-white px-3 py-4 shadow-sm md:px-6 md:py-6">
+        <div className="overflow-x-clip rounded-3xl border border-slate-200/80 bg-white px-3 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 md:px-6 md:py-6">
           <div className="text-center">
             <h2 className="about-section-title md:text-3xl">{title}</h2>
             <p className="mx-auto max-w-2xl py-3 text-sm text-muted-theme">{t("timeline_hint")}</p>
           </div>
           <ol className="relative mx-auto max-w-5xl overflow-x-clip py-2">
           <div className="pointer-events-none absolute bottom-0 left-1/2 top-0 hidden -translate-x-1/2 md:block">
-            <span className="block h-full border-l-2 border-dashed border-slate-300" />
+            <span className="block h-full border-l-2 border-dashed border-slate-300 dark:border-slate-600" />
             {hoveredIndex !== null && preparedItems[hoveredIndex] ? (
               <span
                 className={cn(
@@ -132,7 +132,7 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
                 <div className={cn("hidden md:flex", alignRight ? "md:order-1 md:justify-end md:pr-1" : "md:order-3")} />
 
                 <div className="relative z-10 mx-auto hidden w-16 items-center justify-center md:flex md:order-2">
-                  <span className={cn("z-10 flex h-11 w-11 items-center justify-center rounded-full border-4 border-white text-white shadow-lg", theme.dot)}>
+                  <span className={cn("z-10 flex h-11 w-11 items-center justify-center rounded-full border-4 border-white text-white shadow-lg dark:border-slate-900", theme.dot)}>
                     <item.Icon className="h-4 w-4" />
                   </span>
                 </div>
@@ -152,7 +152,7 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
                     <span
                       className={cn(
                         "absolute top-1/2 hidden h-0.5 w-5 -translate-y-1/2 md:block",
-                        isHovered ? theme.dot : "bg-slate-300"
+                        isHovered ? theme.dot : "bg-slate-300 dark:bg-slate-600"
                       )}
                       style={alignRight ? { right: "100%" } : { left: "100%" }}
                     />
@@ -190,7 +190,7 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
                   {isHovered && item.images.length > 0 ? (
                     <div
                       className={cn(
-                        "pointer-events-none absolute top-1/2 z-30 hidden w-[min(450px,calc(100vw-2.5rem))] -translate-y-1/2 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl backdrop-blur md:block",
+                        "pointer-events-none absolute top-1/2 z-30 hidden w-[min(450px,calc(100vw-2.5rem))] -translate-y-1/2 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl backdrop-blur dark:border-slate-600 dark:bg-slate-900/95 md:block",
                         alignRight ? "left-[calc(100%+0.55rem)]" : "right-[calc(100%+0.55rem)]"
                       )}
                       style={popupOffset}

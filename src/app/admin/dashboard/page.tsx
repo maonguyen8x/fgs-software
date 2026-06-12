@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { getDashboardAnalytics } from "@/lib/analytics/dashboard-stats";
 import { AdminDashboardCharts } from "@/components/admin/AdminDashboardCharts";
+import { AdminVisitorsTable } from "@/components/admin/AdminVisitorsTable";
 import { AdminPageShell } from "@/components/admin/AdminPageShell";
 
 export const dynamic = "force-dynamic";
@@ -25,6 +26,20 @@ export default async function AdminDashboardPage() {
           visits: t("visits"),
         }}
       />
+      <div className="mt-8">
+        <AdminVisitorsTable
+          visits={data.recentVisits}
+          labels={{
+            title: t("visitors_list_title"),
+            subtitle: t("visitors_list_subtitle"),
+            time: t("visitors_col_time"),
+            country: t("visitors_col_country"),
+            path: t("visitors_col_path"),
+            session: t("visitors_col_session"),
+            empty: t("visitors_empty"),
+          }}
+        />
+      </div>
     </AdminPageShell>
   );
 }

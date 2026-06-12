@@ -1,7 +1,8 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
+import { getAdminLoginUrl } from "@/config/admin";
 import { SESSION_REMEMBER_SECONDS, SESSION_SHORT_SECONDS } from "@/config/admin-auth";
+import { verifyAdminToken } from "@/lib/admin-signed-token";
 import { prisma } from "./db";
 
 export const authOptions: NextAuthOptions = {
@@ -9,27 +10,33 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        loginTicket: { label: "Login Ticket", type: "text" },
         rememberMe: { label: "Remember Me", type: "text" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        const ticket = credentials?.loginTicket
+          ? verifyAdminToken<{ type: string; userId: string }>(credentials.loginTicket)
+          : null;
+
+        if (!ticket || ticket.type !== "login_ticket" || !ticket.userId) return null;
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email.trim().toLowerCase() },
+          where: { id: ticket.userId },
         });
-        if (!user) return null;
+        if (!user || !user.isActive) return null;
 
-        const valid = await bcrypt.compare(credentials.password, user.password);
-        if (!valid) return null;
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { lastLoginAt: new Date() },
+        });
 
         return {
           id: user.id,
           email: user.email,
           name: user.name,
           image: user.avatar ?? undefined,
-          rememberMe: credentials.rememberMe === "true",
+          role: user.role,
+          rememberMe: credentials?.rememberMe === "true",
         };
       },
     }),
@@ -42,7 +49,7 @@ export const authOptions: NextAuthOptions = {
     maxAge: SESSION_REMEMBER_SECONDS,
   },
   pages: {
-    signIn: "/admin/login",
+    signIn: getAdminLoginUrl(),
   },
   callbacks: {
     async jwt({ token, user, trigger, session: updateSession }) {
@@ -53,6 +60,9 @@ export const authOptions: NextAuthOptions = {
         token.exp = Math.floor(Date.now() / 1000) + maxAge;
         token.name = user.name;
         if (user.image) token.picture = user.image as string;
+        if ((user as { role?: string }).role) {
+          token.role = (user as { role?: string }).role;
+        }
       }
       if (trigger === "update" && updateSession) {
         if (updateSession.name) token.name = updateSession.name as string;
@@ -67,6 +77,7 @@ export const authOptions: NextAuthOptions = {
         if (token.sub) session.user.id = token.sub;
         if (typeof token.name === "string") session.user.name = token.name;
         if (typeof token.picture === "string") session.user.image = token.picture;
+        if (typeof token.role === "string") session.user.role = token.role;
       }
       return session;
     },

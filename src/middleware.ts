@@ -2,21 +2,12 @@ import createIntlMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
-import { getAdminLoginSecret, isDefaultAdminLoginDisabled } from "@/config/admin";
+import { getAdminLoginSecret, getAdminLoginUrl, isDefaultAdminLoginDisabled } from "@/config/admin";
+import { isAdminPublicPath } from "@/config/admin-public-paths";
 import { routing } from "./i18n/routing";
 import { getMiddlewareBootstrap } from "./lib/middleware-bootstrap-cache";
 import { resolvePublicPathMiddlewareWithMaps } from "./lib/middleware-public-paths";
 import { SITE_DEFAULT_LOCALE_COOKIE } from "./lib/site-default-locale-keys";
-
-const ADMIN_PUBLIC_PATHS = [
-  "/admin/login",
-  "/admin/forgot-password",
-  "/admin/reset-password",
-];
-
-function isAdminPublicPath(pathname: string): boolean {
-  return ADMIN_PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
-}
 
 const PROBE_PATHS = [
   /^\/admin(\/.*)?$/i,
@@ -45,9 +36,19 @@ function forwardWithPathname(request: NextRequest, pathname: string): NextRespon
   return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
+function normalizePathname(pathname: string): string {
+  return pathname.replace(/\/{2,}/g, "/");
+}
+
 export async function middleware(request: NextRequest) {
   try {
-    const { pathname } = request.nextUrl;
+    const pathname = normalizePathname(request.nextUrl.pathname);
+
+    if (pathname !== request.nextUrl.pathname) {
+      const url = request.nextUrl.clone();
+      url.pathname = pathname;
+      return NextResponse.redirect(url);
+    }
 
     if (pathname.startsWith("/error-ui")) {
       return NextResponse.next();
@@ -82,6 +83,10 @@ export async function middleware(request: NextRequest) {
           secret: process.env.NEXTAUTH_SECRET,
         });
         if (token) return forwardWithPathname(request, pathname);
+
+        const loginUrl = new URL(getAdminLoginUrl(), request.url);
+        loginUrl.searchParams.set("callbackUrl", pathname);
+        return NextResponse.redirect(loginUrl);
       }
       return notFoundResponse(request);
     }

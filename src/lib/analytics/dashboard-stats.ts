@@ -1,5 +1,14 @@
 import { prisma } from "@/lib/db";
 
+export interface RecentVisitRow {
+  id: string;
+  path: string | null;
+  country: string;
+  countryCode: string;
+  sessionKey: string;
+  createdAt: string;
+}
+
 export interface DashboardAnalytics {
   totalVisits: number;
   visitsThisMonth: number;
@@ -9,6 +18,7 @@ export interface DashboardAnalytics {
   teamCount: number;
   byMonth: { month: string; label: string; count: number }[];
   byCountry: { country: string; countryCode: string; count: number; color: string }[];
+  recentVisits: RecentVisitRow[];
 }
 
 const CHART_COLORS = [
@@ -46,18 +56,10 @@ const EMPTY: DashboardAnalytics = {
   teamCount: 0,
   byMonth: lastMonths(6).map((month) => ({ month, label: monthLabel(month), count: 0 })),
   byCountry: [],
+  recentVisits: [],
 };
 
 export async function getDashboardAnalytics(): Promise<DashboardAnalytics> {
-  if (!("siteVisit" in prisma) || typeof prisma.siteVisit?.count !== "function") {
-    const [messageCount, partnerCount, teamCount] = await Promise.all([
-      prisma.message.count(),
-      prisma.partner.count({ where: { isVisible: true } }),
-      prisma.teamMember.count({ where: { isVisible: true } }),
-    ]);
-    return { ...EMPTY, messageCount, partnerCount, teamCount };
-  }
-
   const monthKeys = lastMonths(6);
   const currentMonth = monthKeys[monthKeys.length - 1]!;
 
@@ -71,6 +73,7 @@ export async function getDashboardAnalytics(): Promise<DashboardAnalytics> {
     teamCount,
     monthGroups,
     countryGroups,
+    recentVisits,
   ] = await Promise.all([
     prisma.siteVisit.count(),
     prisma.siteVisit.count({ where: { monthKey: currentMonth } }),
@@ -90,6 +93,18 @@ export async function getDashboardAnalytics(): Promise<DashboardAnalytics> {
     prisma.siteVisit.groupBy({
       by: ["countryCode", "country"],
       _count: { _all: true },
+    }),
+    prisma.siteVisit.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 50,
+      select: {
+        id: true,
+        path: true,
+        country: true,
+        countryCode: true,
+        sessionKey: true,
+        createdAt: true,
+      },
     }),
   ]);
 
@@ -116,8 +131,15 @@ export async function getDashboardAnalytics(): Promise<DashboardAnalytics> {
         count: g._count._all,
         color: CHART_COLORS[i % CHART_COLORS.length]!,
       })),
+    recentVisits: recentVisits.map((v) => ({
+      ...v,
+      createdAt: v.createdAt.toISOString(),
+    })),
   };
-  } catch {
+  } catch (err) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("[dashboard-stats]", err);
+    }
     const [messageCount, partnerCount, teamCount] = await Promise.all([
       prisma.message.count(),
       prisma.partner.count({ where: { isVisible: true } }),

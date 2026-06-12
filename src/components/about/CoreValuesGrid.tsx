@@ -29,7 +29,7 @@ export function CoreValuesGrid({ title, items, locale, variant = "default" }: Co
       className={
         isTeam
           ? "team-flow-section team-flow-section--balanced bg-slate-50/80 dark:bg-slate-900/40"
-          : "page-section !py-3 bg-slate-50"
+          : "page-section !py-3 bg-slate-50 dark:bg-slate-950"
       }
     >
       <div className={isTeam ? "team-page-inner" : "container-narrow"}>
@@ -44,14 +44,14 @@ export function CoreValuesGrid({ title, items, locale, variant = "default" }: Co
             return (
               <article
                 key={item.id}
-                className={`rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md${isTeam ? " text-left" : ""}`}
+                className={`rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 dark:shadow-none dark:hover:bg-slate-800/90${isTeam ? " text-left" : ""}`}
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-950/60 dark:text-primary-400">
                   <Icon className="h-6 w-6" />
                 </div>
                 <h3
                   className={
-                    isTeam ? "text-lg font-bold text-slate-900 md:text-xl dark:text-white" : "text-lg font-bold text-slate-900"
+                    isTeam ? "text-lg font-bold text-slate-900 md:text-xl dark:text-white" : "text-lg font-bold text-slate-900 dark:text-slate-100"
                   }
                 >
                   {getLocalizedField(item, "title", locale)}
@@ -60,7 +60,7 @@ export function CoreValuesGrid({ title, items, locale, variant = "default" }: Co
                   className={
                     isTeam
                       ? "mt-2 text-base leading-relaxed text-slate-600 dark:text-slate-400"
-                      : "mt-2 text-sm leading-relaxed text-slate-600"
+                      : "mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400"
                   }
                 >
                   {getLocalizedField(item, "description", locale)}

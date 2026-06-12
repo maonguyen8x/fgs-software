@@ -11,6 +11,7 @@ import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 import { publishPublicSiteUpdate } from "@/lib/admin-public-sync";
 import { GoogleMapsAddressField, GoogleMapsLinkSettings } from "@/components/admin/MapLocationSettings";
 import { BlueRadioGroup } from "@/components/ui/BlueRadio";
+import { useAdminSettingsDraft } from "@/hooks/useAdminSettingsDraft";
 
 const fields = [
   { key: "company_name", labelKey: "company_name" },
@@ -99,6 +100,12 @@ export function SettingsForm({ settings }: { settings: Record<string, string> })
   const [values, setValues] = useState(settings);
   const [loading, setLoading] = useState(false);
 
+  const { clearDraft } = useAdminSettingsDraft({
+    scope: "company-form",
+    values,
+    setValues,
+  });
+
   const patchValues = (patch: Record<string, string>) => {
     setValues((prev) => ({ ...prev, ...patch }));
   };
@@ -117,6 +124,7 @@ export function SettingsForm({ settings }: { settings: Record<string, string> })
       return;
     }
     showAdminSuccessToast(t("save_success"));
+    await clearDraft();
     publishPublicSiteUpdate(router);
   };
 
