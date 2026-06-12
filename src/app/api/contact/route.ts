@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { getDefaultAdminEmail, sendContactEmails } from "@/lib/email";
+import { resolveContactInboxEmail, sendContactEmails } from "@/lib/email";
 import { getSettingsMap } from "@/lib/settings";
-import { apiSuccess, apiValidationError, apiServerError } from "@/lib/api/response";
+import { apiSuccess, apiError, apiValidationError, apiServerError } from "@/lib/api/response";
 import { logger } from "@/lib/logger";
 import { sanitizeEmail, sanitizeText } from "@/lib/security/sanitize";
 
@@ -32,16 +32,32 @@ export async function POST(request: Request) {
     };
 
     const settings = await getSettingsMap();
-    const adminEmail = settings.admin_email?.trim() || getDefaultAdminEmail();
+    const inboxEmail = resolveContactInboxEmail(settings);
 
     const message = await prisma.message.create({ data });
 
-    const emailResult = await sendContactEmails(data, adminEmail, settings.admin_email_cc);
+    const emailResult = await sendContactEmails(data, inboxEmail, settings.admin_email_cc);
+
+    if (!emailResult.adminSent) {
+      logger.error("Contact form email not delivered", {
+        inboxEmail,
+        code: emailResult.code,
+        error: emailResult.error,
+      });
+      return apiError(
+        emailResult.code === "EMAIL_NOT_CONFIGURED"
+          ? "Email service is not configured on the server"
+          : "Could not deliver your message by email",
+        503,
+        emailResult.code ?? "EMAIL_SEND_FAILED"
+      );
+    }
 
     return apiSuccess({
       success: true,
       messageId: message.id,
-      emailSent: emailResult.adminSent,
+      emailSent: true,
+      inbox: inboxEmail,
     });
   } catch (error) {
     if (error instanceof z.ZodError) {

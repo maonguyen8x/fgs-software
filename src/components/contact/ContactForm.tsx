@@ -77,7 +77,18 @@ export function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("Failed");
+      const body = (await res.json().catch(() => null)) as {
+        error?: string;
+        code?: string;
+      } | null;
+      if (!res.ok) {
+        if (body?.code === "EMAIL_NOT_CONFIGURED" || body?.code === "EMAIL_SEND_FAILED") {
+          toast.error(t("email_delivery_failed"));
+        } else {
+          toast.error(t("error"));
+        }
+        return;
+      }
       toast.success(t("success"));
       reset(defaultValues);
     } catch {

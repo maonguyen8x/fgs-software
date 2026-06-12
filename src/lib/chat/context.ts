@@ -25,7 +25,7 @@ export async function buildCompanyKnowledge(locale: Locale): Promise<string> {
   const lines: string[] = [
     `Company: ${companyName}`,
     `Tagline: ${getSettingValue(settings, "hero_subheadline", locale)}`,
-    `Contact email: ${settings.admin_email ?? "contact@fgs-software.com"}`,
+    `Contact email: ${settings.admin_email ?? "contact.fgssoftware@gmail.com"}`,
     `Phone: ${settings.phone ?? "N/A"}`,
     `Address: ${settings.address ?? "Da Nang, Vietnam"}`,
     `Working hours: ${settings.working_hours ?? "Mon–Fri 9:00–18:00 ICT"}`,
