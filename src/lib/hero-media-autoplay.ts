@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { resumeHeroYouTubePlayers } from "@/lib/youtube-iframe-api";
 
 const HERO_VIDEO_SELECTOR = "video.hero-slide-video";
 
@@ -59,6 +60,7 @@ export function useHeroAutoplayUnlock(): void {
       document.querySelectorAll<HTMLVideoElement>(HERO_VIDEO_SELECTOR).forEach((video) => {
         void playHeroMutedVideo(video);
       });
+      resumeHeroYouTubePlayers();
       document.removeEventListener("pointerdown", unlock);
       document.removeEventListener("keydown", unlock);
       document.removeEventListener("touchstart", unlock);

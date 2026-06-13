@@ -5,6 +5,8 @@ import { useTranslations } from "next-intl";
 import { ChevronDown } from "lucide-react";
 import { TypewriterText } from "@/components/ui/TypewriterText";
 import { HeroSlideLayer } from "@/components/home/HeroSlideLayer";
+import { HeroBrandTitle } from "@/components/home/HeroBrandTitle";
+import { HeroQuantumNeuralOverlay } from "@/components/home/HeroQuantumNeuralOverlay";
 import type { HeroScrollSlideItem } from "@/lib/hero-scroll-slides";
 import type { HeroDisplayCopy } from "@/lib/hero-copy";
 import {
@@ -126,14 +128,18 @@ export function HomeHeroExperience({ slides, copy }: HomeHeroExperienceProps) {
         })}
       </div>
 
-      <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-black/15 via-transparent to-black/25" />
+      <HeroQuantumNeuralOverlay />
+
+      <HeroBrandTitle />
+
+      <div className="pointer-events-none absolute inset-0 z-[4] bg-linear-to-b from-transparent via-transparent to-black/28" />
 
       <div className="relative z-10 flex h-full w-full flex-col">
         {showText && (
-          <div className="container-narrow flex flex-1 flex-col justify-center px-4 pb-24 pt-16 md:pt-20">
+          <div className="container-narrow flex flex-1 flex-col items-center justify-center px-4 pb-24 pt-16 md:pt-20">
             <div className="mx-auto max-w-3xl text-center">
               {copy.showHeadline && (
-                <h1 className="page-title text-4xl font-bold tracking-tight text-white drop-shadow-md md:text-5xl lg:text-[3.25rem] lg:leading-tight">
+                <h2 className="page-title text-2xl font-bold tracking-tight text-white drop-shadow-md md:text-3xl lg:text-4xl lg:leading-tight">
                   {copy.typewriterEnabled && copy.typewriterTarget === "headline" ? (
                     <TypewriterText
                       text={copy.headline}
@@ -144,7 +150,7 @@ export function HomeHeroExperience({ slides, copy }: HomeHeroExperienceProps) {
                   ) : (
                     <span className="text-gradient-hero">{copy.headline}</span>
                   )}
-                </h1>
+                </h2>
               )}
 
               {copy.showSubheadline &&
@@ -165,7 +171,7 @@ export function HomeHeroExperience({ slides, copy }: HomeHeroExperienceProps) {
         )}
 
         <div
-          className={`pointer-events-auto absolute left-0 right-0 flex justify-center ${
+          className={`pointer-events-auto absolute left-0 right-0 z-10 flex justify-center ${
             showText ? "bottom-10" : "bottom-12"
           }`}
         >
