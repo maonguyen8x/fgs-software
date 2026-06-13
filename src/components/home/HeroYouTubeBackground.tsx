@@ -143,7 +143,7 @@ export function HeroYouTubeBackground({ videoId, posterUrl, alt, isActive }: Her
     if (!iframeMounted || !isActive || !origin) return;
 
     let cancelled = false;
-    let keepAliveTimer: ReturnType<typeof setInterval> | undefined;
+    let keepAliveTimer: number | undefined;
 
     const onIframeLoad = () => {
       if (cancelled) return;

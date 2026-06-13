@@ -11,7 +11,8 @@ export interface YouTubePlayer {
 }
 
 export interface YouTubePlayerOptions {
-  videoId: string;
+  /** Required when creating a new player; omit when wrapping an existing iframe. */
+  videoId?: string;
   width?: string | number;
   height?: string | number;
   host?: string;
