@@ -8,11 +8,6 @@ import {
   registerHeroYouTubePlayer,
   type YouTubePlayer,
 } from "@/lib/youtube-iframe-api";
-import {
-  dispatchHeroVideoLoopReset,
-  dispatchHeroVideoNearEnd,
-  HERO_BRAND_TRIGGER_BEFORE_END_SEC,
-} from "@/lib/hero-video-events";
 import { useMounted } from "@/hooks/use-mounted";
 
 interface HeroYouTubeBackgroundProps {
@@ -31,7 +26,6 @@ export function HeroYouTubeBackground({ videoId, posterUrl, alt, isActive }: Her
   const playerRef = useRef<YouTubePlayer | null>(null);
   const unregisterRef = useRef<(() => void) | null>(null);
   const isActiveRef = useRef(isActive);
-  const brandFiredRef = useRef(false);
   const [origin, setOrigin] = useState("");
   const [playing, setPlaying] = useState(false);
   const [iframeMounted, setIframeMounted] = useState(false);
@@ -47,7 +41,6 @@ export function HeroYouTubeBackground({ videoId, posterUrl, alt, isActive }: Her
   useEffect(() => {
     setPlaying(false);
     setIframeMounted(false);
-    brandFiredRef.current = false;
   }, [isActive, videoId, origin]);
 
   useEffect(() => {
@@ -71,27 +64,6 @@ export function HeroYouTubeBackground({ videoId, posterUrl, alt, isActive }: Her
     playerRef.current = null;
   }, []);
 
-  const checkProgress = useCallback(() => {
-    const player = playerRef.current;
-    if (!player || !isActiveRef.current) return;
-
-    const duration = player.getDuration?.() ?? 0;
-    const current = player.getCurrentTime?.() ?? 0;
-    if (duration <= 0) return;
-
-    const remaining = duration - current;
-
-    if (current < 1.5) {
-      brandFiredRef.current = false;
-    }
-
-    const triggerAt = Math.max(duration - HERO_BRAND_TRIGGER_BEFORE_END_SEC, duration * 0.82);
-    if (!brandFiredRef.current && current >= triggerAt && remaining > 0.35) {
-      brandFiredRef.current = true;
-      dispatchHeroVideoNearEnd();
-    }
-  }, []);
-
   const bindPlayer = useCallback(async () => {
     const iframe = iframeRef.current;
     if (!iframe || !isActiveRef.current) return;
@@ -110,12 +82,9 @@ export function HeroYouTubeBackground({ videoId, posterUrl, alt, isActive }: Her
 
           if (data === YT.PlayerState.PLAYING) {
             setPlaying(true);
-            checkProgress();
           }
 
           if (data === YT.PlayerState.ENDED) {
-            dispatchHeroVideoLoopReset();
-            brandFiredRef.current = false;
             target.seekTo(0, true);
             target.playVideo();
           }
@@ -137,7 +106,7 @@ export function HeroYouTubeBackground({ videoId, posterUrl, alt, isActive }: Her
 
     playerRef.current = player;
     unregisterRef.current = registerHeroYouTubePlayer(player);
-  }, [checkProgress, destroyPlayer]);
+  }, [destroyPlayer]);
 
   useEffect(() => {
     if (!iframeMounted || !isActive || !origin) return;
@@ -164,14 +133,10 @@ export function HeroYouTubeBackground({ videoId, posterUrl, alt, isActive }: Her
         if (!YT) return;
         const state = playerRef.current.getPlayerState();
         if (state === YT.PlayerState.ENDED) {
-          dispatchHeroVideoLoopReset();
-          brandFiredRef.current = false;
           playerRef.current.seekTo(0, true);
           playerRef.current.playVideo();
         } else if (state === YT.PlayerState.PAUSED && isActiveRef.current) {
           playerRef.current.playVideo();
-        } else if (state === YT.PlayerState.PLAYING) {
-          checkProgress();
         }
       } catch {
         /* ignore */
@@ -184,9 +149,8 @@ export function HeroYouTubeBackground({ videoId, posterUrl, alt, isActive }: Her
       if (keepAliveTimer) window.clearInterval(keepAliveTimer);
       destroyPlayer();
       setPlaying(false);
-      brandFiredRef.current = false;
     };
-  }, [iframeMounted, isActive, origin, videoId, bindPlayer, destroyPlayer, checkProgress]);
+  }, [iframeMounted, isActive, origin, videoId, bindPlayer, destroyPlayer]);
 
   const embedUrl = origin ? buildYouTubeBackgroundEmbedUrl(videoId, origin) : "";
   const showMotion = iframeMounted && isActive && playing;

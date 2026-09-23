@@ -3,11 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { bindHeroVideoAutoplay } from "@/lib/hero-media-autoplay";
-import {
-  dispatchHeroVideoLoopReset,
-  dispatchHeroVideoNearEnd,
-  HERO_BRAND_TRIGGER_BEFORE_END_SEC,
-} from "@/lib/hero-video-events";
 import { useMounted } from "@/hooks/use-mounted";
 
 interface HeroFileVideoBackgroundProps {
@@ -21,7 +16,6 @@ interface HeroFileVideoBackgroundProps {
 export function HeroFileVideoBackground({ src, posterUrl, alt, isActive }: HeroFileVideoBackgroundProps) {
   const mounted = useMounted();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const brandFiredRef = useRef(false);
   const [motionVisible, setMotionVisible] = useState(false);
   const [videoMounted, setVideoMounted] = useState(false);
   const isLocalPoster = posterUrl.startsWith("/");
@@ -49,34 +43,15 @@ export function HeroFileVideoBackground({ src, posterUrl, alt, isActive }: HeroF
       if (video.currentTime > 0.04 && !video.paused) {
         setMotionVisible(true);
       }
-
-      const duration = video.duration;
-      if (!Number.isFinite(duration) || duration <= 0) return;
-
-      if (video.currentTime < 1.2) {
-        brandFiredRef.current = false;
-      }
-
-      const remaining = duration - video.currentTime;
-      const triggerAt = Math.max(duration - HERO_BRAND_TRIGGER_BEFORE_END_SEC, duration * 0.82);
-      if (!brandFiredRef.current && video.currentTime >= triggerAt && remaining > 0.2) {
-        brandFiredRef.current = true;
-        dispatchHeroVideoNearEnd();
-      }
     };
     const onPlaying = () => setMotionVisible(true);
     const onPause = () => {
       if (video.currentTime < 0.04) setMotionVisible(false);
     };
-    const onEnded = () => {
-      dispatchHeroVideoLoopReset();
-      brandFiredRef.current = false;
-    };
 
     video.addEventListener("timeupdate", onTimeUpdate);
     video.addEventListener("playing", onPlaying);
     video.addEventListener("pause", onPause);
-    video.addEventListener("ended", onEnded);
 
     video.controls = false;
     video.removeAttribute("controls");
@@ -88,7 +63,6 @@ export function HeroFileVideoBackground({ src, posterUrl, alt, isActive }: HeroF
       video.removeEventListener("timeupdate", onTimeUpdate);
       video.removeEventListener("playing", onPlaying);
       video.removeEventListener("pause", onPause);
-      video.removeEventListener("ended", onEnded);
     };
   }, [showVideo, src]);
 

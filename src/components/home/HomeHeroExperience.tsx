@@ -2,24 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { ChevronDown } from "lucide-react";
-import { TypewriterText } from "@/components/ui/TypewriterText";
 import { HeroSlideLayer } from "@/components/home/HeroSlideLayer";
-import { HeroBrandTitle } from "@/components/home/HeroBrandTitle";
 import { HeroQuantumNeuralOverlay } from "@/components/home/HeroQuantumNeuralOverlay";
 import type { HeroScrollSlideItem } from "@/lib/hero-scroll-slides";
-import type { HeroDisplayCopy } from "@/lib/hero-copy";
-import {
-  HOME_HASH_EXPLORE,
-  HOME_HASH_HERO,
-  scrollToHomeSection,
-  setHomeHash,
-} from "@/lib/home-hash";
+import { HOME_HASH_HERO } from "@/lib/home-hash";
 import { useHeroAutoplayUnlock } from "@/lib/hero-media-autoplay";
 
 interface HomeHeroExperienceProps {
   slides: HeroScrollSlideItem[];
-  copy: HeroDisplayCopy;
 }
 
 const WHEEL_COOLDOWN_MS = 650;
@@ -36,7 +26,7 @@ function bgLayerStyle(offset: number) {
   };
 }
 
-export function HomeHeroExperience({ slides, copy }: HomeHeroExperienceProps) {
+export function HomeHeroExperience({ slides }: HomeHeroExperienceProps) {
   const t = useTranslations("hero");
   const rootRef = useRef<HTMLElement>(null);
   const isHoveredRef = useRef(false);
@@ -45,7 +35,6 @@ export function HomeHeroExperience({ slides, copy }: HomeHeroExperienceProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const count = Math.max(slides.length, 1);
-  const showText = copy.showHeadline || copy.showSubheadline;
 
   useHeroAutoplayUnlock();
 
@@ -96,11 +85,6 @@ export function HomeHeroExperience({ slides, copy }: HomeHeroExperienceProps) {
     return () => el.removeEventListener("wheel", onWheel);
   }, [count]);
 
-  const goToExplore = () => {
-    setHomeHash(HOME_HASH_EXPLORE);
-    scrollToHomeSection(HOME_HASH_EXPLORE);
-  };
-
   return (
     <section
       id={HOME_HASH_HERO}
@@ -129,65 +113,6 @@ export function HomeHeroExperience({ slides, copy }: HomeHeroExperienceProps) {
       </div>
 
       <HeroQuantumNeuralOverlay />
-
-      <HeroBrandTitle />
-
-      <div className="pointer-events-none absolute inset-0 z-[4] bg-linear-to-b from-transparent via-transparent to-black/28" />
-
-      <div className="relative z-10 flex h-full w-full flex-col">
-        {showText && (
-          <div className="container-narrow flex flex-1 flex-col items-center justify-center px-4 pb-24 pt-16 md:pt-20">
-            <div className="mx-auto max-w-3xl text-center">
-              {copy.showHeadline && (
-                <h2 className="page-title text-2xl font-bold tracking-tight text-white drop-shadow-md md:text-3xl lg:text-4xl lg:leading-tight">
-                  {copy.typewriterEnabled && copy.typewriterTarget === "headline" ? (
-                    <TypewriterText
-                      text={copy.headline}
-                      as="span"
-                      className="text-gradient-hero min-h-[1.25em]"
-                      speedMs={55}
-                    />
-                  ) : (
-                    <span className="text-gradient-hero">{copy.headline}</span>
-                  )}
-                </h2>
-              )}
-
-              {copy.showSubheadline &&
-                (copy.typewriterEnabled && copy.typewriterTarget === "subheadline" ? (
-                  <TypewriterText
-                    text={copy.subheadline}
-                    as="p"
-                    className="mx-auto mt-3 max-w-2xl text-base text-white/95 drop-shadow-sm md:text-lg"
-                    speedMs={62}
-                  />
-                ) : (
-                  <p className="mx-auto mt-3 max-w-2xl text-base text-white/95 drop-shadow-sm md:text-lg">
-                    {copy.subheadline}
-                  </p>
-                ))}
-            </div>
-          </div>
-        )}
-
-        <div
-          className={`pointer-events-auto absolute left-0 right-0 z-10 flex justify-center ${
-            showText ? "bottom-10" : "bottom-12"
-          }`}
-        >
-          <button
-            type="button"
-            onClick={goToExplore}
-            className="group flex cursor-pointer flex-col items-center gap-1 text-white/90 transition hover:text-white"
-            aria-label={t("scroll_to_explore")}
-          >
-            <span className="text-xs font-medium uppercase tracking-[0.2em] drop-shadow-sm">
-              {t("scroll_to_explore")}
-            </span>
-            <ChevronDown className="h-6 w-6 animate-bounce motion-reduce:animate-none drop-shadow-sm" aria-hidden />
-          </button>
-        </div>
-      </div>
     </section>
   );
 }

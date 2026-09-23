@@ -6,7 +6,6 @@ import { HomeHashSync } from "@/components/home/HomeHashSync";
 import { ScrollToTopButton } from "@/components/layout/ScrollToTopButton";
 import { getCachedHeroScrollSlides } from "@/lib/cache/queries";
 import { resolveHeroScrollSlides } from "@/lib/hero-scroll-slides";
-import { resolveHeroDisplayCopy } from "@/lib/hero-copy";
 import { resolveHomeClientsCopy } from "@/lib/home-clients-copy";
 import { sanitizeHomeSectionSubtitle } from "@/lib/home-section-copy";
 import { HomeSectionHeading } from "@/components/home/HomeSectionHeading";
@@ -32,7 +31,6 @@ export default async function HomePage({
     getCachedHeroScrollSlides(),
   ]);
   const heroSlides = resolveHeroScrollSlides(heroSlideRows);
-  const heroCopy = resolveHeroDisplayCopy(settings, loc);
   const clientsCopy = resolveHomeClientsCopy(settings, loc, {
     title: t("clients.default_title"),
     subtitle: t("clients.default_subtitle"),
@@ -45,7 +43,7 @@ export default async function HomePage({
   return (
     <div className="bg-theme">
       <HomeHashSync />
-      <HomeHeroExperience slides={heroSlides} copy={heroCopy} />
+      <HomeHeroExperience slides={heroSlides} />
       <HomeExploreSection />
       <HomeClientsMarquee
         partners={partners}
