@@ -95,6 +95,11 @@
       "security_desc": "Protecting systems, data, and compliance with security standards.",
       "automation_title": "Automation & RPA",
       "automation_desc": "Automating repetitive work to reduce errors and boost productivity."
+    },
+    "tech_stack": {
+      "title": "Languages & technologies we use",
+      "subtitle": "A toolkit proven across real-world projects — from frontend and backend to data, infrastructure and integrations.",
+      "aria": "Technology list"
     }
   },
   "services": {

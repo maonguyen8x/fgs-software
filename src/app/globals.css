@@ -129,6 +129,77 @@
     }
   }
 
+  /* Trang Giới thiệu — logo ngôn ngữ / công nghệ chạy ngang */
+  .tech-marquee-viewport {
+    mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  }
+
+  .tech-marquee-track {
+    animation: clients-marquee-scroll var(--marquee-duration, 60s) linear infinite;
+  }
+
+  .tech-marquee-track[data-reverse] {
+    animation-direction: reverse;
+  }
+
+  .tech-marquee-row:hover .tech-marquee-track {
+    animation-play-state: paused;
+  }
+
+  .tech-pill {
+    transition:
+      transform 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .tech-pill-icon {
+    color: #94a3b8;
+    transition: color 0.3s ease;
+  }
+
+  .tech-pill:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--tech-color) 45%, transparent);
+    box-shadow: 0 8px 24px -10px color-mix(in srgb, var(--tech-color) 55%, transparent);
+  }
+
+  .tech-pill:hover .tech-pill-icon {
+    color: var(--tech-color);
+  }
+
+  .dark .tech-pill-icon {
+    color: #64748b;
+  }
+
+  .dark .tech-pill:hover {
+    border-color: color-mix(in srgb, var(--tech-color-dark) 45%, transparent);
+    box-shadow: 0 8px 24px -10px color-mix(in srgb, var(--tech-color-dark) 45%, transparent);
+  }
+
+  .dark .tech-pill:hover .tech-pill-icon {
+    color: var(--tech-color-dark);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tech-marquee-viewport {
+      mask-image: none;
+    }
+
+    .tech-marquee-track {
+      animation: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 0.75rem;
+      width: 100%;
+      padding-inline: 1rem;
+    }
+
+    .tech-pill[aria-hidden] {
+      display: none;
+    }
+  }
+
   .home-hero {
     background: linear-gradient(
       145deg,

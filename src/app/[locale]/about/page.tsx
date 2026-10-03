@@ -9,6 +9,7 @@ import { ScrollToTopButton } from "@/components/layout/ScrollToTopButton";
 import { CoreValuesGrid } from "@/components/about/CoreValuesGrid";
 import { VietnamMap } from "@/components/about/VietnamMap";
 import { AboutTechFocusSection } from "@/components/about/AboutTechFocusSection";
+import { AboutTechStackMarquee } from "@/components/about/AboutTechStackMarquee";
 import { fetchAboutPageData } from "@/lib/cache/safe-about-data";
 import { fetchPageBlockMap } from "@/lib/cache/safe-page-blocks";
 import { getPageBlockSubtitle, getPageBlockTitle } from "@/lib/page-content";
@@ -54,6 +55,7 @@ export default async function AboutPage({
 
       <CoreValuesGrid title={t("values_title")} items={coreValues} locale={loc} />
       <AboutTechFocusSection />
+      <AboutTechStackMarquee />
       <VietnamMap
         title={getPageBlockTitle(blocks, "branches_section", loc, t("branches_title"))}
         branches={branches}
