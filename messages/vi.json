@@ -95,6 +95,11 @@
       "security_desc": "Bảo vệ hệ thống, dữ liệu và tuân thủ tiêu chuẩn an toàn thông tin.",
       "automation_title": "Automation & RPA",
       "automation_desc": "Tự động hóa tác vụ lặp lại, giảm sai sót và tăng năng suất đội ngũ."
+    },
+    "tech_stack": {
+      "title": "Ngôn ngữ & công nghệ chúng tôi sử dụng",
+      "subtitle": "Bộ công cụ đã được kiểm chứng qua nhiều dự án thực tế — từ giao diện, máy chủ, dữ liệu đến hạ tầng và tích hợp.",
+      "aria": "Danh sách công nghệ"
     }
   },
   "services": {
