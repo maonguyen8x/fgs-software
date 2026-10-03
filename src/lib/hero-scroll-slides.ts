@@ -18,30 +18,24 @@ export const DEFAULT_HERO_SCROLL_SLIDES: HeroScrollSlideItem[] = [
   {
     id: "default-danang-dragon",
     mediaType: "video",
-    imageUrl:
-      "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1920&h=1080&fit=crop&q=85",
-    videoUrl:
-      "https://assets.mixkit.co/videos/preview/mixkit-city-lights-at-night-from-a-bridge-4158-large.mp4",
+    imageUrl: "/images/hero-bridge-night.jpg",
+    videoUrl: "https://assets.mixkit.co/videos/4087/4087-720.mp4",
     alt: "Cầu Rồng Đà Nẵng về đêm",
     title: "Cầu Rồng",
   },
   {
     id: "default-danang-tran-thi-ly",
     mediaType: "video",
-    imageUrl:
-      "https://images.unsplash.com/photo-1592155931574-092ecc4d1b58?w=1920&h=1080&fit=crop&q=85",
-    videoUrl:
-      "https://assets.mixkit.co/videos/preview/mixkit-traffic-in-a-city-at-night-seen-from-above-3400-large.mp4",
+    imageUrl: "/images/hero-city-traffic.jpg",
+    videoUrl: "https://assets.mixkit.co/videos/11/11-720.mp4",
     alt: "Cầu Trần Thị Lý Đà Nẵng về đêm",
     title: "Cầu Trần Thị Lý",
   },
   {
     id: "default-danang-song-han",
     mediaType: "video",
-    imageUrl:
-      "https://images.unsplash.com/photo-1559592413-7cec05d19800?w=1920&h=1080&fit=crop&q=85",
-    videoUrl:
-      "https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-city-at-night-4452-large.mp4",
+    imageUrl: "/images/hero-city-aerial.jpg",
+    videoUrl: "https://assets.mixkit.co/videos/42342/42342-720.mp4",
     alt: "Cầu Sông Hàn Đà Nẵng về đêm",
     title: "Cầu Sông Hàn",
   },

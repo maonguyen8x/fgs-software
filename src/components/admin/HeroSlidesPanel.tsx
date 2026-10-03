@@ -24,8 +24,7 @@ import { Label } from "@/components/ui/label";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 import { publishPublicSiteUpdate } from "@/lib/admin-public-sync";
 
-const DEFAULT_VIDEO_POSTER =
-  "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1920&h=1080&fit=crop&q=85";
+const DEFAULT_VIDEO_POSTER = "/images/hero-bridge-night.jpg";
 
 interface HeroSlideRow {
   id: string;
