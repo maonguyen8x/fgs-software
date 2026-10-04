@@ -64,7 +64,7 @@ export function HomeHeroSection({
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="border-primary-200/80 bg-white/60 backdrop-blur-sm">
-                <Link href={`/${locale}/works`}>{t("cta_works")}</Link>
+                <Link href={`/${locale}/services#products`}>{t("cta_works")}</Link>
               </Button>
             </div>
           </div>

@@ -32,7 +32,6 @@ export function Footer({ companyName, navConfig, settings }: FooterProps) {
     { id: "about", label: t("about") },
     { id: "services", label: t("services") },
     { id: "team", label: t("team") },
-    { id: "works", label: t("works") },
     { id: "contact", label: t("contact") },
   ].map((link) => ({ ...link, href: hrefForNavId(navConfig, link.id) }));
 

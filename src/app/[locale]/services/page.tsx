@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getCachedServices, getCachedTechStack } from "@/lib/cache/queries";
+import { getCachedServices, getCachedTechStack, getCachedWorks } from "@/lib/cache/queries";
 import { CONSULTATION_FORM_URL } from "@/config/consultation-form";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ScrollToTopButton } from "@/components/layout/ScrollToTopButton";
@@ -7,25 +7,33 @@ import { PageSection } from "@/components/layout/PageSection";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { TechStackSection } from "@/components/sections/TechStackSection";
 import { ConsultationFormLink } from "@/components/services/ConsultationFormLink";
+import { WorksProductsPanel } from "@/components/works/WorksProductsPanel";
 import type { Locale } from "@/i18n/routing";
 import { fetchPageBlockMap } from "@/lib/cache/safe-page-blocks";
 import { getPageBlockSubtitle, getPageBlockTitle } from "@/lib/page-content";
 import { getSettingsMapSafe } from "@/lib/settings-safe";
 
+/** Products (works) and services share this page — see the "services" nav item. */
 export default async function ServicesPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ category?: string }>;
 }) {
   const { locale } = await params;
+  const { category } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("services");
+  const tWorks = await getTranslations("works");
   const loc = locale as Locale;
 
-  const [services, techStack, blocks, settings] = await Promise.all([
+  const [services, techStack, works, blocks, worksBlocks, settings] = await Promise.all([
     getCachedServices(true),
     getCachedTechStack(),
+    getCachedWorks(true, category),
     fetchPageBlockMap("services"),
+    fetchPageBlockMap("works"),
     getSettingsMapSafe(),
   ]);
 
@@ -44,7 +52,26 @@ export default async function ServicesPage({
         promoteSubtitle
         backgroundColor={settings.page_header_services_bg}
       />
-      <PageSection>
+      <PageSection className="!pb-6 md:!pb-8">
+        <div id="products" className="scroll-mt-24">
+          <WorksProductsPanel
+            heading={getPageBlockSubtitle(worksBlocks, "page_header", loc, tWorks("subtitle"))}
+            locale={locale}
+            loc={loc}
+            currentCategory={category ?? "all"}
+            works={works}
+            viewLabel={tWorks("view_details")}
+          />
+        </div>
+      </PageSection>
+
+      <PageSection className="!pt-6 md:!pt-8">
+        <h2
+          id="services"
+          className="mb-6 scroll-mt-24 text-center text-lg font-bold tracking-wide text-primary-700 md:mb-8 md:text-xl dark:text-primary-300"
+        >
+          {t("services_heading")}
+        </h2>
         <ServicesGrid
           services={services}
           locale={loc}

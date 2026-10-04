@@ -37,7 +37,7 @@ interface WorkDetailContentProps {
 }
 
 export function WorkDetailContent({ work, locale, images, labels }: WorkDetailContentProps) {
-  const worksListHref = usePublicPath("/works");
+  const worksListHref = `${usePublicPath("/services")}#products`;
   const title = getLocalizedField(work, "title", locale);
   const summary = getLocalizedField(work, "summary", locale);
   const description = getLocalizedField(work, "description", locale);

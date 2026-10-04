@@ -45,6 +45,16 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  /** Product list merged into the "Products & Services" page; /works/[slug] details stay. */
+  async redirects() {
+    return [
+      {
+        source: "/:locale(en|ja|vi)/works",
+        destination: "/:locale/services#products",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

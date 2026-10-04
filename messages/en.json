@@ -2,7 +2,7 @@
   "nav": {
     "home": "Home",
     "about": "About",
-    "services": "Services",
+    "services": "Products & Services",
     "team": "About Us",
     "works": "Products",
     "blog": "Blog",
@@ -105,6 +105,7 @@
   "services": {
     "title": "Services & Capabilities",
     "subtitle": "Comprehensive IT outsourcing solutions",
+    "services_heading": "WHAT WE OFFER",
     "tech_title": "Technology Stack",
     "tech_subtitle": "Modern tools and frameworks we master",
     "contact_cta": "Discuss your project",

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import { usePublicPath } from "@/components/providers/PublicPathsProvider";
 
 const categories = ["all", "web", "mobile", "api", "other"] as const;
 
@@ -14,6 +15,7 @@ export function WorksFilter({
   currentCategory: string;
 }) {
   const t = useTranslations("works");
+  const listPath = `/${locale}${usePublicPath("/services")}`;
 
   const labels: Record<string, string> = {
     all: t("filter_all"),
@@ -28,7 +30,7 @@ export function WorksFilter({
       {categories.map((cat) => (
         <Link
           key={cat}
-          href={cat === "all" ? `/${locale}/works` : `/${locale}/works?category=${cat}`}
+          href={cat === "all" ? `${listPath}#products` : `${listPath}?category=${cat}#products`}
           className={cn(
             "cursor-pointer rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200",
             currentCategory === cat
