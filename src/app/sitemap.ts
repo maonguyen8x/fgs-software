@@ -11,7 +11,7 @@ import {
 } from "@/lib/public-paths";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-const STATIC_ROUTE_IDS = ["home", "about", "services", "team", "works", "blog", "contact"] as const;
+const STATIC_ROUTE_IDS = ["home", "about", "services", "team", "blog", "contact"] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [works, settings] = await Promise.all([

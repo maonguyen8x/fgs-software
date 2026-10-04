@@ -61,7 +61,7 @@ export function HeroSection({
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href={`/${locale}/works`}>{t("cta_works")}</Link>
+              <Link href={`/${locale}/services#products`}>{t("cta_works")}</Link>
             </Button>
           </div>
         </motion.div>

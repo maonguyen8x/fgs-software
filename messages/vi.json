@@ -2,7 +2,7 @@
   "nav": {
     "home": "Trang chủ",
     "about": "Giới thiệu",
-    "services": "Dịch vụ",
+    "services": "Sản phẩm & Dịch vụ",
     "team": "Về chúng tôi",
     "works": "Sản phẩm",
     "blog": "Blog",
@@ -105,6 +105,7 @@
   "services": {
     "title": "Dịch vụ & Năng lực",
     "subtitle": "Giải pháp outsourcing IT toàn diện",
+    "services_heading": "DỊCH VỤ CỦA CHÚNG TÔI",
     "tech_title": "Công nghệ sử dụng",
     "tech_subtitle": "Công cụ và framework hiện đại chúng tôi thành thạo",
     "contact_cta": "Thảo luận dự án",

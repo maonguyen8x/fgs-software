@@ -85,7 +85,7 @@ export default async function HomePreviewPage({
               variant="outline"
               className="border-white/70 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 hover:text-white"
             >
-              <Link href={`/${loc}/works`}>{tHero("cta_works")}</Link>
+              <Link href={`/${loc}/services#products`}>{tHero("cta_works")}</Link>
             </Button>
           </div>
         </div>
@@ -132,7 +132,7 @@ export default async function HomePreviewPage({
             <WorksGrid works={featuredWorks} locale={loc} viewLabel={t("view_all")} />
             <div className="mt-10 text-center">
               <Button asChild variant="outline" size="lg">
-                <Link href={`/${loc}/works`}>{t("view_all")}</Link>
+                <Link href={`/${loc}/services#products`}>{t("view_all")}</Link>
               </Button>
             </div>
           </div>
