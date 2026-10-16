@@ -1,21 +1,6 @@
-/** URL hash for the video hero block (top of homepage). */
-export const HOME_HASH_HERO = "hero";
+import { HOME_CHAPTER_IDS, HOME_HASH_HERO } from "@/lib/home-chapters";
 
-/** URL hash for the neural-network explore block below the video hero. */
-export const HOME_HASH_EXPLORE = "kham-pha";
+export { HOME_HASH_HERO, HOME_CHAPTER_IDS };
 
-export function setHomeHash(hash: string, options?: { replace?: boolean }) {
-  if (typeof window === "undefined") return;
-  const path = window.location.pathname + window.location.search;
-  const next = `${path}#${hash}`;
-  if (options?.replace) {
-    window.history.replaceState(null, "", next);
-  } else {
-    window.history.pushState(null, "", next);
-  }
-}
-
-export function scrollToHomeSection(sectionId: string) {
-  if (typeof document === "undefined") return;
-  document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
+/** Section id retained for the older explore component; it is not a URL fragment. */
+export const HOME_HASH_EXPLORE = "chapter-02";

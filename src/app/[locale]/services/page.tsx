@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getCachedServices, getCachedTechStack, getCachedWorks } from "@/lib/cache/queries";
+import { getCachedServices, getCachedTechStack } from "@/lib/cache/queries";
 import { CONSULTATION_FORM_URL } from "@/config/consultation-form";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ScrollToTopButton } from "@/components/layout/ScrollToTopButton";
@@ -7,33 +7,25 @@ import { PageSection } from "@/components/layout/PageSection";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { TechStackSection } from "@/components/sections/TechStackSection";
 import { ConsultationFormLink } from "@/components/services/ConsultationFormLink";
-import { WorksProductsPanel } from "@/components/works/WorksProductsPanel";
 import type { Locale } from "@/i18n/routing";
 import { fetchPageBlockMap } from "@/lib/cache/safe-page-blocks";
 import { getPageBlockSubtitle, getPageBlockTitle } from "@/lib/page-content";
 import { getSettingsMapSafe } from "@/lib/settings-safe";
 
-/** Products (works) and services share this page — see the "services" nav item. */
 export default async function ServicesPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ category?: string }>;
 }) {
   const { locale } = await params;
-  const { category } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("services");
-  const tWorks = await getTranslations("works");
   const loc = locale as Locale;
 
-  const [services, techStack, works, blocks, worksBlocks, settings] = await Promise.all([
+  const [services, techStack, blocks, settings] = await Promise.all([
     getCachedServices(true),
     getCachedTechStack(),
-    getCachedWorks(true, category),
     fetchPageBlockMap("services"),
-    fetchPageBlockMap("works"),
     getSettingsMapSafe(),
   ]);
 
@@ -52,20 +44,39 @@ export default async function ServicesPage({
         promoteSubtitle
         backgroundColor={settings.page_header_services_bg}
       />
-      <PageSection className="!pb-6 md:!pb-8">
-        <div id="products" className="scroll-mt-24">
-          <WorksProductsPanel
-            heading={getPageBlockSubtitle(worksBlocks, "page_header", loc, tWorks("subtitle"))}
-            locale={locale}
-            loc={loc}
-            currentCategory={category ?? "all"}
-            works={works}
-            viewLabel={tWorks("view_details")}
-          />
+      <section className="services-overview">
+        <div className="container-narrow grid gap-8 px-4 py-14 sm:px-6 md:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] md:items-center md:py-20 lg:px-8">
+          <div>
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-violet-600 dark:text-violet-300">
+              {t("overview_eyebrow")}
+            </p>
+            <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 md:text-5xl dark:text-white">
+              {t("overview_title")}
+            </h2>
+            <p className="mt-5 max-w-xl text-sm leading-relaxed text-slate-600 md:text-base dark:text-slate-300">
+              {t("overview_description")}
+            </p>
+          </div>
+          <div className="services-overview-panel">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-200">
+              {t("overview_panel_title")}
+            </p>
+            <div className="mt-6 divide-y divide-white/10">
+              {(["product", "platform", "intelligence"] as const).map((key, index) => (
+                <div key={key} className="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
+                  <span className="font-mono text-xs text-violet-300">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-sm font-medium text-white md:text-base">
+                    {t(`overview_items.${key}`)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </PageSection>
-
-      <PageSection className="!pt-6 md:!pt-8">
+      </section>
+      <PageSection>
         <h2
           id="services"
           className="mb-6 scroll-mt-24 text-center text-lg font-bold tracking-wide text-primary-700 md:mb-8 md:text-xl dark:text-primary-300"
@@ -89,12 +100,22 @@ export default async function ServicesPage({
       />
 
       <PageSection className="text-center">
-        <ConsultationFormLink
-          label={t("contact_cta")}
-          badgeLabel={t("contact_cta_form_badge")}
-          href={CONSULTATION_FORM_URL}
-          variant="button"
-        />
+        <div className="mx-auto max-w-2xl">
+          <h2 className="text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl dark:text-white">
+            {t("ready_title")}
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600 md:text-base dark:text-slate-300">
+            {t("ready_description")}
+          </p>
+          <div className="mt-6">
+            <ConsultationFormLink
+              label={t("contact_cta")}
+              badgeLabel={t("contact_cta_form_badge")}
+              href={CONSULTATION_FORM_URL}
+              variant="button"
+            />
+          </div>
+        </div>
       </PageSection>
       <ScrollToTopButton />
     </div>

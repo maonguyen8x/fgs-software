@@ -62,34 +62,18 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
   const preparedItems = useMemo(
     () =>
       items
-        .filter((item) => !item.milestoneDate.startsWith("2026-12"))
+        .filter((item) => !isPlaceholderMilestone(item, locale))
         .map((item, index) => ({
-        fallbackDate: index === 0 ? "2026-05" : index === 1 ? "2026-06" : item.milestoneDate,
-        fallbackTitle:
-          index === 0
-            ? locale === "ja"
-              ? "2026年5月 ダナン支社を設立"
-              : locale === "en"
-                ? "05/2026: Da Nang branch established"
-                : "5/2026 thành lập chi nhánh tại Đà Nẵng"
-            : index === 1
-              ? locale === "ja"
-                ? "2026年6月 ABC社と協業開始"
-                : locale === "en"
-                  ? "06/2026: Partnership started with company ABC"
-                  : "6/2026 hợp tác với công ty ABC"
-              : "",
-        ...item,
-        titleText: getLocalizedField(item, "title", locale),
-        descriptionText: getLocalizedField(item, "description", locale),
-        placeholder: isPlaceholderMilestone(item, locale),
-        tone: palette[index % palette.length],
-        Icon: iconList[index % iconList.length],
+          ...item,
+          titleText: getLocalizedField(item, "title", locale),
+          descriptionText: getLocalizedField(item, "description", locale),
+          tone: palette[index % palette.length],
+          Icon: iconList[index % iconList.length],
         })),
     [items, locale]
   );
 
-  if (items.length === 0) return null;
+  if (preparedItems.length === 0) return null;
 
   return (
     <section className="relative overflow-x-clip py-3">
@@ -116,8 +100,8 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
           {preparedItems.map((item, index) => {
             const isHovered = hoveredIndex === index;
             const alignRight = index % 2 === 1;
-            const dateLabel = item.placeholder ? formatMilestoneDate(item.fallbackDate) : formatMilestoneDate(item.milestoneDate);
-            const titleLabel = item.placeholder && item.fallbackTitle ? item.fallbackTitle : item.titleText;
+            const dateLabel = formatMilestoneDate(item.milestoneDate);
+            const titleLabel = item.titleText;
             const theme = palette[index % palette.length];
             const popupOffset =
               index === 0 ? { marginLeft: "15px" } : index === 1 ? { marginRight: "15px" } : undefined;
@@ -173,7 +157,7 @@ export function TimelineSection({ title, items, locale }: TimelineSectionProps) 
 
                   <div className={cn("mt-3 max-w-xs text-center md:max-w-sm", alignRight ? "md:text-left" : "md:text-right")}>
                     <h3 className="text-base font-bold leading-snug text-heading md:text-lg">
-                      {titleLabel || t("timeline_placeholder")}
+                      {titleLabel}
                     </h3>
                     {item.descriptionText ? (
                       <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-muted-theme">

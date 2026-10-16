@@ -43,13 +43,6 @@ export interface HeaderNavConfig {
 
 export const HEADER_NAV_SETTING_KEY = "header_nav_json";
 
-/** Products and services share one page (internal route /services). */
-const PRODUCTS_SERVICES_LABELS = {
-  labelEn: "Products & Services",
-  labelVi: "Sản phẩm & Dịch vụ",
-  labelJa: "製品・サービス",
-} as const;
-
 export const DEFAULT_HEADER_NAV: HeaderNavConfig = {
   global: {
     fontSizePx: 17,
@@ -60,18 +53,9 @@ export const DEFAULT_HEADER_NAV: HeaderNavConfig = {
   },
   items: [
     {
-      id: "home",
-      href: "/",
-      labelEn: "Home",
-      labelVi: "Trang chủ",
-      labelJa: "ホーム",
-      enabled: true,
-      exact: true,
-    },
-    {
       id: "about",
       href: "/about",
-      labelEn: "About",
+      labelEn: "Company",
       labelVi: "Giới thiệu",
       labelJa: "会社概要",
       enabled: true,
@@ -79,7 +63,17 @@ export const DEFAULT_HEADER_NAV: HeaderNavConfig = {
     {
       id: "services",
       href: "/services",
-      ...PRODUCTS_SERVICES_LABELS,
+      labelEn: "Services",
+      labelVi: "Dịch vụ",
+      labelJa: "サービス",
+      enabled: true,
+    },
+    {
+      id: "works",
+      href: "/works",
+      labelEn: "Portfolio",
+      labelVi: "Dự án",
+      labelJa: "ポートフォリオ",
       enabled: true,
     },
     {
@@ -87,7 +81,7 @@ export const DEFAULT_HEADER_NAV: HeaderNavConfig = {
       href: "/team",
       labelEn: "About Us",
       labelVi: "Về chúng tôi",
-      labelJa: "メンバー紹介",
+      labelJa: "私たちについて",
       enabled: true,
     },
     {
@@ -101,31 +95,21 @@ export const DEFAULT_HEADER_NAV: HeaderNavConfig = {
   ],
 };
 
-/** Old "Services" labels, replaced by the merged "Products & Services" item. */
-const LEGACY_SERVICES_LABELS = {
-  labelEn: ["Services"],
-  labelVi: ["Dịch vụ"],
-  labelJa: ["サービス"],
-} as const;
+function canonicalizeNavItems(items: HeaderNavItem[]): HeaderNavItem[] {
+  return DEFAULT_HEADER_NAV.items.map((item) => {
+    const stored = items.find((candidate) => candidate.id === item.id);
+    if (!stored) return item;
 
-/**
- * Products (works) and Services used to be two menu items; they are now one page.
- * Drops the stored "works" item and renames "services" while it still has the old default labels.
- */
-function mergeProductsIntoServices(items: HeaderNavItem[]): HeaderNavItem[] {
-  return items
-    .filter((item) => item.id !== "works")
-    .map((item) => {
-      if (item.id !== "services") return item;
-      const next = { ...item };
-      for (const key of ["labelEn", "labelVi", "labelJa"] as const) {
-        const current = item[key]?.trim();
-        if (!current || (LEGACY_SERVICES_LABELS[key] as readonly string[]).includes(current)) {
-          next[key] = PRODUCTS_SERVICES_LABELS[key];
-        }
-      }
-      return next;
-    });
+    return {
+      ...item,
+      fontSizePx: stored.fontSizePx,
+      fontWeight: stored.fontWeight,
+      textTransform: stored.textTransform,
+      color: stored.color,
+      activeColor: stored.activeColor,
+      enabled: true,
+    };
+  });
 }
 
 export function parseHeaderNavConfig(raw: string | undefined): HeaderNavConfig {
@@ -133,19 +117,9 @@ export function parseHeaderNavConfig(raw: string | undefined): HeaderNavConfig {
   try {
     const parsed = JSON.parse(raw) as HeaderNavConfig;
     if (!parsed?.items || !Array.isArray(parsed.items)) return DEFAULT_HEADER_NAV;
-    const items = (parsed.items.length > 0 ? parsed.items : DEFAULT_HEADER_NAV.items).map(
-      (item) => {
-        if (item.id !== "team") return item;
-        const ja = item.labelJa?.trim();
-        if (ja === "チーム" || ja === "私たちについて") {
-          return { ...item, labelJa: "メンバー紹介" };
-        }
-        return item;
-      }
-    );
     return {
       global: { ...DEFAULT_HEADER_NAV.global, ...parsed.global },
-      items: mergeProductsIntoServices(items),
+      items: canonicalizeNavItems(parsed.items),
     };
   } catch {
     return DEFAULT_HEADER_NAV;

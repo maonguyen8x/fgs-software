@@ -9,6 +9,8 @@ export interface TechStackItem {
   paths: string[];
   /** true: icon dạng nét (Tabler), false: icon tô kín (Simple Icons) */
   stroke?: boolean;
+  /** Brand initials for technologies without a bundled vector logo. */
+  glyph?: string;
 }
 
 export const TECH_STACK_PRIMARY: TechStackItem[] = [

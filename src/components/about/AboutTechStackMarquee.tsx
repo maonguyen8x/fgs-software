@@ -5,6 +5,52 @@ import {
   type TechStackItem,
 } from "@/components/about/tech-stack-icons";
 
+function resolveTechStack(
+  entries: Array<{ key: string; name: string; color: string; glyph?: string }>,
+  source: TechStackItem[]
+): TechStackItem[] {
+  return entries.map((entry) => {
+    const existing = source.find((item) => item.key === entry.key);
+    return existing
+      ? { ...existing, name: entry.name }
+      : { ...entry, paths: [] };
+  });
+}
+
+const PRIMARY_TECH = resolveTechStack(
+  [
+    { key: "java", name: "Java", color: "#ED8B00", glyph: "J" },
+    { key: "javascript", name: "JavaScript", color: "#F7DF1E" },
+    { key: "typescript", name: "TypeScript", color: "#3178C6" },
+    { key: "react", name: "ReactJS", color: "#61DAFB" },
+    { key: "nestjs", name: "NestJS", color: "#E0234E", glyph: "N" },
+    { key: "nextjs", name: "NextJS", color: "#000000" },
+    { key: "python", name: "Python", color: "#3776AB" },
+    { key: "csharp", name: "C#", color: "#512BD4" },
+    { key: "cpp", name: "C++", color: "#00599C", glyph: "C++" },
+    { key: "dotnet", name: ".NET", color: "#512BD4" },
+    { key: "tailwind", name: "TailwindCSS", color: "#06B6D4" },
+    { key: "prisma", name: "Prisma", color: "#2D3748" },
+    { key: "bootstrap", name: "Bootstrap", color: "#7952B3", glyph: "B" },
+    { key: "aws", name: "AWS Cloud", color: "#FF9900", glyph: "AWS" },
+    { key: "azure", name: "Azure", color: "#0078D4", glyph: "A" },
+  ],
+  TECH_STACK_PRIMARY
+);
+
+const SECONDARY_TECH = resolveTechStack(
+  [
+    { key: "mongodb", name: "MongoDB", color: "#47A248" },
+    { key: "redis", name: "Redis", color: "#D82C20" },
+    { key: "sqlserver", name: "SQL Server", color: "#CC2927", glyph: "SQL" },
+    { key: "postgresql", name: "PostgreSQL", color: "#4169E1" },
+    { key: "memcache", name: "Memcache", color: "#2D6A8A", glyph: "M" },
+    { key: "elasticsearch", name: "Elasticsearch", color: "#FEC514", glyph: "E" },
+    { key: "mysql", name: "MySQL", color: "#4479A1", glyph: "My" },
+  ],
+  TECH_STACK_SECONDARY
+);
+
 /** Logo màu tối (Next.js, Vercel...) sẽ không thấy trên nền tối → đổi sang trắng khi dark mode */
 function darkModeColor(hex: string) {
   const n = parseInt(hex.slice(1), 16);
@@ -35,9 +81,20 @@ function TechPill({ item, hidden }: { item: TechStackItem; hidden?: boolean }) {
         strokeLinejoin={item.stroke ? "round" : undefined}
         aria-hidden
       >
-        {item.paths.map((d, i) => (
-          <path key={i} d={d} />
-        ))}
+        {item.glyph ? (
+          <text
+            x="12"
+            y="16"
+            textAnchor="middle"
+            fontSize={item.glyph.length > 2 ? "7" : "11"}
+            fontWeight="700"
+            fontFamily="Arial, sans-serif"
+          >
+            {item.glyph}
+          </text>
+        ) : (
+          item.paths.map((d, i) => <path key={i} d={d} />)
+        )}
       </svg>
       <span className="whitespace-nowrap text-sm font-semibold text-slate-700 dark:text-slate-200 md:text-[15px]">
         {item.name}
@@ -80,8 +137,8 @@ export function AboutTechStackMarquee() {
       </div>
 
       <div className="tech-marquee-viewport flex flex-col gap-2 md:gap-3">
-        <MarqueeRow items={TECH_STACK_PRIMARY} label={t("aria")} />
-        <MarqueeRow items={TECH_STACK_SECONDARY} label={t("aria")} reverse />
+        <MarqueeRow items={PRIMARY_TECH} label={t("aria")} reverse />
+        <MarqueeRow items={SECONDARY_TECH} label={t("aria")} />
       </div>
     </section>
   );

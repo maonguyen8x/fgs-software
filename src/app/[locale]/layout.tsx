@@ -23,6 +23,7 @@ import { resolveLogoDisplay } from "@/lib/brand-logo";
 import { parseChatbotPosition } from "@/lib/chatbot-position";
 import { parsePublicPathMapsFromSettings } from "@/lib/public-paths";
 import { PublicPathsProvider } from "@/components/providers/PublicPathsProvider";
+import { IntroLogoLoader } from "@/components/layout/IntroLogoLoader";
 
 /** Layout shell is cached via getCachedLayoutSettings; pages control their own revalidation. */
 export const revalidate = 120;
@@ -69,6 +70,7 @@ export default async function LocaleLayout({
       <BrandThemeStyle settings={settings} />
       <ThemeShell settings={settings}>
         <SessionProvider>
+          <IntroLogoLoader companyName={companyName} />
           <NavigationProgress />
           <LocaleCookieSync locale={locale as Locale} />
           <VisitTracker />
@@ -88,7 +90,6 @@ export default async function LocaleLayout({
                   facebook_url: settings.facebook_url,
                   address: settings.address,
                   phone: settings.phone,
-                  admin_email: settings.admin_email,
                 }} />
               </PublicPathsProvider>
             <Toaster position="top-right" richColors />

@@ -15,7 +15,7 @@ export function WorksFilter({
   currentCategory: string;
 }) {
   const t = useTranslations("works");
-  const listPath = `/${locale}${usePublicPath("/services")}`;
+  const listPath = `/${locale}${usePublicPath("/works")}`;
 
   const labels: Record<string, string> = {
     all: t("filter_all"),
@@ -30,7 +30,7 @@ export function WorksFilter({
       {categories.map((cat) => (
         <Link
           key={cat}
-          href={cat === "all" ? `${listPath}#products` : `${listPath}?category=${cat}#products`}
+          href={cat === "all" ? listPath : `${listPath}?category=${cat}`}
           className={cn(
             "cursor-pointer rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200",
             currentCategory === cat

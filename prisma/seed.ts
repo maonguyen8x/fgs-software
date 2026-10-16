@@ -192,6 +192,118 @@ async function main() {
     });
   }
 
+  const capabilityServices = [
+    {
+      icon: "Blocks",
+      title: "Web3.0",
+      titleJa: "Web3.0",
+      titleVi: "Web3.0",
+      description: "Build connected applications with wallet-aware experiences, decentralized identity, and thoughtful on-chain integrations.",
+      descriptionJa: "ウォレット連携、分散型ID、オンチェーン連携を取り入れたアプリケーションを開発します。",
+      descriptionVi: "Xây dựng ứng dụng kết nối với ví điện tử, định danh phi tập trung và các tích hợp on-chain phù hợp.",
+      techStack: ["Wallet integration", "Decentralized identity", "Smart contracts"],
+    },
+    {
+      icon: "Link2",
+      title: "Blockchain",
+      titleJa: "ブロックチェーン",
+      titleVi: "Blockchain",
+      description: "Design and integrate blockchain services, smart-contract workflows, and dependable data interfaces.",
+      descriptionJa: "ブロックチェーンサービスやスマートコントラクトのワークフロー、信頼性の高いデータ連携を設計・実装します。",
+      descriptionVi: "Thiết kế và tích hợp dịch vụ blockchain, quy trình smart contract cùng giao diện dữ liệu đáng tin cậy.",
+      techStack: ["Smart contracts", "Web3", "Distributed systems"],
+    },
+    {
+      icon: "Landmark",
+      title: "Digital Banking",
+      titleJa: "デジタルバンキング",
+      titleVi: "Ngân hàng số",
+      description: "Create accessible digital banking experiences with secure account journeys, payment flows, and operational tools.",
+      descriptionJa: "安全な口座利用、決済フロー、業務ツールを備えた使いやすいデジタルバンキング体験をつくります。",
+      descriptionVi: "Tạo trải nghiệm ngân hàng số dễ tiếp cận với luồng tài khoản, thanh toán và công cụ vận hành an toàn.",
+      techStack: ["Account services", "Payment flows", "Security"],
+    },
+    {
+      icon: "WalletCards",
+      title: "FinApps & FinTech",
+      titleJa: "金融アプリ・FinTech",
+      titleVi: "FinApps & FinTech",
+      description: "Develop financial applications that connect users, transactions, and business operations in one clear experience.",
+      descriptionJa: "ユーザー、取引、業務プロセスをわかりやすくつなぐ金融アプリケーションを開発します。",
+      descriptionVi: "Phát triển ứng dụng tài chính kết nối người dùng, giao dịch và vận hành doanh nghiệp trong một trải nghiệm rõ ràng.",
+      techStack: ["Financial applications", "Payments", "Integrations"],
+    },
+    {
+      icon: "PanelsTopLeft",
+      title: "Mobile & Web Apps",
+      titleJa: "モバイル・Webアプリ",
+      titleVi: "Ứng dụng Mobile & Web",
+      description: "Deliver responsive web and mobile products shaped around real user needs and maintainable engineering.",
+      descriptionJa: "ユーザーのニーズに寄り添い、保守性にも配慮したWeb・モバイルプロダクトを提供します。",
+      descriptionVi: "Phát triển sản phẩm web và di động thích ứng theo nhu cầu người dùng, với nền tảng kỹ thuật dễ bảo trì.",
+      techStack: ["React", "Next.js", "Flutter", "React Native"],
+    },
+    {
+      icon: "ShieldCheck",
+      title: "Web Security",
+      titleJa: "Webセキュリティ",
+      titleVi: "Bảo mật Web",
+      description: "Strengthen application security through architecture reviews, secure implementation, and ongoing maintenance.",
+      descriptionJa: "アーキテクチャレビュー、安全な実装、継続的な保守を通じてアプリケーションを守ります。",
+      descriptionVi: "Tăng cường bảo mật ứng dụng qua đánh giá kiến trúc, triển khai an toàn và bảo trì liên tục.",
+      techStack: ["Architecture review", "Secure coding", "Monitoring"],
+    },
+    {
+      icon: "Webhook",
+      title: "API Development",
+      titleJa: "API開発",
+      titleVi: "Phát triển API",
+      description: "Connect products and services with well-structured APIs, integrations, and reliable data exchange.",
+      descriptionJa: "適切に設計されたAPIやシステム連携を通じて、サービス間の安定したデータ交換を実現します。",
+      descriptionVi: "Kết nối sản phẩm và dịch vụ bằng API có cấu trúc tốt, tích hợp hệ thống và trao đổi dữ liệu ổn định.",
+      techStack: ["REST", "GraphQL", "PostgreSQL", "Redis"],
+    },
+    {
+      icon: "ChartNoAxesCombined",
+      title: "Big Data",
+      titleJa: "ビッグデータ",
+      titleVi: "Big Data",
+      description: "Organize data pipelines and analytics foundations so teams can turn complex information into useful signals.",
+      descriptionJa: "複雑な情報を価値あるインサイトへつなげるデータパイプラインと分析基盤を整備します。",
+      descriptionVi: "Tổ chức luồng dữ liệu và nền tảng phân tích để chuyển thông tin phức tạp thành tín hiệu hữu ích.",
+      techStack: ["Data pipelines", "Analytics", "Data platforms"],
+    },
+    {
+      icon: "Gamepad2",
+      title: "Gaming",
+      titleJa: "ゲーム",
+      titleVi: "Gaming",
+      description: "Build engaging game services and supporting web or mobile experiences with scalable back-end foundations.",
+      descriptionJa: "拡張性のあるバックエンドを基盤に、魅力的なゲームサービスやWeb・モバイル体験を開発します。",
+      descriptionVi: "Xây dựng dịch vụ trò chơi cùng trải nghiệm web hoặc mobile trên nền tảng back-end có thể mở rộng.",
+      techStack: ["Web applications", "Mobile applications", "Cloud services"],
+    },
+    {
+      icon: "Bot",
+      title: "AI Automations",
+      titleJa: "AIオートメーション",
+      titleVi: "Tự động hóa AI",
+      description: "Apply AI to repetitive workflows, knowledge discovery, and decision support with human oversight in the loop.",
+      descriptionJa: "人の確認を大切にしながら、定型業務、ナレッジ活用、意思決定支援にAIを取り入れます。",
+      descriptionVi: "Ứng dụng AI vào quy trình lặp lại, khai thác tri thức và hỗ trợ quyết định với sự giám sát của con người.",
+      techStack: ["AI", "Workflow automation", "Knowledge systems"],
+    },
+  ];
+
+  for (const [index, service] of capabilityServices.entries()) {
+    const existing = await prisma.service.findFirst({ where: { title: service.title } });
+    if (!existing) {
+      await prisma.service.create({
+        data: { ...service, order: 101 + index, isVisible: true },
+      });
+    }
+  }
+
   const techCount = await prisma.techStack.count();
   if (techCount === 0) {
     const techs = [
@@ -318,6 +430,67 @@ async function main() {
         order: 1,
         featured: true,
         isVisible: true,
+      },
+    });
+  }
+
+  const aiProducts = [
+    {
+      title: "AI Meeting Assistant",
+      titleJa: "AIミーティングアシスタント",
+      titleVi: "Trợ lý họp AI",
+      slug: "ai-meeting-assistant",
+      summary: "A meeting companion for Google Meet and Zoom that captures conversations, creates notes and summaries, analyzes discussions, translates speech, and suggests next steps.",
+      summaryJa: "Google MeetやZoomの会話を記録し、議事録・要約・分析・音声翻訳と次のアクション提案を行う会議アシスタントです。",
+      summaryVi: "Trợ lý cho Google Meet và Zoom, ghi chú, tóm tắt, phân tích cuộc họp, dịch lời nói và đề xuất các bước tiếp theo.",
+      description: "## Meeting intelligence\nCapture meeting notes, summarize discussions, surface key points, translate speech across languages, and suggest follow-up actions for the team.",
+      descriptionJa: "## 会議インテリジェンス\n議事録の作成、会話の要約、重要事項の抽出、多言語音声翻訳、フォローアップの提案を支援します。",
+      descriptionVi: "## Trí tuệ họp trực tuyến\nGhi chú, tóm tắt nội dung, làm rõ điểm chính, dịch lời nói đa ngôn ngữ và đề xuất việc cần theo dõi.",
+      techStack: ["Google Meet", "Zoom", "Meeting notes", "AI summaries", "Speech translation", "Action items"],
+      category: "ai",
+      order: 101,
+    },
+    {
+      title: "AI Recruiting Platform",
+      titleJa: "AI採用プラットフォーム",
+      titleVi: "Nền tảng tuyển dụng AI",
+      slug: "ai-recruiting-platform",
+      summary: "A recruiting workspace for SaaS-based hiring, with automated interview assistance, candidate evaluation, and interview-session and screen tracking.",
+      summaryJa: "SaaS型の採用ワークスペースです。面接の自動化支援、候補者評価、面接セッションと画面のトラッキングを備えています。",
+      summaryVi: "Nền tảng SaaS hỗ trợ tuyển dụng với phỏng vấn tự động, đánh giá ứng viên và theo dõi phiên phỏng vấn cũng như màn hình.",
+      description: "## Hiring workflow\nSupport recruiting teams with structured candidate screening, automated interview assistance, evaluation workflows, and session and screen tracking.",
+      descriptionJa: "## 採用ワークフロー\n候補者のスクリーニング、面接の自動化支援、評価フロー、面接セッションと画面のトラッキングを支援します。",
+      descriptionVi: "## Quy trình tuyển dụng\nHỗ trợ sàng lọc ứng viên, phỏng vấn tự động, quy trình đánh giá và theo dõi phiên phỏng vấn cùng màn hình.",
+      techStack: ["SaaS", "Automated interviews", "Candidate evaluation", "Session tracking", "Screen tracking"],
+      category: "ai",
+      order: 102,
+    },
+    {
+      title: "Personal AI Assistant",
+      titleJa: "パーソナルAIアシスタント",
+      titleVi: "Trợ lý AI cá nhân",
+      slug: "personal-ai-assistant",
+      summary: "A personal assistant that organizes tasks and notifications, reminds users about upcoming work, and helps catch important messages and information.",
+      summaryJa: "タスクや通知を整理し、予定をリマインドしながら、大切なメッセージや情報の見落としを防ぐパーソナルアシスタントです。",
+      summaryVi: "Trợ lý cá nhân giúp quản lý công việc và thông báo, nhắc việc sắp tới, đồng thời hạn chế bỏ sót tin nhắn và thông tin quan trọng.",
+      description: "## Personal productivity\nKeep tasks and reminders organized, highlight important messages and updates, and help users stay on top of information they might otherwise miss.",
+      descriptionJa: "## パーソナル生産性\nタスクやリマインダーを整理し、重要なメッセージや更新情報を知らせ、情報の見落としを防ぎます。",
+      descriptionVi: "## Năng suất cá nhân\nSắp xếp công việc và lời nhắc, làm nổi bật tin nhắn và cập nhật quan trọng, giúp người dùng không bỏ lỡ thông tin.",
+      techStack: ["Task management", "Smart reminders", "Message notifications", "Personal knowledge"],
+      category: "ai",
+      order: 103,
+    },
+  ];
+
+  for (const work of aiProducts) {
+    await prisma.work.upsert({
+      where: { slug: work.slug },
+      update: {},
+      create: {
+        ...work,
+        gallery: [],
+        isVisible: true,
+        featured: true,
       },
     });
   }

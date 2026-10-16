@@ -6,10 +6,20 @@ import {
   getCachedStats,
   getCachedTeam,
   getCachedTestimonials,
+  getCachedTechStack,
   getCachedWhyChooseUs,
   getCachedWorks,
 } from "./queries";
-import type { Partner, Service, Stat, TeamMember, Testimonial, WhyChooseUs, Work } from "@prisma/client";
+import type {
+  Partner,
+  Service,
+  Stat,
+  TeamMember,
+  TechStack,
+  Testimonial,
+  WhyChooseUs,
+  Work,
+} from "@prisma/client";
 
 export interface HomePageData {
   settings: Record<string, string>;
@@ -20,6 +30,7 @@ export interface HomePageData {
   allWorks: Work[];
   testimonials: Testimonial[];
   partners: Partner[];
+  techStack: TechStack[];
   dataLoadFailed: boolean;
 }
 
@@ -32,6 +43,7 @@ const EMPTY_HOME_DATA: HomePageData = {
   allWorks: [],
   testimonials: [],
   partners: [],
+  techStack: [],
   dataLoadFailed: true,
 };
 
@@ -51,7 +63,7 @@ function createTimeoutPromise<T>(promise: Promise<T>, timeoutMs: number): Promis
 
 export async function fetchHomePageData(): Promise<HomePageData> {
   try {
-    const [settings, stats, allServices, whyItems, allTeam, allWorks, testimonials, partners] =
+    const [settings, stats, allServices, whyItems, allTeam, allWorks, testimonials, partners, techStack] =
       await createTimeoutPromise(
         Promise.all([
           getCachedSettings(),
@@ -62,6 +74,7 @@ export async function fetchHomePageData(): Promise<HomePageData> {
           getCachedWorks(true),
           getCachedTestimonials(3),
           getCachedPartners(),
+          getCachedTechStack(),
         ]),
         FETCH_TIMEOUT_MS
       );
@@ -75,6 +88,7 @@ export async function fetchHomePageData(): Promise<HomePageData> {
       allWorks,
       testimonials,
       partners,
+      techStack,
       dataLoadFailed: false,
     };
   } catch (error) {

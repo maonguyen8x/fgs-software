@@ -1,10 +1,13 @@
+"use client";
+
+import { useState } from "react";
 import * as LucideIcons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowUpRight, Plus } from "lucide-react";
 import { ConsultationFormLink } from "@/components/services/ConsultationFormLink";
-import { Badge } from "@/components/ui/badge";
 import type { Locale } from "@/i18n/routing";
 import { getLocalizedField } from "@/lib/i18n-content";
+import { cn } from "@/lib/utils";
 
 interface Service {
   id: string;
@@ -16,6 +19,7 @@ interface Service {
   descriptionJa?: string | null;
   descriptionVi?: string | null;
   techStack: string[];
+  order: number;
 }
 
 interface ServicesGridProps {
@@ -38,37 +42,94 @@ export function ServicesGrid({
   learnMoreLabel,
   formBadgeLabel,
 }: ServicesGridProps) {
+  const capabilities = services.filter((service) => service.order >= 101 && service.order <= 110);
+  const [activeKey, setActiveKey] = useState<string | null>(
+    () => capabilities[0]?.id ?? null
+  );
+
   return (
-    <div className="page-grid">
-      {services.map((service) => {
+    <div className="services-capability-list">
+      {capabilities.map((service, index) => {
+        const active = activeKey === service.id;
         const Icon = getIcon(service.icon);
+        const title = getLocalizedField(service, "title", locale);
+        const description = getLocalizedField(service, "description", locale);
+        const panelId = `service-capability-${service.id}`;
+
         return (
-          <Card key={service.id} className="group flex flex-col">
-            <CardHeader className="space-y-2">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-100 text-primary-600 transition-all duration-300 group-hover:bg-primary-600 group-hover:text-white group-hover:shadow-md group-hover:shadow-primary-600/30 dark:bg-primary-950 dark:text-primary-300">
-                <Icon className="h-5 w-5" />
-              </div>
-              <CardTitle>{getLocalizedField(service, "title", locale)}</CardTitle>
-              <CardDescription className="line-clamp-3">
-                {getLocalizedField(service, "description", locale)}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="mt-auto space-y-3">
-              <div className="flex flex-wrap gap-1.5">
-                {service.techStack.slice(0, 4).map((tech) => (
-                  <Badge key={tech} variant="secondary" className="text-xs">
-                    {tech}
-                  </Badge>
-                ))}
-              </div>
-              <ConsultationFormLink
-                href={consultationHref}
-                label={learnMoreLabel}
-                badgeLabel={formBadgeLabel}
-                variant="inline"
+          <div key={service.id} className="services-capability-item">
+            <button
+              type="button"
+              aria-expanded={active}
+              aria-controls={panelId}
+              onMouseEnter={() => setActiveKey(service.id)}
+              onFocus={() => setActiveKey(service.id)}
+              onClick={() => setActiveKey(active ? null : service.id)}
+              className={cn(
+                "services-capability-trigger group",
+                active && "services-capability-trigger-active"
+              )}
+            >
+              <span className="services-capability-number">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="services-capability-icon">
+                <Icon className="h-5 w-5" strokeWidth={1.6} aria-hidden />
+              </span>
+              <span className="min-w-0 flex-1 text-left">
+                <span className="block text-base font-medium tracking-tight sm:text-lg">
+                  {title}
+                </span>
+              </span>
+              <Plus
+                className={cn(
+                  "h-5 w-5 shrink-0 transition-transform duration-300",
+                  active && "rotate-45"
+                )}
+                aria-hidden
               />
-            </CardContent>
-          </Card>
+            </button>
+            <div
+              id={panelId}
+              className={cn("services-capability-detail", !active && "hidden")}
+              aria-hidden={!active}
+            >
+              <div className="services-capability-detail-glow" aria-hidden />
+              <div className="relative grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-violet-300">
+                    {String(index + 1).padStart(2, "0")} / {String(capabilities.length).padStart(2, "0")}
+                  </p>
+                  <h3 className="mt-3 text-xl font-semibold tracking-tight text-white md:text-2xl">
+                    {title}
+                  </h3>
+                  <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-300 md:text-base">
+                    {description}
+                  </p>
+                  {service.techStack.length > 0 ? (
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {service.techStack.map((technology) => (
+                        <span
+                          key={technology}
+                          className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs text-slate-200"
+                        >
+                          {technology}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+                <ConsultationFormLink
+                  href={consultationHref}
+                  label={learnMoreLabel}
+                  badgeLabel={formBadgeLabel}
+                  variant="inline"
+                  className="relative w-fit border-white/20 bg-white/5 text-white hover:bg-white/10 dark:border-white/20 dark:bg-white/5 dark:text-white"
+                />
+                <ArrowUpRight className="absolute right-0 top-0 hidden h-5 w-5 text-violet-200 md:block" aria-hidden />
+              </div>
+            </div>
+          </div>
         );
       })}
     </div>

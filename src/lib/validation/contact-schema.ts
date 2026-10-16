@@ -3,6 +3,7 @@ import { z } from "zod";
 export type ContactValidationMessages = {
   nameRequired: string;
   nameMin: string;
+  phoneRequired: string;
   emailRequired: string;
   emailInvalid: string;
   messageRequired: string;
@@ -11,20 +12,26 @@ export type ContactValidationMessages = {
 
 export function createContactSchema(messages: ContactValidationMessages) {
   return z.object({
-    name: z
+    firstName: z
       .string({ required_error: messages.nameRequired })
       .trim()
       .min(1, messages.nameRequired)
-      .min(2, messages.nameMin),
+      .max(100),
+    lastName: z
+      .string({ required_error: messages.nameRequired })
+      .trim()
+      .min(1, messages.nameRequired)
+      .max(100),
     email: z
       .string({ required_error: messages.emailRequired })
       .trim()
       .min(1, messages.emailRequired)
       .email(messages.emailInvalid),
-    company: z.string().optional(),
-    phone: z.string().optional(),
-    projectType: z.string().optional(),
-    budget: z.string().optional(),
+    phone: z
+      .string({ required_error: messages.phoneRequired })
+      .trim()
+      .min(1, messages.phoneRequired)
+      .max(50),
     message: z
       .string({ required_error: messages.messageRequired })
       .trim()

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import { HOME_HASH_HERO, scrollToHomeSection, setHomeHash } from "@/lib/home-hash";
 
 function ScrollToTopIcon({ className }: { className?: string }) {
   return (
@@ -25,12 +24,7 @@ function ScrollToTopIcon({ className }: { className?: string }) {
   );
 }
 
-interface ScrollToTopButtonProps {
-  /** On homepage: scroll to hero + update hash */
-  home?: boolean;
-}
-
-export function ScrollToTopButton({ home = false }: ScrollToTopButtonProps) {
+export function ScrollToTopButton() {
   const t = useTranslations("hero");
   const [visible, setVisible] = useState(false);
 
@@ -42,10 +36,6 @@ export function ScrollToTopButton({ home = false }: ScrollToTopButtonProps) {
   }, []);
 
   const scrollUp = () => {
-    if (home) {
-      setHomeHash(HOME_HASH_HERO, { replace: true });
-      scrollToHomeSection(HOME_HASH_HERO);
-    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 

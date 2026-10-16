@@ -4,7 +4,7 @@ import {
   type EmailSettingKey,
 } from "@/lib/email/setting-keys";
 
-export const DEFAULT_CONTACT_INBOX = "contact.fgssoftware@gmail.com";
+export const DEFAULT_CONTACT_INBOX = "contact@fgs-software.com";
 
 export interface ResolvedEmailConfig {
   contactInbox: string;

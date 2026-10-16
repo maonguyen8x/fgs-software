@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { resolveContactInboxEmail, sendContactEmails } from "@/lib/email";
+import { DEFAULT_CONTACT_INBOX, sendContactEmails } from "@/lib/email";
 import { getSettingsMap } from "@/lib/settings";
 import { apiSuccess, apiError, apiValidationError, apiServerError } from "@/lib/api/response";
 import { logger } from "@/lib/logger";
@@ -31,21 +31,25 @@ export async function POST(request: Request) {
       message: sanitizeText(parsed.message, 5000),
     };
 
-    const settings = await getSettingsMap();
-    const inboxEmail = resolveContactInboxEmail(settings);
-
-    const message = await prisma.message.create({ data });
+    let settings: Record<string, string> = {};
+    try {
+      settings = await getSettingsMap();
+    } catch (error) {
+      logger.warn("Contact email settings unavailable; using environment configuration", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
 
     const emailResult = await sendContactEmails(
       data,
-      inboxEmail,
+      DEFAULT_CONTACT_INBOX,
       settings.admin_email_cc,
       settings
     );
 
     if (!emailResult.adminSent) {
       logger.error("Contact form email not delivered", {
-        inboxEmail,
+        inboxEmail: DEFAULT_CONTACT_INBOX,
         code: emailResult.code,
         error: emailResult.error,
       });
@@ -58,11 +62,22 @@ export async function POST(request: Request) {
       );
     }
 
+    let messageId: string | undefined;
+    try {
+      const message = await prisma.message.create({ data });
+      messageId = message.id;
+    } catch (error) {
+      logger.error("Contact email delivered but message could not be saved", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+
     return apiSuccess({
       success: true,
-      messageId: message.id,
+      messageId,
       emailSent: true,
-      inbox: inboxEmail,
+      messageStored: Boolean(messageId),
+      inbox: DEFAULT_CONTACT_INBOX,
     });
   } catch (error) {
     if (error instanceof z.ZodError) {

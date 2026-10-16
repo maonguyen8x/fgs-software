@@ -1,7 +1,6 @@
 "use client";
 
 import { useId } from "react";
-import Image from "next/image";
 import { ClientOnly } from "@/components/ui/ClientOnly";
 
 const NEURAL_NODES: { x: number; y: number; r: number }[] = [
@@ -144,15 +143,15 @@ function GlobeScene({ compact }: { compact?: boolean }) {
       </div>
 
       <div className="team-globe-spin-outer relative z-10 h-full w-full">
-        <div className="team-globe-sphere relative h-full w-full rounded-full bg-transparent">
-          <Image
-            src="/images/team-earth-globe.png"
-            alt=""
-            fill
-            priority={!compact}
-            className="team-globe-earth-img object-contain object-center"
-            sizes={compact ? "260px" : "(max-width: 768px) 320px, 400px"}
-          />
+        <div className="team-globe-sphere team-globe-surface relative h-full w-full overflow-hidden rounded-full">
+          <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" aria-hidden>
+            <circle cx="50" cy="50" r="49" fill="none" stroke="rgba(125,211,252,.36)" strokeWidth=".55" />
+            <ellipse cx="50" cy="50" rx="49" ry="18" fill="none" stroke="rgba(125,211,252,.24)" strokeWidth=".45" />
+            <ellipse cx="50" cy="50" rx="49" ry="34" fill="none" stroke="rgba(125,211,252,.2)" strokeWidth=".4" />
+            <ellipse cx="50" cy="50" rx="20" ry="49" fill="none" stroke="rgba(125,211,252,.24)" strokeWidth=".45" />
+            <ellipse cx="50" cy="50" rx="38" ry="49" fill="none" stroke="rgba(125,211,252,.18)" strokeWidth=".4" />
+            <path d="M2 50h96M8 33h84M8 67h84" fill="none" stroke="rgba(125,211,252,.16)" strokeWidth=".4" />
+          </svg>
           <div className="team-globe-rim pointer-events-none absolute inset-0 rounded-full" aria-hidden />
         </div>
         <div className="team-globe-neural-wrap pointer-events-none absolute inset-[-6%] z-20">
