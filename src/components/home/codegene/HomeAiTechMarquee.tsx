@@ -41,11 +41,11 @@ export function HomeAiTechMarquee({
 
   return (
     <section
-      className="home-ai-tech-marquee overflow-hidden border-y border-slate-200/70 bg-white py-7 dark:border-slate-800 dark:bg-slate-950 md:py-9"
+      className="home-ai-tech-marquee overflow-hidden border-y border-slate-200/70 bg-white py-[10px] dark:border-slate-800 dark:bg-slate-950"
       aria-label={title || t("title")}
     >
       <div className="container-narrow px-4">
-        <p className="mb-5 text-center text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 md:text-sm dark:text-slate-400">
+        <p className="mb-[10px] text-center text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 md:text-sm dark:text-slate-400">
           {title || t("title")}
         </p>
       </div>

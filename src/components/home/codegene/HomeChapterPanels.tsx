@@ -43,7 +43,7 @@ function ChapterSection({
       id={id}
       data-home-chapter={id}
       className={cn(
-        "home-chapter-section scroll-mt-24 border-b border-slate-200/80 py-14 md:py-16 lg:min-h-[88vh] lg:py-20 dark:border-slate-800",
+        "home-chapter-section scroll-mt-24 border-b border-slate-200/80 py-3 dark:border-slate-800",
         className
       )}
     >
@@ -68,7 +68,7 @@ function SectionHead({
   subtitle?: string;
 }) {
   return (
-    <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div className="mb-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div>
         <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
           {badge}
@@ -215,7 +215,7 @@ function Chapter02Technologies({
       title={copy?.title || t("chapter-02_headline")}
       titleAccent={copy?.title ? undefined : t("chapter-02_headline_accent")}
       subtitle={copy?.subtitle} />
-      <div className="grid gap-8 lg:grid-cols-[minmax(300px,0.88fr)_minmax(0,1.12fr)] lg:items-center">
+      <div className="grid gap-3 lg:grid-cols-[minmax(300px,0.88fr)_minmax(0,1.12fr)] lg:items-center">
         <div
           ref={ref}
           className="home-tech-orbit-stage group relative mx-auto aspect-square w-full max-w-[430px]"

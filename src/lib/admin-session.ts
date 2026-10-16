@@ -9,12 +9,12 @@ export interface AdminSessionUser {
   role: string;
 }
 
-function useSecureCookies(): boolean {
-  return process.env.NEXTAUTH_URL?.startsWith("https://") ?? false;
+export function useSecureAdminCookies(): boolean {
+  return process.env.NEXTAUTH_URL?.startsWith("https://") ?? Boolean(process.env.VERCEL);
 }
 
 export function getSessionCookieName(): string {
-  return useSecureCookies() ? "__Secure-next-auth.session-token" : "next-auth.session-token";
+  return useSecureAdminCookies() ? "__Secure-next-auth.session-token" : "next-auth.session-token";
 }
 
 export async function createAdminSessionToken(
@@ -42,7 +42,7 @@ export async function createAdminSessionToken(
 }
 
 export function sessionCookieOptions(maxAge: number) {
-  const secure = useSecureCookies();
+  const secure = useSecureAdminCookies();
   return {
     httpOnly: true,
     sameSite: "lax" as const,

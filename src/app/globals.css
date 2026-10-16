@@ -986,7 +986,7 @@
     min-width: 10.5rem;
     max-width: 12.5rem;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     border: 1px solid rgba(148, 163, 184, 0.24);
     border-radius: 1rem;
     background: rgba(255, 255, 255, 0.88);
@@ -1026,9 +1026,10 @@
   .about-identity-point-name {
     margin-top: 0.15rem;
     color: #0f172a;
-    font-size: 1.05rem;
-    font-weight: 650;
+    font-size: 1.25rem;
+    font-weight: 750;
     letter-spacing: -0.02em;
+    text-align: center;
   }
 
   .dark .about-identity-point-name {
@@ -1042,6 +1043,7 @@
     font-size: 0.72rem;
     line-height: 1.45;
     overflow-wrap: anywhere;
+    text-align: center;
   }
 
   .dark .about-identity-point-note {
@@ -2155,6 +2157,13 @@
   border-top: 1px solid #e2e8f0;
 }
 
+.services-capability-layout {
+  display: grid;
+  align-items: start;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+}
+
 .dark .services-capability-list {
   border-color: #334155;
 }
@@ -2227,18 +2236,61 @@
   color: #7c3aed;
 }
 
-.services-capability-detail {
-  position: absolute;
-  z-index: 20;
-  inset: -0.25rem 0 auto 3.25rem;
+.services-capability-preview {
+  position: sticky;
+  top: 6rem;
+  min-height: 26rem;
   overflow: hidden;
-  margin: 0;
   border: 1px solid rgba(167, 139, 250, 0.2);
   border-radius: 1.25rem;
   background: #0b0d14;
-  padding: 1.5rem;
-  box-shadow: 0 24px 65px rgba(3, 4, 12, 0.46);
-  animation: service-detail-appear 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  box-shadow: 0 24px 65px rgba(3, 4, 12, 0.32);
+}
+
+.services-capability-preview-content,
+.services-capability-preview-empty {
+  position: relative;
+  z-index: 1;
+}
+
+.services-capability-preview-empty {
+  display: flex;
+  min-height: 22rem;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.services-capability-preview-icon {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  place-items: center;
+  border: 1px solid rgba(196, 181, 253, 0.25);
+  border-radius: 1rem;
+  background: rgba(139, 92, 246, 0.16);
+  color: #c4b5fd;
+}
+
+.services-capability-preview-icon svg {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+@media (max-width: 767px) {
+  .services-capability-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .services-capability-preview {
+    position: relative;
+    top: auto;
+    min-height: 20rem;
+  }
+
+  .services-capability-preview-empty {
+    min-height: 17rem;
+  }
 }
 
 .services-capability-detail-glow {
@@ -3160,7 +3212,8 @@ button.contact-location-card:hover {
   -webkit-background-clip: text;
   opacity: 0.25;
   text-shadow: 0 0 0 transparent;
-  animation: intro-logo-letter-light 1.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: intro-logo-letter-light 950ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  padding-bottom: 0.08em;
 }
 
 .intro-logo-sub {
@@ -3181,7 +3234,7 @@ button.contact-location-card:hover {
   background-clip: text;
   -webkit-background-clip: text;
   opacity: 0.2;
-  animation: intro-logo-software-light 1100ms ease-out forwards;
+  animation: intro-logo-software-light 620ms ease-out forwards;
 }
 
 @keyframes intro-logo-star-glow {
@@ -3997,6 +4050,12 @@ button.contact-location-card:hover {
   margin-inline: auto;
 }
 
+@media (min-width: 1024px) {
+  .ph-products {
+    transform: translateY(-8px);
+  }
+}
+
 .ph-product {
   position: relative;
   overflow: hidden;
@@ -4322,7 +4381,7 @@ button.contact-location-card:hover {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding: clamp(5rem, 10vw, 9rem) 0 clamp(4rem, 8vw, 7rem);
+  padding: 18px 0 clamp(2.5rem, 4vw, 4rem);
   background:
     radial-gradient(ellipse at 85% 15%, rgba(201, 184, 255, 0.22), transparent 34%),
     #fbf3df;
@@ -4496,7 +4555,7 @@ button.contact-location-card:hover {
 .about-notebook-margin-note { margin-top: 1.3rem; text-align: right; transform: rotate(-3deg); }
 
 .about-notebook-story {
-  padding: clamp(4rem, 8vw, 7rem) 0;
+  padding: clamp(2.5rem, 4vw, 4rem) 0;
 }
 
 .about-notebook-section-head {
@@ -4587,7 +4646,7 @@ button.contact-location-card:hover {
 
 .about-notebook-values-and-why {
   position: relative;
-  padding: clamp(4rem, 8vw, 7rem) 0;
+  padding: clamp(2.5rem, 4vw, 4rem) 0;
   color: #f7f4fc;
   background:
     radial-gradient(ellipse at 50% 0%, rgba(124, 92, 255, 0.15), transparent 46%),
@@ -4596,12 +4655,12 @@ button.contact-location-card:hover {
 
 .about-notebook-values-and-why > .container-narrow > .about-notebook-chapter,
 .about-notebook-dark-note { text-align: center; }
-.about-notebook-dark-note { margin: 0.25rem 0 2.5rem; color: #bcb6ca; font-size: 0.83rem; }
+.about-notebook-dark-note { margin: 0.25rem 0 1.25rem; color: #bcb6ca; font-size: 0.83rem; }
 
 .about-notebook-values-grid {
   display: grid;
   align-items: start;
-  gap: clamp(2rem, 5vw, 4rem);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
@@ -4712,7 +4771,7 @@ button.contact-location-card:hover {
 
 .about-notebook-workflow {
   position: relative;
-  padding: clamp(4rem, 8vw, 7rem) 1rem;
+  padding: clamp(2.5rem, 4vw, 4rem) 1rem;
   background:
     radial-gradient(circle at 12% 20%, rgba(124, 92, 255, 0.06) 0 2px, transparent 3px),
     #fdfcf8;
@@ -4752,7 +4811,7 @@ button.contact-location-card:hover {
 .about-notebook-step-label { margin-top: 0.65rem; color: #7a7480; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
 .about-notebook-repeat { margin-top: -0.3rem; color: #7956df; font-family: "Segoe Print", "Bradley Hand", cursive; text-align: center; transform: rotate(-2deg); }
 
-.about-notebook-join { padding: 1rem 0 clamp(4rem, 8vw, 7rem); }
+.about-notebook-join { padding: 1rem 0 clamp(2.5rem, 4vw, 4rem); }
 .about-notebook-join-panel {
   display: grid;
   align-items: center;
@@ -4805,7 +4864,7 @@ button.contact-location-card:hover {
 .about-notebook-join-mark { position: relative; z-index: 1; margin-top: 3rem; color: #53488c; font-family: "Segoe Print", "Bradley Hand", cursive; font-size: 1.1rem; transform: rotate(-4deg); }
 
 .about-notebook-closing {
-  padding: clamp(4rem, 8vw, 7rem) 0;
+  padding: clamp(2.5rem, 4vw, 4rem) 0;
   background: #f6f7fb;
   text-align: center;
 }
@@ -4816,12 +4875,13 @@ button.contact-location-card:hover {
 .about-notebook-closing-actions a:not(.about-notebook-dark-button) { color: #302b36; text-decoration: underline wavy #8b69ef 1.5px; text-underline-offset: 5px; }
 
 .about-notebook-page .about-identity-section {
-  padding: 4rem 0;
+  padding: 2rem 0;
   background: #fdfcf8;
 }
 .about-notebook-page .about-identity-eyebrow { color: #7956df; }
 .about-notebook-page .about-identity-title { color: #24212a; }
 .about-notebook-page .about-identity-subtitle { color: #5d5862; }
+.about-notebook-page .about-identity-diagram { margin-top: 1.5rem; }
 .about-notebook-page .about-identity-center { box-shadow: 0 0 0 1px rgba(124, 92, 255, 0.24), 0 20px 48px rgba(78, 60, 124, 0.12); }
 .about-notebook-page .about-identity-point { background: #fffefa; }
 
@@ -4949,7 +5009,7 @@ button.contact-location-card:hover {
 }
 
 .home-hero-title {
-  margin-top: 10px;
+  margin-top: 15px;
   font-size: clamp(2.1rem, 4.2vw, 4rem);
   font-weight: 700;
   letter-spacing: -0.035em;

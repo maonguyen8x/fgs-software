@@ -104,10 +104,10 @@ export function HomeCodeGeneExperience({
 
       <div className="home-chapters-wrap relative bg-[#fafafa] dark:bg-slate-950">
         <div className="home-chapters-grid pointer-events-none absolute inset-0 opacity-[0.45]" aria-hidden />
-        <div className="container-narrow relative px-4 pb-20 pt-10 md:pt-12">
+        <div className="container-narrow relative px-4 py-3">
           <div className="grid gap-8 lg:grid-cols-[minmax(240px,280px)_minmax(0,1fr)] lg:gap-10">
             <div className="hidden lg:block">
-              <div className="sticky top-24">
+              <div className="sticky top-24 pt-3">
                 <HomeChapterRail activeId={activeChapter} onNavigate={scrollToChapter} />
               </div>
             </div>

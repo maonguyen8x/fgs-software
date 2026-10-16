@@ -2,6 +2,7 @@ import createIntlMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { getSessionCookieName, useSecureAdminCookies } from "@/lib/admin-session";
 import { getAdminLoginSecret, getAdminLoginUrl, isDefaultAdminLoginDisabled } from "@/config/admin";
 import { isAdminPublicPath } from "@/config/admin-public-paths";
 import { routing } from "./i18n/routing";
@@ -78,9 +79,12 @@ export async function middleware(request: NextRequest) {
         return forwardWithPathname(request, pathname);
       }
       if (pathname.startsWith("/admin")) {
+        const secureCookie = useSecureAdminCookies();
         const token = await getToken({
           req: request,
-          secret: process.env.NEXTAUTH_SECRET,
+          secret: process.env.NEXTAUTH_SECRET?.trim(),
+          secureCookie,
+          cookieName: getSessionCookieName(),
         });
         if (token) return forwardWithPathname(request, pathname);
 

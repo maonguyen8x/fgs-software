@@ -33,7 +33,16 @@ interface AmbientAudioGraph {
   context: AudioContext;
   output: GainNode;
   oscillators: OscillatorNode[];
+  voices: OscillatorNode[];
+  chordTimer: number;
 }
+
+const AMBIENT_CHORDS = [
+  [55, 82.41, 110, 130.81, 164.81, 196],
+  [49, 73.42, 98, 116.54, 146.83, 174.61],
+  [65.41, 98, 130.81, 164.81, 196, 233.08],
+  [43.65, 65.41, 87.31, 104, 130.81, 155.56],
+] as const;
 
 function AmbientAudioToggle() {
   const t = useTranslations("hero");
@@ -46,6 +55,7 @@ function AmbientAudioToggle() {
     return () => {
       const graph = audioRef.current;
       if (!graph) return;
+      window.clearInterval(graph.chordTimer);
       graph.oscillators.forEach((oscillator) => oscillator.stop());
       void graph.context.close();
     };
@@ -58,6 +68,7 @@ function AmbientAudioToggle() {
     try {
       const graph = audioRef.current;
       if (enabled && graph) {
+        window.clearInterval(graph.chordTimer);
         graph.output.gain.cancelScheduledValues(graph.context.currentTime);
         graph.output.gain.setTargetAtTime(0.0001, graph.context.currentTime, 0.18);
         graph.oscillators.forEach((oscillator) =>
@@ -82,15 +93,21 @@ function AmbientAudioToggle() {
       filter.Q.value = 0.7;
       output.connect(filter);
       filter.connect(context.destination);
-      const nextGraph: AmbientAudioGraph = { context, output, oscillators: [] };
+      const nextGraph: AmbientAudioGraph = {
+        context,
+        output,
+        oscillators: [],
+        voices: [],
+        chordTimer: 0,
+      };
       audioRef.current = nextGraph;
 
-      [55, 82.41, 110, 130.81, 164.81, 196, 220, 261.63, 329.63, 392].forEach((frequency, index) => {
+      AMBIENT_CHORDS[0].forEach((frequency, index) => {
         const oscillator = context.createOscillator();
         const voice = context.createGain();
         const modulation = context.createOscillator();
         const modulationDepth = context.createGain();
-        oscillator.type = index > 5 ? "triangle" : "sine";
+        oscillator.type = index > 3 ? "triangle" : "sine";
         oscillator.frequency.value = frequency;
         voice.gain.value = index < 2 ? 0.075 : 0.035;
         modulation.type = "sine";
@@ -100,11 +117,24 @@ function AmbientAudioToggle() {
         modulationDepth.connect(oscillator.frequency);
         oscillator.connect(voice);
         voice.connect(output);
+        nextGraph.voices.push(oscillator);
         nextGraph.oscillators.push(oscillator);
         nextGraph.oscillators.push(modulation);
         oscillator.start();
         modulation.start();
       });
+
+      let chordIndex = 0;
+      nextGraph.chordTimer = window.setInterval(() => {
+        chordIndex = (chordIndex + 1) % AMBIENT_CHORDS.length;
+        AMBIENT_CHORDS[chordIndex].forEach((frequency, index) => {
+          nextGraph.voices[index]?.frequency.setTargetAtTime(
+            frequency,
+            context.currentTime,
+            1.8
+          );
+        });
+      }, 9000);
 
       await context.resume();
       output.gain.setTargetAtTime(0.05, context.currentTime, 1.6);
@@ -113,6 +143,7 @@ function AmbientAudioToggle() {
     } catch {
       const failedGraph = audioRef.current;
       if (failedGraph) {
+        window.clearInterval(failedGraph.chordTimer);
         failedGraph.oscillators.forEach((oscillator) => oscillator.stop());
         void failedGraph.context.close();
       }

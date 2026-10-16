@@ -16,7 +16,6 @@ export function AboutIdentityOrbit({ title, subtitle }: AboutIdentityOrbitProps)
     <section className="about-identity-section">
       <div className="container-narrow px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="about-identity-eyebrow">{t("identity_eyebrow")}</p>
           <h2 className="about-identity-title">{title}</h2>
           <p className="about-identity-subtitle">{subtitle}</p>
         </div>
@@ -82,8 +81,8 @@ export function AboutIdentityOrbit({ title, subtitle }: AboutIdentityOrbitProps)
           </div>
           <div className="about-identity-point about-identity-point--software">
             <span className="about-identity-point-index">03</span>
-            <span className="about-identity-point-name">Software</span>
-            <span className="about-identity-point-note">{t("identity_software_note")}</span>
+            <span className="about-identity-point-name">Solutions</span>
+            <span className="about-identity-point-note">{t("identity_solutions_note")}</span>
           </div>
         </div>
       </div>

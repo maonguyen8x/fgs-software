@@ -8,12 +8,18 @@ export function IntroLogoLoader({ companyName }: { companyName: string }) {
   const [brandMark = "FGS", ...brandNameParts] = companyName.trim().split(/\s+/);
   const letters = Array.from(brandMark);
   const software = brandNameParts.join(" ") || "Software";
-  const logoRevealEnd = 2.75 + letters.length * 1.7;
-  const softwareRevealStart = logoRevealEnd + 0.2;
-  const softwareStep = 0.11;
-  const revealEnd = softwareRevealStart + Math.max(0, software.length - 1) * softwareStep + 1.1;
-  const leaveAt = revealEnd + 0.28;
-  const hideAt = leaveAt + 0.5;
+  const logoRevealStart = 0.8;
+  const logoStep = 0.42;
+  const logoRevealDuration = 0.95;
+  const logoRevealEnd =
+    logoRevealStart + Math.max(0, letters.length - 1) * logoStep + logoRevealDuration;
+  const softwareRevealStart = logoRevealEnd + 0.12;
+  const softwareStep = 0.045;
+  const softwareRevealDuration = 0.62;
+  const revealEnd =
+    softwareRevealStart + Math.max(0, software.length - 1) * softwareStep + softwareRevealDuration;
+  const leaveAt = revealEnd + 0.04;
+  const hideAt = leaveAt + 0.46;
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -83,7 +89,7 @@ export function IntroLogoLoader({ companyName }: { companyName: string }) {
         </span>
         <span className="intro-logo-main">
           {letters.map((letter, index) => (
-            <span key={`${letter}-${index}`} style={{ animationDelay: `${2.75 + index * 1.7}s` }}>
+            <span key={`${letter}-${index}`} style={{ animationDelay: `${logoRevealStart + index * logoStep}s` }}>
               {letter}
             </span>
           ))}

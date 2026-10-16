@@ -33,7 +33,7 @@ import {
   Wifi,
   type LucideIcon,
 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 
 export interface PhoneShowcaseProduct {
@@ -49,6 +49,8 @@ interface AiPhoneShowcaseProps {
   title: string;
   subtitle: string;
   productLabel: string;
+  emptyTitle?: string;
+  emptyDescription?: string;
   products: PhoneShowcaseProduct[];
   className?: string;
 }
@@ -429,32 +431,47 @@ export function AiPhoneShowcase({
   title,
   subtitle,
   productLabel,
+  emptyTitle,
+  emptyDescription,
   products,
   className = "",
 }: AiPhoneShowcaseProps) {
   const reducedMotion = Boolean(useReducedMotion());
   const [state, setState] = useState({ product: 0, feature: 0 });
   const [paused, setPaused] = useState(false);
+  const fallbackTitle = emptyTitle || title;
+  const fallbackDescription = emptyDescription || subtitle;
+  const displayProducts = useMemo(
+    () =>
+      products.length > 0
+        ? products
+        : [{
+            id: "empty-ai-product-preview",
+            title: fallbackTitle,
+            description: fallbackDescription,
+            features: [],
+          }],
+    [fallbackDescription, fallbackTitle, products]
+  );
 
   useEffect(() => {
     if (reducedMotion || paused || products.length === 0) return;
     const timer = window.setInterval(() => {
       setState((current) => {
-        const features = productFeatures(products[current.product] ?? products[0]);
+        const features = productFeatures(displayProducts[current.product] ?? displayProducts[0]);
         if (current.feature + 1 < features.length) {
           return { product: current.product, feature: current.feature + 1 };
         }
-        return { product: (current.product + 1) % products.length, feature: 0 };
+        return { product: (current.product + 1) % displayProducts.length, feature: 0 };
       });
     }, FEATURE_INTERVAL_MS);
     return () => window.clearInterval(timer);
-  }, [paused, products, reducedMotion]);
+  }, [displayProducts, paused, products.length, reducedMotion]);
 
   const select = useCallback((index: number) => setState({ product: index, feature: 0 }), []);
 
-  if (products.length === 0) return null;
-  const activeIndex = Math.min(state.product, products.length - 1);
-  const active = products[activeIndex];
+  const activeIndex = Math.min(state.product, displayProducts.length - 1);
+  const active = displayProducts[activeIndex];
 
   return (
     <section className={`ai-phone-showcase ${className}`}>
@@ -484,7 +501,7 @@ export function AiPhoneShowcase({
               if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false);
             }}
           >
-            {products.map((product, index) => {
+            {products.length > 0 ? products.map((product, index) => {
               const isActive = index === activeIndex;
               const accent = ACCENTS[index % ACCENTS.length];
               return (
@@ -532,7 +549,12 @@ export function AiPhoneShowcase({
                   </AnimatePresence>
                 </div>
               );
-            })}
+            }) : (
+              <div className="ph-product ph-product--empty">
+                <p className="ph-product-title">{fallbackTitle}</p>
+                <p className="ph-product-desc">{fallbackDescription}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

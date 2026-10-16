@@ -10,6 +10,8 @@ interface AIPortfolioShowcaseProps {
   products: Work[];
   locale: Locale;
   productLabel: string;
+  emptyTitle: string;
+  emptyDescription: string;
 }
 
 export function AIPortfolioShowcase({
@@ -19,6 +21,8 @@ export function AIPortfolioShowcase({
   products,
   locale,
   productLabel,
+  emptyTitle,
+  emptyDescription,
 }: AIPortfolioShowcaseProps) {
   return (
     <AiPhoneShowcase
@@ -26,6 +30,8 @@ export function AIPortfolioShowcase({
       title={title}
       subtitle={subtitle}
       productLabel={productLabel}
+      emptyTitle={emptyTitle}
+      emptyDescription={emptyDescription}
       products={products.map((product) => ({
         id: product.id,
         title: getLocalizedField(product, "title", locale),

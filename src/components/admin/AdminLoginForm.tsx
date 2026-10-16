@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -47,7 +47,6 @@ export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }
   const t = useTranslations("admin.login");
   const tSuccess = useTranslations("admin.login_success");
   const te = useTranslations("admin.errors");
-  const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/admin/settings/site";
   const errorCode = searchParams.get("error") as AdminErrorKey | null;
@@ -110,8 +109,7 @@ export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }
 
     const target = new URL(callbackUrl, window.location.origin);
     target.searchParams.set("login", "success");
-    router.push(`${target.pathname}${target.search}`);
-    router.refresh();
+    window.location.assign(`${target.pathname}${target.search}`);
   };
 
   const parseJsonResponse = async (res: Response): Promise<CheckCredentialsResponse> => {

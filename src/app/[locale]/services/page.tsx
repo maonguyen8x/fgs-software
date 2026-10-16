@@ -87,6 +87,8 @@ export default async function ServicesPage({
           consultationHref={CONSULTATION_FORM_URL}
           learnMoreLabel={getPageBlockTitle(blocks, "service_cta", loc, t("contact_cta"))}
           formBadgeLabel={t("contact_cta_form_badge")}
+          previewTitle={t("preview_title")}
+          previewHint={t("preview_hint")}
         />
       </PageSection>
 

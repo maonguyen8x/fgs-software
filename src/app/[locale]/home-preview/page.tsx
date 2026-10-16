@@ -106,6 +106,8 @@ export default async function HomePreviewPage({
               consultationHref={CONSULTATION_FORM_URL}
               learnMoreLabel={tServices("contact_cta")}
               formBadgeLabel={tServices("contact_cta_form_badge")}
+              previewTitle={tServices("preview_title")}
+              previewHint={tServices("preview_hint")}
             />
           </div>
         </section>

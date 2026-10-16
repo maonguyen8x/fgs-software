@@ -119,8 +119,8 @@ export default async function AboutPage({
       </section>
 
       <AboutIdentityOrbit
-        title={getPageBlockTitle(blocks, "identity_section", loc, t("identity_title"))}
-        subtitle={getPageBlockSubtitle(blocks, "identity_section", loc, t("identity_subtitle"))}
+        title={t("identity_title")}
+        subtitle={t("identity_subtitle")}
       />
 
       <section className="about-notebook-story">

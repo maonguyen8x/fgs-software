@@ -54,16 +54,16 @@ export default async function ProductsPage({
   return (
     <div className="min-h-screen bg-[#05060f] text-white">
       <h1 className="sr-only">{t("title")}</h1>
-      {aiProducts.length > 0 ? (
-        <AIPortfolioShowcase
-          eyebrow={getPageBlockTitle(blocks, "ai_showcase_eyebrow", loc, t("ai_showcase_eyebrow"))}
-          title={getPageBlockTitle(blocks, "ai_showcase_section", loc, t("ai_showcase_title"))}
-          subtitle={getPageBlockSubtitle(blocks, "ai_showcase_section", loc, t("ai_showcase_description"))}
-          productLabel={t("ai_product_label")}
-          products={aiProducts}
-          locale={loc}
-        />
-      ) : null}
+      <AIPortfolioShowcase
+        eyebrow={getPageBlockTitle(blocks, "ai_showcase_eyebrow", loc, t("ai_showcase_eyebrow"))}
+        title={getPageBlockTitle(blocks, "ai_showcase_section", loc, t("ai_showcase_title"))}
+        subtitle={getPageBlockSubtitle(blocks, "ai_showcase_section", loc, t("ai_showcase_description"))}
+        productLabel={t("ai_product_label")}
+        emptyTitle={t("ai_showcase_empty_title")}
+        emptyDescription={t("ai_showcase_empty_description")}
+        products={aiProducts}
+        locale={loc}
+      />
       <WorksProductsPanel
         locale={locale}
         loc={loc}
