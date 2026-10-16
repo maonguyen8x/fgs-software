@@ -18,7 +18,7 @@ const schema = z.object({
   thumbnail: z.string().optional(),
   gallery: z.array(z.string()).optional(),
   techStack: z.array(z.string()).optional(),
-  category: z.enum(["web", "mobile", "api", "other"]).optional(),
+  category: z.enum(["apps", "fintech", "enterprise", "ecommerce", "ai", "web", "mobile", "api", "other"]).optional(),
   duration: z.string().optional(),
   demoUrl: z.string().optional(),
   githubUrl: z.string().optional(),

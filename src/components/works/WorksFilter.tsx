@@ -1,46 +1,48 @@
 "use client";
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { usePublicPath } from "@/components/providers/PublicPathsProvider";
+import { getWorkCategoryIcon } from "@/components/works/work-categories";
 
-const categories = ["all", "web", "mobile", "api", "other"] as const;
+export interface WorksFilterItem {
+  key: string;
+  label: string;
+  count: number;
+}
 
 export function WorksFilter({
   locale,
   currentCategory,
+  items,
 }: {
   locale: string;
   currentCategory: string;
+  items: WorksFilterItem[];
 }) {
-  const t = useTranslations("works");
   const listPath = `/${locale}${usePublicPath("/works")}`;
 
-  const labels: Record<string, string> = {
-    all: t("filter_all"),
-    web: t("filter_web"),
-    mobile: t("filter_mobile"),
-    api: t("filter_api"),
-    other: t("filter_other"),
-  };
-
   return (
-    <div className="flex flex-wrap justify-center gap-2 md:gap-2.5">
-      {categories.map((cat) => (
-        <Link
-          key={cat}
-          href={cat === "all" ? listPath : `${listPath}?category=${cat}`}
-          className={cn(
-            "cursor-pointer rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200",
-            currentCategory === cat
-              ? "border-primary-500 bg-primary-600 text-white shadow-md shadow-primary-600/25"
-              : "border-slate-200/90 bg-white text-slate-600 shadow-sm hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-primary-700 dark:hover:bg-primary-950/50"
-          )}
-        >
-          {labels[cat]}
-        </Link>
-      ))}
+    <div className="works-filter-bar">
+      <div className="works-filter-track">
+        {items.map((item) => {
+          const Icon = getWorkCategoryIcon(item.key);
+          const active = currentCategory === item.key;
+          return (
+            <Link
+              key={item.key}
+              href={item.key === "all" ? listPath : `${listPath}?category=${item.key}`}
+              scroll={false}
+              className={cn("works-filter-chip", active && "is-active")}
+              aria-current={active ? "true" : undefined}
+            >
+              <Icon className="h-4 w-4" aria-hidden />
+              <span>{item.label}</span>
+              <b>{item.count}</b>
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }

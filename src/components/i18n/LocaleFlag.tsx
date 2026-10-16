@@ -1,4 +1,3 @@
-import { useId } from "react";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
@@ -10,29 +9,13 @@ const VN_STAR_POINTS = Array.from({ length: 10 }, (_, i) => {
 }).join(" ");
 
 function UkFlag() {
-  const id = useId();
-  const clipFlag = `${id}-s`;
-  const clipDiagonal = `${id}-t`;
   return (
     <svg viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
-      <clipPath id={clipFlag}>
-        <path d="M0,0 v30 h60 v-30 z" />
-      </clipPath>
-      <clipPath id={clipDiagonal}>
-        <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z" />
-      </clipPath>
-      <g clipPath={`url(#${clipFlag})`}>
-        <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
-        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" />
-        <path
-          d="M0,0 L60,30 M60,0 L0,30"
-          clipPath={`url(#${clipDiagonal})`}
-          stroke="#C8102E"
-          strokeWidth="4"
-        />
-        <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10" />
-        <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6" />
-      </g>
+      <path d="M0 0h60v30H0z" fill="#012169" />
+      <path d="M0 0 60 30M60 0 0 30" stroke="#fff" strokeWidth="6" />
+      <path d="M0 0 60 30M60 0 0 30" stroke="#C8102E" strokeWidth="2.4" />
+      <path d="M30 0v30M0 15h60" stroke="#fff" strokeWidth="10" />
+      <path d="M30 0v30M0 15h60" stroke="#C8102E" strokeWidth="6" />
     </svg>
   );
 }

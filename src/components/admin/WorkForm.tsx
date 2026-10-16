@@ -152,6 +152,11 @@ export function WorkForm({ initial }: WorkFormProps) {
             value={form.category}
             onChange={(e) => update("category", e.target.value)}
           >
+            <option value="apps">Apps</option>
+            <option value="fintech">Fintech &amp; Payments</option>
+            <option value="enterprise">Enterprise &amp; B2B</option>
+            <option value="ecommerce">E-Commerce</option>
+            <option value="ai">AI SaaS</option>
             <option value="web">Web</option>
             <option value="mobile">Mobile</option>
             <option value="api">API</option>

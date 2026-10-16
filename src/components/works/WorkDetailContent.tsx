@@ -16,6 +16,11 @@ const CATEGORY_LABELS: Record<string, string> = {
   mobile: "Mobile",
   api: "API",
   other: "Other",
+  apps: "Apps",
+  fintech: "Fintech & Payments",
+  enterprise: "Enterprise & B2B",
+  ecommerce: "E-Commerce",
+  ai: "AI SaaS",
 };
 
 function SectionDivider() {

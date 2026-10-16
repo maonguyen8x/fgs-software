@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 interface ActivitiesSectionProps {
   title: string;
+  subtitle: string;
   items: CompanyActivity[];
   locale: Locale;
 }
@@ -45,7 +46,7 @@ function flattenActivities(items: CompanyActivity[], locale: Locale): ActivityDi
   return result;
 }
 
-export function ActivitiesSection({ title, items, locale }: ActivitiesSectionProps) {
+export function ActivitiesSection({ title, subtitle, items, locale }: ActivitiesSectionProps) {
   const t = useTranslations("about");
   const displayItems = flattenActivities(items, locale);
 
@@ -58,7 +59,7 @@ export function ActivitiesSection({ title, items, locale }: ActivitiesSectionPro
           {t("activities_badge")}
         </p>
         <h2 className="about-section-title !py-3">{title}</h2>
-        <p className="mx-auto max-w-xl py-3 text-sm text-muted-theme">{t("activities_subtitle")}</p>
+        <p className="mx-auto max-w-xl py-3 text-sm text-muted-theme">{subtitle}</p>
       </div>
 
       <div className="mx-auto mt-4 max-w-5xl space-y-10 md:space-y-14">

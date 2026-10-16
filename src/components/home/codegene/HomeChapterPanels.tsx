@@ -58,12 +58,14 @@ function SectionHead({
   titleAccent,
   actionHref,
   actionLabel,
+  subtitle,
 }: {
   badge: string;
   title: string;
   titleAccent?: string;
   actionHref?: string;
   actionLabel?: string;
+  subtitle?: string;
 }) {
   return (
     <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -77,6 +79,11 @@ function SectionHead({
             <span className="font-serif italic text-violet-600 dark:text-violet-400">{titleAccent}</span>
           ) : null}
         </h3>
+        {subtitle ? (
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+            {subtitle}
+          </p>
+        ) : null}
       </div>
       {actionHref && actionLabel ? (
         <Link
@@ -94,9 +101,11 @@ function SectionHead({
 function Chapter01Services({
   services,
   locale,
+  copy,
 }: {
   services: HomeServiceItem[];
   locale: Locale;
+  copy?: HomeChapterCopy;
 }) {
   const t = useTranslations("home.chapters");
 
@@ -104,12 +113,13 @@ function Chapter01Services({
     <ChapterSection id="chapter-01">
       <SectionHead
         badge={t("chapter-01_badge")}
-        title={t("chapter-01_headline")}
-        titleAccent={t("chapter-01_headline_accent")}
+        title={copy?.title || t("chapter-01_headline")}
+        titleAccent={copy?.title ? undefined : t("chapter-01_headline_accent")}
+        subtitle={copy?.subtitle}
         actionHref="/works"
         actionLabel={t("explore_all")}
       />
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="mx-auto grid w-full max-w-[1120px] grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5 xl:gap-4">
         {services.slice(0, 10).map((service, index) => {
           const Icon = getIcon(service.icon);
           const title = getLocalizedField(service, "title", locale);
@@ -120,21 +130,17 @@ function Chapter01Services({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: index * 0.04, duration: 0.45 }}
-              className="home-service-card group relative overflow-hidden rounded-2xl border border-slate-800/80 bg-[#0c0f14] p-4 text-white shadow-lg"
+              className="home-service-card group relative overflow-hidden rounded-2xl border border-slate-800/80 bg-[#0c0f14] p-4 text-white shadow-lg sm:p-5"
             >
-              <span className="text-[10px] font-semibold text-violet-400/90">
+              <span className="home-service-card-number">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <div className="home-service-card-glow pointer-events-none absolute inset-0 opacity-60" aria-hidden />
-              <div className="relative mt-6 flex h-24 items-center justify-center">
+              <div className="relative mt-3 flex h-24 items-center justify-center">
                 <Icon className="h-14 w-14 text-violet-400/90 drop-shadow-[0_0_18px_rgba(167,139,250,0.55)]" strokeWidth={1.1} />
               </div>
-              <h4 className="relative mt-2 text-sm font-semibold leading-snug">{title}</h4>
-              <Icon
-                className="absolute right-3 top-3 h-4 w-4 text-slate-500 opacity-70"
-                strokeWidth={1.5}
-                aria-hidden
-              />
+              <h4 className="relative mt-2 text-center text-sm font-semibold leading-snug">{title}</h4>
+              <span className="home-service-card-accent" aria-hidden />
             </motion.article>
           );
         })}
@@ -159,6 +165,11 @@ const INNER_ORBIT_TECH = [
   ["AI/ML", "BrainCircuit"],
 ] as const;
 
+export interface HomeOrbitTechnology {
+  name: string;
+  icon: string;
+}
+
 const TECH_CATEGORY_KEYS = [
   ["web", "frontend"],
   ["backend", "backend"],
@@ -180,9 +191,15 @@ function techNames(items: TechStack[], category: string): string[] {
 function Chapter02Technologies({
   techStack,
   companyName,
+  copy,
+  outerOrbitTech,
+  innerOrbitTech,
 }: {
   techStack: TechStack[];
   companyName: string;
+  copy?: HomeChapterCopy;
+  outerOrbitTech?: HomeOrbitTechnology[];
+  innerOrbitTech?: HomeOrbitTechnology[];
 }) {
   const t = useTranslations("home.chapters");
   const ref = useRef(null);
@@ -198,12 +215,15 @@ function Chapter02Technologies({
     ["Package", "ecosystem_product"],
   ] as const;
   const [brandMark = "FGS", ...brandNameParts] = companyName.trim().split(/\s+/);
+  const outerTech = outerOrbitTech ?? OUTER_ORBIT_TECH.map(([name, icon]) => ({ name, icon }));
+  const innerTech = innerOrbitTech ?? INNER_ORBIT_TECH.map(([name, icon]) => ({ name, icon }));
   return (
     <ChapterSection id="chapter-02">
       <SectionHead 
       badge={t("chapter-02_badge")} 
-      title={t("chapter-02_headline")} 
-      titleAccent={t("chapter-02_headline_accent")} />
+      title={copy?.title || t("chapter-02_headline")}
+      titleAccent={copy?.title ? undefined : t("chapter-02_headline_accent")}
+      subtitle={copy?.subtitle} />
       <div className="grid gap-8 lg:grid-cols-[minmax(300px,0.88fr)_minmax(0,1.12fr)] lg:items-center">
         <div
           ref={ref}
@@ -220,9 +240,9 @@ function Chapter02Technologies({
           <div className="home-tech-orbit-ring home-tech-orbit-ring--outer absolute inset-[5%] rounded-full border border-slate-300/60 dark:border-slate-600/50" />
           <div className="home-tech-orbit-ring home-tech-orbit-ring--inner absolute inset-[24%] rounded-full border border-violet-400/45" />
           <div className="home-tech-orbit-track home-tech-orbit-track--outer absolute inset-[5%]">
-            {OUTER_ORBIT_TECH.map(([name, iconName], index) => {
-              const Icon = getIcon(iconName);
-              const angle = (index / OUTER_ORBIT_TECH.length) * Math.PI * 2 - Math.PI / 2;
+            {outerTech.map(({ name, icon }, index) => {
+              const Icon = getIcon(icon);
+              const angle = (index / outerTech.length) * Math.PI * 2 - Math.PI / 2;
               return (
                 <span
                   key={name}
@@ -242,9 +262,9 @@ function Chapter02Technologies({
           </div>
 
           <div className="home-tech-orbit-track home-tech-orbit-track--inner absolute inset-[12%]">
-            {INNER_ORBIT_TECH.map(([name, iconName], index) => {
-              const Icon = getIcon(iconName);
-              const angle = (index / INNER_ORBIT_TECH.length) * Math.PI * 2 - Math.PI / 2;
+            {innerTech.map(({ name, icon }, index) => {
+              const Icon = getIcon(icon);
+              const angle = (index / innerTech.length) * Math.PI * 2 - Math.PI / 2;
               return (
                 <span
                   key={name}
@@ -346,10 +366,12 @@ function StepPipeline({
   chapterId,
   stepKeys,
   variant,
+  copy,
 }: {
   chapterId: "chapter-03" | "chapter-04";
   stepKeys: readonly string[];
   variant: "pipeline" | "nda";
+  copy?: HomeChapterCopy;
 }) {
   const t = useTranslations("home.chapters");
   const ref = useRef(null);
@@ -360,8 +382,9 @@ function StepPipeline({
     <ChapterSection id={chapterId}>
       <SectionHead
         badge={t(`${chapterId}_badge`)}
-        title={t(`${chapterId}_headline`)}
-        titleAccent={t(`${chapterId}_headline_accent`)}
+        title={copy?.title || t(`${chapterId}_headline`)}
+        titleAccent={copy?.title ? undefined : t(`${chapterId}_headline_accent`)}
+        subtitle={copy?.subtitle}
       />
       <div ref={ref} className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="rounded-2xl border border-slate-200/90 bg-white p-5 dark:border-slate-700 dark:bg-slate-900/50">
@@ -440,7 +463,7 @@ function StepPipeline({
   );
 }
 
-function Chapter05Connect() {
+function Chapter05Connect({ copy }: { copy?: HomeChapterCopy }) {
   const t = useTranslations("home.chapters");
   const steps = ["explore", "connect", "collaborate"] as const;
   const shouldReduceMotion = useReducedMotion();
@@ -467,8 +490,9 @@ function Chapter05Connect() {
     <ChapterSection id="chapter-05" className="border-b-0">
       <SectionHead
         badge={t("chapter-05_badge")}
-        title={t("chapter-05_headline")}
-        titleAccent={t("chapter-05_headline_accent")}
+        title={copy?.title || t("chapter-05_headline")}
+        titleAccent={copy?.title ? undefined : t("chapter-05_headline_accent")}
+        subtitle={copy?.subtitle}
         actionHref="/contact"
         actionLabel={t("chapter-05_cta")}
       />
@@ -565,11 +589,19 @@ function Chapter05Connect() {
   );
 }
 
+export interface HomeChapterCopy {
+  title?: string;
+  subtitle?: string;
+}
+
 interface HomeChapterPanelsProps {
   services: HomeServiceItem[];
   techStack: TechStack[];
   companyName: string;
   locale: Locale;
+  chapterCopy?: Partial<Record<HomeChapterId, HomeChapterCopy>>;
+  outerOrbitTech?: HomeOrbitTechnology[];
+  innerOrbitTech?: HomeOrbitTechnology[];
 }
 
 export function HomeChapterPanels({
@@ -577,22 +609,33 @@ export function HomeChapterPanels({
   techStack,
   companyName,
   locale,
+  chapterCopy,
+  outerOrbitTech,
+  innerOrbitTech,
 }: HomeChapterPanelsProps) {
   return (
     <>
-      <Chapter01Services services={services} locale={locale} />
-      <Chapter02Technologies techStack={techStack} companyName={companyName} />
+      <Chapter01Services services={services} locale={locale} copy={chapterCopy?.["chapter-01"]} />
+      <Chapter02Technologies
+        techStack={techStack}
+        companyName={companyName}
+        copy={chapterCopy?.["chapter-02"]}
+        outerOrbitTech={outerOrbitTech}
+        innerOrbitTech={innerOrbitTech}
+      />
       <StepPipeline
         chapterId="chapter-03"
         stepKeys={["ideate", "design", "build", "ship", "scale"]}
         variant="pipeline"
+        copy={chapterCopy?.["chapter-03"]}
       />
       <StepPipeline
         chapterId="chapter-04"
         stepKeys={["discover", "nda", "exchange", "deliver"]}
         variant="nda"
+        copy={chapterCopy?.["chapter-04"]}
       />
-      <Chapter05Connect />
+      <Chapter05Connect copy={chapterCopy?.["chapter-05"]} />
     </>
   );
 }

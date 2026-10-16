@@ -4,10 +4,12 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ConceptProductsSection } from "@/components/about/ConceptProductsSection";
 import { HomeTechHero } from "@/components/home/codegene/HomeTechHero";
-import { HomeAiTechMarquee } from "@/components/home/codegene/HomeAiTechMarquee";
+import { HomeAiTechMarquee, type HomeAiTechnology } from "@/components/home/codegene/HomeAiTechMarquee";
 import { HomeChapterRail } from "@/components/home/codegene/HomeChapterRail";
 import {
   HomeChapterPanels,
+  type HomeChapterCopy,
+  type HomeOrbitTechnology,
   type HomeServiceItem,
 } from "@/components/home/codegene/HomeChapterPanels";
 import {
@@ -16,11 +18,20 @@ import {
   type HomeChapterId,
 } from "@/lib/home-chapters";
 import type { Locale } from "@/i18n/routing";
-import type { TechStack } from "@prisma/client";
+import type { TechStack, Work } from "@prisma/client";
+import { getLocalizedField } from "@/lib/i18n-content";
 
 interface HomeCodeGeneExperienceProps {
   services: HomeServiceItem[];
   techStack: TechStack[];
+  products: Work[];
+  heroCopy?: { eyebrow?: string; title?: string; subtitle?: string };
+  chapterCopy?: Partial<Record<HomeChapterId, HomeChapterCopy>>;
+  outerOrbitTech?: HomeOrbitTechnology[];
+  innerOrbitTech?: HomeOrbitTechnology[];
+  aiTechnologies?: HomeAiTechnology[];
+  aiTechnologiesTitle?: string;
+  productsCopy?: { eyebrow?: string; title?: string; subtitle?: string };
   companyName: string;
   locale: Locale;
 }
@@ -30,10 +41,19 @@ const OBSERVED_IDS = [HOME_HASH_HERO, ...HOME_CHAPTER_IDS] as const;
 export function HomeCodeGeneExperience({
   services,
   techStack,
+  products,
+  heroCopy,
+  chapterCopy,
+  outerOrbitTech,
+  innerOrbitTech,
+  aiTechnologies,
+  aiTechnologiesTitle,
+  productsCopy,
   companyName,
   locale,
 }: HomeCodeGeneExperienceProps) {
   const t = useTranslations("about.concept_products");
+  const works = useTranslations("works");
   const [activeChapter, setActiveChapter] = useState<HomeChapterId>("chapter-01");
 
   const scrollToChapter = useCallback((id: string) => {
@@ -88,8 +108,8 @@ export function HomeCodeGeneExperience({
 
   return (
     <div className="home-codegene">
-      <HomeTechHero />
-      <HomeAiTechMarquee />
+      <HomeTechHero copy={heroCopy} />
+      <HomeAiTechMarquee title={aiTechnologiesTitle} items={aiTechnologies} />
 
       <div className="home-chapters-wrap relative bg-[#fafafa] dark:bg-slate-950">
         <div className="home-chapters-grid pointer-events-none absolute inset-0 opacity-[0.45]" aria-hidden />
@@ -106,29 +126,26 @@ export function HomeCodeGeneExperience({
                 techStack={techStack}
                 companyName={companyName}
                 locale={locale}
+                chapterCopy={chapterCopy}
+                outerOrbitTech={outerOrbitTech}
+                innerOrbitTech={innerOrbitTech}
               />
             </div>
           </div>
         </div>
       </div>
       <ConceptProductsSection
-        eyebrow={t("eyebrow")}
-        title={t("title")}
-        subtitle={t("subtitle")}
-        products={[
-          {
-            title: t("items.knowledge.title"),
-            description: t("items.knowledge.description"),
-          },
-          {
-            title: t("items.vision.title"),
-            description: t("items.vision.description"),
-          },
-          {
-            title: t("items.insights.title"),
-            description: t("items.insights.description"),
-          },
-        ]}
+        eyebrow={productsCopy?.eyebrow || t("eyebrow")}
+        title={productsCopy?.title || t("title")}
+        subtitle={productsCopy?.subtitle || t("subtitle")}
+        productLabel={works("ai_product_label")}
+        products={products.map((product) => ({
+          id: product.id,
+          title: getLocalizedField(product, "title", locale),
+          description: getLocalizedField(product, "summary", locale),
+          features: product.techStack,
+          appUrl: product.demoUrl,
+        }))}
       />
     </div>
   );

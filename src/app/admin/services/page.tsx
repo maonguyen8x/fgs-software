@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AdminPageShell } from "@/components/admin/AdminPageShell";
+import { DeleteServiceButton } from "@/components/admin/DeleteServiceButton";
 
 export default async function AdminServicesPage() {
   const services = await prisma.service.findMany({ orderBy: { order: "asc" } });
@@ -36,10 +37,11 @@ export default async function AdminServicesPage() {
                     {s.isVisible ? "Visible" : "Hidden"}
                   </Badge>
                 </td>
-                <td className="px-4 py-3 text-right">
+                <td className="space-x-2 px-4 py-3 text-right">
                   <Button asChild variant="outline" size="sm">
                     <Link href={`/admin/services/${s.id}`}>Edit</Link>
                   </Button>
+                  <DeleteServiceButton id={s.id} title={s.title} />
                 </td>
               </tr>
             ))}

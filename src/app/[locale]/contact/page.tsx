@@ -7,6 +7,9 @@ import { DEFAULT_CONTACT_INBOX } from "@/lib/email";
 import { getCachedBranches } from "@/lib/cache/queries";
 import { logger } from "@/lib/logger";
 import type { Locale } from "@/i18n/routing";
+import { fetchPageBlockMap } from "@/lib/cache/safe-page-blocks";
+import { getPageBlockSubtitle, getPageBlockTitle } from "@/lib/page-content";
+import { getSettingsMapSafe } from "@/lib/settings-safe";
 
 export const revalidate = 300;
 const BRANCH_FETCH_TIMEOUT_MS = 3000;
@@ -41,26 +44,33 @@ export default async function ContactPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("contact");
-  const branches = await fetchContactBranches();
+  const loc = locale as Locale;
+  const [branches, blocks, settings] = await Promise.all([
+    fetchContactBranches(),
+    fetchPageBlockMap("contact"),
+    getSettingsMapSafe(),
+  ]);
+  const inbox = settings.admin_email || DEFAULT_CONTACT_INBOX;
+  const configuredIntroTitle = getPageBlockTitle(blocks, "contact_intro", loc, "");
 
   const contactLinks = [
     {
       icon: CalendarDays,
-      title: t("book_session_title"),
-      description: t("book_session_description"),
+      title: getPageBlockTitle(blocks, "book_session", loc, t("book_session_title")),
+      description: getPageBlockSubtitle(blocks, "book_session", loc, t("book_session_description")),
       href: "#contact-form",
     },
     {
       icon: Calculator,
-      title: t("project_estimator_title"),
-      description: t("project_estimator_description"),
+      title: getPageBlockTitle(blocks, "project_estimator", loc, t("project_estimator_title")),
+      description: getPageBlockSubtitle(blocks, "project_estimator", loc, t("project_estimator_description")),
       href: "/services",
     },
     {
       icon: Mail,
-      title: t("direct_line_title"),
-      description: DEFAULT_CONTACT_INBOX,
-      href: `mailto:${DEFAULT_CONTACT_INBOX}`,
+      title: getPageBlockTitle(blocks, "direct_line", loc, t("direct_line_title")),
+      description: inbox,
+      href: `mailto:${inbox}`,
     },
   ];
 
@@ -73,14 +83,20 @@ export default async function ContactPage({
       <section className="container-narrow relative grid gap-10 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12 lg:px-8 lg:py-16">
         <div className="flex flex-col justify-center">
           <p className="mb-5 text-xs font-semibold uppercase tracking-[0.24em] text-slate-600">
-            {t("eyebrow")}
+            {getPageBlockTitle(blocks, "contact_eyebrow", loc, t("eyebrow"))}
           </p>
-          <h1 className="max-w-[12ch] text-5xl font-semibold leading-[0.99] tracking-[-0.055em] sm:text-6xl lg:text-[clamp(3.5rem,5.3vw,5.5rem)]">
-            {t("headline_start")}{" "}
-            <span className="contact-headline-accent">{t("headline_accent")}</span>
+          <h1 className="max-w-[20ch] text-4xl font-semibold leading-[1.02] tracking-[-0.055em] sm:text-5xl lg:text-[clamp(3rem,4.6vw,4.8rem)]">
+            {configuredIntroTitle ? (
+              <span className="contact-headline-accent">{configuredIntroTitle}</span>
+            ) : (
+              <>
+                {t("headline_start")}{" "}
+                <span className="contact-headline-accent">{t("headline_accent")}</span>
+              </>
+            )}
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
-            {t("intro")}
+            {getPageBlockSubtitle(blocks, "contact_intro", loc, t("intro"))}
           </p>
 
           <div className="mt-9 flex flex-col gap-3">
@@ -108,8 +124,8 @@ export default async function ContactPage({
         </div>
       </section>
       <ContactLocations
-        title={t("locations_title")}
-        subtitle={t("locations_subtitle")}
+        title={getPageBlockTitle(blocks, "locations_section", loc, t("locations_title"))}
+        subtitle={getPageBlockSubtitle(blocks, "locations_section", loc, t("locations_subtitle"))}
         branches={branches}
         locale={locale as Locale}
       />

@@ -9,7 +9,7 @@ import { TechStackSection } from "@/components/sections/TechStackSection";
 import { ConsultationFormLink } from "@/components/services/ConsultationFormLink";
 import type { Locale } from "@/i18n/routing";
 import { fetchPageBlockMap } from "@/lib/cache/safe-page-blocks";
-import { getPageBlockSubtitle, getPageBlockTitle } from "@/lib/page-content";
+import { getPageBlockBody, getPageBlockSubtitle, getPageBlockTitle } from "@/lib/page-content";
 import { getSettingsMapSafe } from "@/lib/settings-safe";
 
 export default async function ServicesPage({
@@ -30,6 +30,18 @@ export default async function ServicesPage({
   ]);
 
   const categories = ["frontend", "backend", "mobile", "database", "devops", "tools"] as const;
+  const managedTechStack = Object.values(blocks)
+    .filter((block) => block.key.startsWith("technology_"))
+    .map((block) => ({
+      id: block.id,
+      name: getPageBlockTitle(blocks, block.key, loc, ""),
+      category: getPageBlockBody(blocks, block.key, loc, ""),
+      logoUrl: null,
+      order: block.order,
+      isVisible: true,
+    }))
+    .filter((item) => item.name && categories.includes(item.category as (typeof categories)[number]));
+  const visibleTechStack = managedTechStack.length > 0 ? managedTechStack : techStack;
 
   const headerTitle = getPageBlockTitle(blocks, "page_header", loc, t("title"));
   const headerSubtitle = getPageBlockSubtitle(blocks, "page_header", loc, t("subtitle"));
@@ -48,18 +60,18 @@ export default async function ServicesPage({
         <div className="container-narrow grid gap-8 px-4 py-14 sm:px-6 md:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] md:items-center md:py-20 lg:px-8">
           <div>
             <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-violet-600 dark:text-violet-300">
-              {t("overview_eyebrow")}
+              {getPageBlockTitle(blocks, "overview_eyebrow", loc, t("overview_eyebrow"))}
             </p>
             <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 md:text-5xl dark:text-white">
-              {t("overview_title")}
+              {getPageBlockTitle(blocks, "overview_section", loc, t("overview_title"))}
             </h2>
             <p className="mt-5 max-w-xl text-sm leading-relaxed text-slate-600 md:text-base dark:text-slate-300">
-              {t("overview_description")}
+              {getPageBlockSubtitle(blocks, "overview_section", loc, t("overview_description"))}
             </p>
           </div>
           <div className="services-overview-panel">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-200">
-              {t("overview_panel_title")}
+              {getPageBlockTitle(blocks, "overview_panel", loc, t("overview_panel_title"))}
             </p>
             <div className="mt-6 divide-y divide-white/10">
               {(["product", "platform", "intelligence"] as const).map((key, index) => (
@@ -68,7 +80,7 @@ export default async function ServicesPage({
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <span className="text-sm font-medium text-white md:text-base">
-                    {t(`overview_items.${key}`)}
+                    {getPageBlockTitle(blocks, `overview_item_${key}`, loc, t(`overview_items.${key}`))}
                   </span>
                 </div>
               ))}
@@ -81,13 +93,13 @@ export default async function ServicesPage({
           id="services"
           className="mb-6 scroll-mt-24 text-center text-lg font-bold tracking-wide text-primary-700 md:mb-8 md:text-xl dark:text-primary-300"
         >
-          {t("services_heading")}
+          {getPageBlockTitle(blocks, "services_heading", loc, t("services_heading"))}
         </h2>
         <ServicesGrid
           services={services}
           locale={loc}
           consultationHref={CONSULTATION_FORM_URL}
-          learnMoreLabel={t("contact_cta")}
+          learnMoreLabel={getPageBlockTitle(blocks, "service_cta", loc, t("contact_cta"))}
           formBadgeLabel={t("contact_cta_form_badge")}
         />
       </PageSection>
@@ -95,21 +107,21 @@ export default async function ServicesPage({
       <TechStackSection
         title={getPageBlockTitle(blocks, "tech_section", loc, t("tech_title"))}
         subtitle={getPageBlockSubtitle(blocks, "tech_section", loc, t("tech_subtitle"))}
-        items={techStack}
+        items={visibleTechStack}
         categories={categories}
       />
 
       <PageSection className="text-center">
         <div className="mx-auto max-w-2xl">
           <h2 className="text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl dark:text-white">
-            {t("ready_title")}
+            {getPageBlockTitle(blocks, "ready_section", loc, t("ready_title"))}
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600 md:text-base dark:text-slate-300">
-            {t("ready_description")}
+            {getPageBlockSubtitle(blocks, "ready_section", loc, t("ready_description"))}
           </p>
           <div className="mt-6">
             <ConsultationFormLink
-              label={t("contact_cta")}
+              label={getPageBlockTitle(blocks, "service_cta", loc, t("contact_cta"))}
               badgeLabel={t("contact_cta_form_badge")}
               href={CONSULTATION_FORM_URL}
               variant="button"

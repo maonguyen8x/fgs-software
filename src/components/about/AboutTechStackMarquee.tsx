@@ -17,7 +17,8 @@ function resolveTechStack(
   });
 }
 
-const PRIMARY_TECH = resolveTechStack(
+const ICON_LIBRARY = [
+  ...resolveTechStack(
   [
     { key: "java", name: "Java", color: "#ED8B00", glyph: "J" },
     { key: "javascript", name: "JavaScript", color: "#F7DF1E" },
@@ -36,9 +37,8 @@ const PRIMARY_TECH = resolveTechStack(
     { key: "azure", name: "Azure", color: "#0078D4", glyph: "A" },
   ],
   TECH_STACK_PRIMARY
-);
-
-const SECONDARY_TECH = resolveTechStack(
+  ),
+  ...resolveTechStack(
   [
     { key: "mongodb", name: "MongoDB", color: "#47A248" },
     { key: "redis", name: "Redis", color: "#D82C20" },
@@ -49,7 +49,42 @@ const SECONDARY_TECH = resolveTechStack(
     { key: "mysql", name: "MySQL", color: "#4479A1", glyph: "My" },
   ],
   TECH_STACK_SECONDARY
-);
+  ),
+];
+
+const TECH_ALIASES: Record<string, string> = {
+  awscloud: "aws",
+  c: "csharp",
+  dotnet: "dotnet",
+  reactjs: "react",
+  tailwindcss: "tailwind",
+};
+
+interface AboutTechStackItem {
+  id: string;
+  name: string;
+  category: string;
+}
+
+function mapTechStackItem(entry: AboutTechStackItem): TechStackItem {
+  const normalizedName = entry.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const key = TECH_ALIASES[normalizedName] ?? normalizedName;
+  const icon = ICON_LIBRARY.find(
+    (item) =>
+      item.key === key ||
+      item.name.toLowerCase().replace(/[^a-z0-9]/g, "") === normalizedName
+  );
+
+  return icon
+    ? { ...icon, name: entry.name }
+    : {
+        key: `custom-${entry.id}`,
+        name: entry.name,
+        color: "#64748b",
+        paths: [],
+        glyph: entry.name.slice(0, 3).toUpperCase(),
+      };
+}
 
 /** Logo màu tối (Next.js, Vercel...) sẽ không thấy trên nền tối → đổi sang trắng khi dark mode */
 function darkModeColor(hex: string) {
@@ -124,8 +159,16 @@ function MarqueeRow({ items, reverse, label }: { items: TechStackItem[]; reverse
   );
 }
 
-export function AboutTechStackMarquee() {
+export function AboutTechStackMarquee({ items }: { items: AboutTechStackItem[] }) {
   const t = useTranslations("about.tech_stack");
+  const primaryTech = items
+    .filter((item) => item.category !== "database")
+    .map(mapTechStackItem);
+  const secondaryTech = items
+    .filter((item) => item.category === "database")
+    .map(mapTechStackItem);
+
+  if (items.length === 0) return null;
 
   return (
     <section className="tech-marquee-section relative w-full overflow-hidden py-8 md:py-10">
@@ -137,8 +180,8 @@ export function AboutTechStackMarquee() {
       </div>
 
       <div className="tech-marquee-viewport flex flex-col gap-2 md:gap-3">
-        <MarqueeRow items={PRIMARY_TECH} label={t("aria")} reverse />
-        <MarqueeRow items={SECONDARY_TECH} label={t("aria")} />
+        {primaryTech.length > 0 ? <MarqueeRow items={primaryTech} label={t("aria")} reverse /> : null}
+        {secondaryTech.length > 0 ? <MarqueeRow items={secondaryTech} label={t("aria")} /> : null}
       </div>
     </section>
   );
