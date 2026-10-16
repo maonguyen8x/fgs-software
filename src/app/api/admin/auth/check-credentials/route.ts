@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 
     if (!result.ok) {
       if (result.error === "requires_totp") {
-        return NextResponse.json({ error: "requires_totp" }, { status: 403 });
+        return NextResponse.json({ error: "requires_totp" });
       }
       if (result.error === "invalid_totp") {
         return NextResponse.json({ error: "invalid_totp" }, { status: 401 });

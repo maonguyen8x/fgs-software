@@ -460,10 +460,10 @@ export function AiPhoneShowcase({
     <section className={`ai-phone-showcase ${className}`}>
       <div className="ai-phone-stars" aria-hidden />
       <div className="container-narrow relative px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto mb-10 max-w-2xl text-center md:mb-14">
+        <div className="mx-auto mb-8 w-full max-w-none text-center md:mb-8">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-violet-300">{eyebrow}</p>
           <h2 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">{title}</h2>
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-slate-400 md:text-base">{subtitle}</p>
+          <p className="mx-auto mt-3 max-w-none text-sm leading-relaxed text-slate-400 md:text-base md:whitespace-nowrap">{subtitle}</p>
         </div>
 
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-6">

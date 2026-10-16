@@ -85,17 +85,17 @@ function AmbientAudioToggle() {
       const nextGraph: AmbientAudioGraph = { context, output, oscillators: [] };
       audioRef.current = nextGraph;
 
-      [55, 82.41, 110, 164.81, 220, 261.63, 329.63].forEach((frequency, index) => {
+      [55, 82.41, 110, 130.81, 164.81, 196, 220, 261.63, 329.63, 392].forEach((frequency, index) => {
         const oscillator = context.createOscillator();
         const voice = context.createGain();
         const modulation = context.createOscillator();
         const modulationDepth = context.createGain();
-        oscillator.type = "sine";
+        oscillator.type = index > 5 ? "triangle" : "sine";
         oscillator.frequency.value = frequency;
-        voice.gain.value = index < 2 ? 0.1 : 0.075;
+        voice.gain.value = index < 2 ? 0.075 : 0.035;
         modulation.type = "sine";
         modulation.frequency.value = 0.025 + index * 0.004;
-        modulationDepth.gain.value = 0.28;
+        modulationDepth.gain.value = index > 5 ? 0.18 : 0.28;
         modulation.connect(modulationDepth);
         modulationDepth.connect(oscillator.frequency);
         oscillator.connect(voice);
@@ -128,7 +128,7 @@ function AmbientAudioToggle() {
     <div className="home-ambient-audio">
       <button
         type="button"
-        className="home-ambient-audio-button"
+        className="home-ambient-audio-button cursor-pointer"
         onClick={() => void toggleAudio()}
         aria-label={enabled ? t("ambient_audio_on") : t("ambient_audio_muted")}
         aria-pressed={enabled}

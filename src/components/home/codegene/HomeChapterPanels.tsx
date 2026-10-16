@@ -116,7 +116,7 @@ function Chapter01Services({
         title={copy?.title || t("chapter-01_headline")}
         titleAccent={copy?.title ? undefined : t("chapter-01_headline_accent")}
         subtitle={copy?.subtitle}
-        actionHref="/works"
+        actionHref="/products"
         actionLabel={t("explore_all")}
       />
       <div className="mx-auto grid w-full max-w-[1120px] grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5 xl:gap-4">
@@ -205,15 +205,6 @@ function Chapter02Technologies({
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, margin: "-80px" });
 
-  const ecosystemItems = [
-    ["Bot", "ecosystem_ai"],
-    ["Landmark", "ecosystem_fintech"],
-    ["Blocks", "ecosystem_blockchain"],
-    ["Globe2", "ecosystem_web"],
-    ["Smartphone", "ecosystem_mobile"],
-    ["Cloud", "ecosystem_cloud"],
-    ["Package", "ecosystem_product"],
-  ] as const;
   const [brandMark = "FGS", ...brandNameParts] = companyName.trim().split(/\s+/);
   const outerTech = outerOrbitTech ?? OUTER_ORBIT_TECH.map(([name, icon]) => ({ name, icon }));
   const innerTech = innerOrbitTech ?? INNER_ORBIT_TECH.map(([name, icon]) => ({ name, icon }));
@@ -335,25 +326,6 @@ function Chapter02Technologies({
                   ))}
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className="mt-12 border-t border-slate-200/80 pt-7 dark:border-slate-700">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-          {t("ecosystem_title")}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {ecosystemItems.map(([iconName, key]) => {
-            const Icon = getIcon(iconName);
-            return (
-              <span
-                key={key}
-                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200"
-              >
-                <Icon className="h-4 w-4 text-violet-600" aria-hidden />
-                {t(key)}
-              </span>
             );
           })}
         </div>

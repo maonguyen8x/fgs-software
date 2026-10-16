@@ -49,7 +49,7 @@ export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }
   const te = useTranslations("admin.errors");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/admin/dashboard";
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/admin/settings/site";
   const errorCode = searchParams.get("error") as AdminErrorKey | null;
 
   const [email, setEmail] = useState("");
@@ -145,7 +145,7 @@ export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }
 
       const data = await parseJsonResponse(res);
 
-      if (res.status === 403 && data.error === "requires_totp") {
+      if (data.error === "requires_totp") {
         setShowTotpStep(true);
         return;
       }

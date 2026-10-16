@@ -20,7 +20,7 @@ export function WorksFilter({
   currentCategory: string;
   items: WorksFilterItem[];
 }) {
-  const listPath = `/${locale}${usePublicPath("/works")}`;
+  const listPath = `/${locale}${usePublicPath("/products")}`;
 
   return (
     <div className="works-filter-bar">

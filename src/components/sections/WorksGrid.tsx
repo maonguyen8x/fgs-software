@@ -49,7 +49,7 @@ export function WorksGrid({ works, locale, viewLabel }: WorksGridProps) {
         return (
           <Link
             key={work.id}
-            href={`/works/${work.slug}`}
+            href={`/products/${work.slug}`}
             className="works-product-card group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_24px_-6px_rgba(15,23,42,0.1)] ring-1 ring-slate-100/90 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary-200/80 hover:shadow-[0_16px_40px_-10px_rgba(37,99,235,0.22)] dark:border-slate-700/90 dark:bg-slate-900 dark:ring-slate-800/80 dark:hover:border-primary-800/60"
           >
             <div className="relative aspect-[16/10] w-full overflow-hidden bg-white dark:bg-slate-900">

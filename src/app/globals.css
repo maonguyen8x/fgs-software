@@ -2160,6 +2160,8 @@
 }
 
 .services-capability-item {
+  position: relative;
+  min-height: 5.5rem;
   border-bottom: 1px solid #e2e8f0;
 }
 
@@ -2226,13 +2228,16 @@
 }
 
 .services-capability-detail {
-  position: relative;
+  position: absolute;
+  z-index: 20;
+  inset: -0.25rem 0 auto 3.25rem;
   overflow: hidden;
-  margin: 0 0 1.25rem 3.25rem;
+  margin: 0;
   border: 1px solid rgba(167, 139, 250, 0.2);
   border-radius: 1.25rem;
   background: #0b0d14;
   padding: 1.5rem;
+  box-shadow: 0 24px 65px rgba(3, 4, 12, 0.46);
   animation: service-detail-appear 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -2761,6 +2766,7 @@ button.contact-location-card:hover {
   color: #f8fafc;
   font-size: 0.7rem;
   font-weight: 600;
+  cursor: pointer;
   backdrop-filter: blur(14px);
   transition: background-color 180ms ease, border-color 180ms ease;
 }
@@ -3468,7 +3474,7 @@ button.contact-location-card:hover {
 .ai-phone-showcase {
   position: relative;
   overflow: hidden;
-  padding: 4.5rem 0 5.5rem;
+  padding: 10px 0;
   color: #fff;
   background:
     radial-gradient(ellipse 52% 46% at 27% 62%, rgba(91, 63, 255, 0.26), transparent 70%),
@@ -4301,6 +4307,570 @@ button.contact-location-card:hover {
 
 .about-office-scene svg { width: 100%; height: 100%; }
 
+/* ───────── Notebook-style company overview ───────── */
+.about-notebook-page {
+  overflow: hidden;
+  color: #25232b;
+  background: #fdfcf8;
+}
+
+.about-notebook-page .container-narrow {
+  width: min(100% - 2rem, 1160px);
+}
+
+.about-notebook-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(5rem, 10vw, 9rem) 0 clamp(4rem, 8vw, 7rem);
+  background:
+    radial-gradient(ellipse at 85% 15%, rgba(201, 184, 255, 0.22), transparent 34%),
+    #fbf3df;
+}
+
+.about-notebook-paper-grid {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image: linear-gradient(rgba(93, 72, 44, 0.035) 1px, transparent 1px);
+  background-size: 100% 34px;
+  mask-image: linear-gradient(180deg, #000 0%, transparent 90%);
+}
+
+.about-notebook-hero-inner {
+  display: grid;
+  align-items: center;
+  gap: clamp(3rem, 8vw, 7rem);
+  grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+}
+
+.about-notebook-hero-copy {
+  position: relative;
+  max-width: 700px;
+}
+
+.about-notebook-script,
+.about-notebook-margin-note,
+.about-notebook-section-head > p:last-child {
+  color: #7552d6;
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.about-notebook-page-title {
+  display: block;
+  margin-top: 1.4rem;
+  color: #706b62;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.about-notebook-hero h1 {
+  margin-top: 0.75rem;
+  font-size: clamp(3rem, 6.4vw, 6rem);
+  font-weight: 750;
+  letter-spacing: -0.075em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.about-notebook-hero h1 del {
+  color: #827e79;
+  font-size: 0.82em;
+  text-decoration-color: #7c5cff;
+  text-decoration-thickness: 3px;
+}
+
+.about-notebook-hero h1 mark {
+  position: relative;
+  color: inherit;
+  background: linear-gradient(transparent 57%, rgba(167, 139, 250, 0.38) 57%);
+}
+
+.about-notebook-hero-description {
+  max-width: 39rem;
+  margin-top: 1.6rem;
+  color: #55515a;
+  font-size: clamp(1rem, 1.4vw, 1.18rem);
+  line-height: 1.8;
+}
+
+.about-notebook-underline {
+  display: block;
+  width: min(80%, 26rem);
+  height: 0.65rem;
+  margin-top: 1rem;
+  border-top: 2px solid #8b69ef;
+  border-radius: 50%;
+  transform: rotate(-1.4deg);
+}
+
+.about-notebook-doodle {
+  position: absolute;
+  color: #8b69ef;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.about-notebook-doodle--gear { top: 18%; left: 6%; font-size: 2.2rem; transform: rotate(-14deg); }
+.about-notebook-doodle--code { right: 44%; bottom: 8%; font: 700 1.5rem monospace; transform: rotate(8deg); }
+.about-notebook-doodle--spark { right: 10%; top: 14%; font-size: 2.4rem; }
+
+.about-notebook-polaroid-wrap {
+  position: relative;
+  width: min(100%, 440px);
+  justify-self: center;
+  transform: rotate(2.2deg);
+}
+
+.about-notebook-polaroid,
+.about-notebook-team-polaroid {
+  position: relative;
+  padding: 0.75rem 0.75rem 1.15rem;
+  background: #fffefa;
+  box-shadow: 0 22px 55px rgba(65, 52, 32, 0.18), 0 2px 5px rgba(65, 52, 32, 0.1);
+}
+
+.about-notebook-polaroid .about-office-scene,
+.about-notebook-team-polaroid .about-office-scene {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  opacity: 1;
+  mask-image: none;
+}
+
+.about-notebook-polaroid .about-office-scene::after,
+.about-notebook-team-polaroid .about-office-scene::after {
+  display: none;
+}
+
+.about-notebook-polaroid figcaption,
+.about-notebook-team-polaroid figcaption {
+  padding-top: 0.8rem;
+  color: #4d4851;
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+.about-notebook-tape {
+  position: absolute;
+  z-index: 2;
+  top: -0.7rem;
+  left: 40%;
+  width: 6.2rem;
+  height: 1.6rem;
+  background: rgba(167, 139, 250, 0.55);
+  transform: rotate(-4deg);
+}
+
+.about-notebook-tape--left { left: 12%; transform: rotate(-11deg); }
+.about-notebook-tape--right { right: 12%; left: auto; transform: rotate(9deg); }
+
+.about-notebook-stamp {
+  position: absolute;
+  z-index: 3;
+  top: -2rem;
+  right: -1.25rem;
+  display: grid;
+  width: 6.8rem;
+  height: 6.8rem;
+  align-content: center;
+  justify-items: center;
+  border: 1.5px dashed #7c5cff;
+  border-radius: 50%;
+  color: #6946d4;
+  background: rgba(253, 252, 248, 0.72);
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  transform: rotate(12deg);
+}
+
+.about-notebook-stamp span { font-size: 0.72rem; }
+.about-notebook-stamp strong { font-size: 1.05rem; }
+.about-notebook-margin-note { margin-top: 1.3rem; text-align: right; transform: rotate(-3deg); }
+
+.about-notebook-story {
+  padding: clamp(4rem, 8vw, 7rem) 0;
+}
+
+.about-notebook-section-head {
+  max-width: 760px;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.about-notebook-chapter {
+  margin-bottom: 0.5rem;
+  color: #7956df;
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.about-notebook-section-head h2 {
+  color: #212027;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 730;
+  letter-spacing: -0.055em;
+  line-height: 1.05;
+}
+
+.about-notebook-section-head > p:last-child { margin-top: 0.65rem; }
+
+.about-notebook-story-grid {
+  display: grid;
+  align-items: center;
+  gap: clamp(2rem, 6vw, 5rem);
+  grid-template-columns: minmax(260px, 0.88fr) minmax(0, 1.12fr);
+}
+
+.about-notebook-team-polaroid {
+  width: min(100%, 460px);
+  justify-self: center;
+  transform: rotate(-2.2deg);
+}
+
+.about-notebook-story-copy > p {
+  color: #4e4a52;
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  font-size: 1.02rem;
+  line-height: 1.9;
+  white-space: pre-line;
+}
+
+.about-notebook-mission-grid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1.5rem;
+}
+
+.about-notebook-mission-card {
+  padding: 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 1rem;
+  color: #e8e4f4;
+  background: #14131b;
+  box-shadow: 0 12px 28px rgba(25, 18, 41, 0.14), inset 0 1px rgba(255, 255, 255, 0.07);
+}
+
+.about-notebook-mission-card > span {
+  color: #c4b5fd;
+  font-size: 0.67rem;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.about-notebook-mission-card h3 { margin-top: 0.5rem; font-size: 1.05rem; font-weight: 700; }
+.about-notebook-mission-card p { margin-top: 0.45rem; color: #c5c1cd; font-size: 0.84rem; line-height: 1.7; white-space: pre-line; }
+
+.about-notebook-timeline {
+  padding: 0 0 clamp(3rem, 7vw, 6rem);
+}
+
+.about-notebook-timeline .about-section-title {
+  color: #26232c;
+}
+
+.about-notebook-timeline .container-narrow > div {
+  border-color: rgba(96, 82, 66, 0.16);
+  background: #fffefa;
+  box-shadow: 0 18px 45px rgba(59, 48, 33, 0.08);
+}
+
+.about-notebook-values-and-why {
+  position: relative;
+  padding: clamp(4rem, 8vw, 7rem) 0;
+  color: #f7f4fc;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(124, 92, 255, 0.15), transparent 46%),
+    #111018;
+}
+
+.about-notebook-values-and-why > .container-narrow > .about-notebook-chapter,
+.about-notebook-dark-note { text-align: center; }
+.about-notebook-dark-note { margin: 0.25rem 0 2.5rem; color: #bcb6ca; font-size: 0.83rem; }
+
+.about-notebook-values-grid {
+  display: grid;
+  align-items: start;
+  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.about-notebook-values,
+.about-notebook-why {
+  min-width: 0;
+}
+
+.about-notebook-ring-heading {
+  position: relative;
+  z-index: 0;
+  display: grid;
+  min-height: 6.8rem;
+  margin: 0 auto 1.6rem;
+  place-items: center;
+  color: #fff;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 730;
+  letter-spacing: -0.04em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.about-notebook-ring-heading::before {
+  position: absolute;
+  z-index: -1;
+  width: min(100%, 18rem);
+  height: 6.5rem;
+  border: 1px dashed rgba(196, 181, 253, 0.55);
+  border-radius: 50%;
+  content: "";
+  transform: rotate(-5deg);
+}
+
+.about-notebook-card-grid,
+.about-notebook-why-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.about-notebook-value-card,
+.about-notebook-why-card {
+  position: relative;
+  min-height: 11rem;
+  padding: 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 1rem;
+  color: #28242e;
+  background: #fff1a8;
+  box-shadow: 0 15px 28px rgba(0, 0, 0, 0.19), inset 0 1px rgba(255, 255, 255, 0.65);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.about-notebook-value-card:nth-child(4n + 2),
+.about-notebook-why-card:nth-child(4n + 2) { background: #c9b8ff; }
+.about-notebook-value-card:nth-child(4n + 3),
+.about-notebook-why-card:nth-child(4n + 3) { background: #ffd1c2; }
+.about-notebook-value-card:nth-child(4n + 4),
+.about-notebook-why-card:nth-child(4n + 4) { background: #b8e6d2; }
+
+.about-notebook-value-card::before,
+.about-notebook-why-card::before {
+  position: absolute;
+  top: -0.5rem;
+  left: 38%;
+  width: 3.6rem;
+  height: 1.1rem;
+  background: rgba(124, 92, 255, 0.36);
+  content: "";
+  transform: rotate(-3deg);
+}
+
+.about-notebook-value-card:hover,
+.about-notebook-why-card:hover {
+  z-index: 1;
+  box-shadow: 0 21px 35px rgba(0, 0, 0, 0.26);
+  transform: translateY(-5px) rotate(0deg);
+}
+
+.about-notebook-value-card:nth-child(odd),
+.about-notebook-why-card:nth-child(odd) { transform: rotate(-1deg); }
+.about-notebook-value-card:nth-child(even),
+.about-notebook-why-card:nth-child(even) { transform: rotate(1deg); }
+
+.about-notebook-value-icon,
+.about-notebook-why-icon {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: 0.8rem;
+  place-items: center;
+  border: 1px solid rgba(34, 29, 43, 0.12);
+  border-radius: 0.75rem;
+  color: #6946d4;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.about-notebook-value-icon svg,
+.about-notebook-why-icon svg { width: 1.2rem; height: 1.2rem; }
+.about-notebook-value-title,
+.about-notebook-why-card h3 { color: #292530; font-size: 1rem; font-weight: 750; }
+.about-notebook-value-description,
+.about-notebook-why-card p { margin-top: 0.45rem; color: #4e4856; font-size: 0.78rem; line-height: 1.6; }
+.about-notebook-why-card { display: flex; gap: 0.75rem; }
+.about-notebook-why-card .about-notebook-why-icon { flex: 0 0 2.5rem; }
+.about-notebook-why-card > div:last-child { min-width: 0; }
+
+.about-notebook-workflow {
+  position: relative;
+  padding: clamp(4rem, 8vw, 7rem) 1rem;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(124, 92, 255, 0.06) 0 2px, transparent 3px),
+    #fdfcf8;
+  background-size: 32px 32px;
+}
+
+.about-notebook-path {
+  position: relative;
+  max-width: 1000px;
+  height: 13rem;
+  margin: 0 auto;
+}
+
+.about-notebook-path > svg { position: absolute; inset: 0; width: 100%; height: 100%; color: #39343e; }
+.about-notebook-step { position: absolute; top: 0; display: grid; justify-items: center; width: 8rem; transform: translateX(-50%); }
+.about-notebook-step--1 { left: 12.2%; }
+.about-notebook-step--2 { left: 37.2%; top: 2.4rem; }
+.about-notebook-step--3 { left: 62.2%; }
+.about-notebook-step--4 { left: 87.8%; top: 2.4rem; }
+.about-notebook-step-circle {
+  display: grid;
+  width: 7.5rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1.5px solid #8b69ef;
+  border-radius: 50%;
+  color: #332a47;
+  background: #fffefa;
+  box-shadow: 0 8px 24px rgba(73, 51, 130, 0.11);
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  font-size: 1.1rem;
+  transform: rotate(-5deg);
+}
+
+.about-notebook-step--2 .about-notebook-step-circle,
+.about-notebook-step--4 .about-notebook-step-circle { transform: rotate(5deg); }
+.about-notebook-step-label { margin-top: 0.65rem; color: #7a7480; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.about-notebook-repeat { margin-top: -0.3rem; color: #7956df; font-family: "Segoe Print", "Bradley Hand", cursive; text-align: center; transform: rotate(-2deg); }
+
+.about-notebook-join { padding: 1rem 0 clamp(4rem, 8vw, 7rem); }
+.about-notebook-join-panel {
+  display: grid;
+  align-items: center;
+  gap: 2rem;
+  grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.9fr);
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  border: 1.5px dashed #8770cc;
+  border-radius: 1.6rem;
+  background: #fffefa;
+  box-shadow: 0 16px 42px rgba(68, 53, 34, 0.08);
+}
+
+.about-notebook-join-panel h2,
+.about-notebook-closing h2 { color: #24212a; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 750; letter-spacing: -0.055em; line-height: 1.08; }
+.about-notebook-join-panel > div:first-child > p:not(.about-notebook-chapter) { max-width: 38rem; margin-top: 1rem; color: #5d5862; line-height: 1.75; }
+.about-notebook-dark-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  margin-top: 1.4rem;
+  padding: 0.7rem 1.15rem;
+  border-radius: 0.55rem;
+  color: #fff;
+  background: #17151d;
+  box-shadow: 4px 4px 0 #c9b8ff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.about-notebook-dark-button:hover { box-shadow: 2px 2px 0 #c9b8ff; transform: translate(2px, 2px); }
+
+.about-notebook-join-art {
+  position: relative;
+  display: grid;
+  min-height: 15rem;
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid #e4d9be;
+  border-radius: 1rem;
+  background:
+    linear-gradient(125deg, transparent 48%, rgba(87, 146, 97, 0.15) 49% 51%, transparent 52%),
+    linear-gradient(#fbf3df, #f5e8c8);
+  transform: rotate(1.2deg);
+}
+.about-notebook-join-art::before { position: absolute; inset: auto 8% 13% 8%; height: 35%; border-radius: 50% 50% 0 0; background: #d9c7a4; content: ""; }
+.about-notebook-join-sun { position: absolute; top: 15%; right: 18%; width: 3.5rem; aspect-ratio: 1; border-radius: 50%; background: #f3c96c; }
+.about-notebook-join-window { position: absolute; top: 13%; left: 12%; width: 33%; height: 42%; border: 0.5rem solid #fffefa; background: linear-gradient(140deg, #b8e6d2, #c9b8ff); box-shadow: 0 7px 14px rgba(67, 54, 35, 0.13); }
+.about-notebook-join-plant { position: absolute; right: 14%; bottom: 18%; color: #45966a; font-size: 4rem; }
+.about-notebook-join-mark { position: relative; z-index: 1; margin-top: 3rem; color: #53488c; font-family: "Segoe Print", "Bradley Hand", cursive; font-size: 1.1rem; transform: rotate(-4deg); }
+
+.about-notebook-closing {
+  padding: clamp(4rem, 8vw, 7rem) 0;
+  background: #f6f7fb;
+  text-align: center;
+}
+.about-notebook-last-page { color: #7956df; font-family: "Segoe Print", "Bradley Hand", cursive; }
+.about-notebook-heart-divider { display: block; margin: 0.8rem 0; color: #7956df; font-size: 2rem; }
+.about-notebook-closing .container-narrow > p:not(.about-notebook-last-page) { max-width: 42rem; margin: 1rem auto 0; color: #5d5862; line-height: 1.8; }
+.about-notebook-closing-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.4rem; }
+.about-notebook-closing-actions a:not(.about-notebook-dark-button) { color: #302b36; text-decoration: underline wavy #8b69ef 1.5px; text-underline-offset: 5px; }
+
+.about-notebook-page .about-identity-section {
+  padding: 4rem 0;
+  background: #fdfcf8;
+}
+.about-notebook-page .about-identity-eyebrow { color: #7956df; }
+.about-notebook-page .about-identity-title { color: #24212a; }
+.about-notebook-page .about-identity-subtitle { color: #5d5862; }
+.about-notebook-page .about-identity-center { box-shadow: 0 0 0 1px rgba(124, 92, 255, 0.24), 0 20px 48px rgba(78, 60, 124, 0.12); }
+.about-notebook-page .about-identity-point { background: #fffefa; }
+
+@media (max-width: 760px) {
+  .about-notebook-hero-inner,
+  .about-notebook-story-grid,
+  .about-notebook-values-grid,
+  .about-notebook-join-panel { grid-template-columns: 1fr; }
+  .about-notebook-hero-inner { gap: 3rem; }
+  .about-notebook-hero h1 { max-width: 14ch; }
+  .about-notebook-polaroid-wrap { width: min(86%, 400px); }
+  .about-notebook-story-grid { gap: 2.5rem; }
+  .about-notebook-values-grid { gap: 3rem; }
+  .about-notebook-path { display: grid; height: auto; gap: 1rem; padding-left: 1rem; }
+  .about-notebook-path > svg { display: none; }
+  .about-notebook-step,
+  .about-notebook-step--1,
+  .about-notebook-step--2,
+  .about-notebook-step--3,
+  .about-notebook-step--4 {
+    position: static;
+    display: flex;
+    width: auto;
+    align-items: center;
+    gap: 1rem;
+    transform: none;
+  }
+  .about-notebook-step-circle { width: 5.2rem; flex: 0 0 5.2rem; font-size: 0.95rem; }
+  .about-notebook-step-label { margin: 0; }
+  .about-notebook-repeat { margin: 1.5rem 0 0; }
+}
+
+@media (max-width: 480px) {
+  .about-notebook-card-grid,
+  .about-notebook-why-grid,
+  .about-notebook-mission-grid { grid-template-columns: 1fr; }
+  .about-notebook-stamp { top: -1.7rem; right: -1rem; width: 5.6rem; height: 5.6rem; }
+  .about-notebook-join-panel { padding: 1.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-notebook-page *,
+  .about-notebook-page *::before,
+  .about-notebook-page *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  .about-notebook-value-card,
+  .about-notebook-why-card,
+  .about-notebook-dark-button { transition: none; }
+}
+
 @media (max-width: 1023px) {
   .about-office-scene {
     width: 100%;
@@ -4379,7 +4949,7 @@ button.contact-location-card:hover {
 }
 
 .home-hero-title {
-  margin-top: 1.4rem;
+  margin-top: 10px;
   font-size: clamp(2.1rem, 4.2vw, 4rem);
   font-weight: 700;
   letter-spacing: -0.035em;

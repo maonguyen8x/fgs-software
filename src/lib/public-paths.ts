@@ -10,7 +10,7 @@ export const NAV_ID_INTERNAL_ROUTES: Record<string, string> = {
   about: "/about",
   services: "/services",
   team: "/team",
-  works: "/works",
+  works: "/products",
   contact: "/contact",
   blog: "/blog",
 };

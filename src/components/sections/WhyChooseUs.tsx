@@ -17,17 +17,18 @@ interface Item {
 interface WhyChooseUsProps {
   items: Item[];
   locale: Locale;
+  variant?: "default" | "notebook";
 }
 
-export function WhyChooseUs({ items, locale }: WhyChooseUsProps) {
+export function WhyChooseUs({ items, locale, variant = "default" }: WhyChooseUsProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-2 md:gap-5">
+    <div className={variant === "notebook" ? "about-notebook-why-grid" : "grid gap-4 md:grid-cols-2 md:gap-5"}>
       {items.map((item) => {
         const icons = LucideIcons as unknown as Record<string, LucideIcon | undefined>;
         const Icon = icons[item.icon] ?? LucideIcons.Star;
         return (
-          <div key={item.id} className="group content-block flex gap-3 md:gap-4">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-100 text-primary-600 transition-colors duration-300 group-hover:bg-primary-600 group-hover:text-white dark:bg-primary-950 dark:text-primary-300">
+          <div key={item.id} className={variant === "notebook" ? "about-notebook-why-card group" : "group content-block flex gap-3 md:gap-4"}>
+            <div className={variant === "notebook" ? "about-notebook-why-icon" : "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-100 text-primary-600 transition-colors duration-300 group-hover:bg-primary-600 group-hover:text-white dark:bg-primary-950 dark:text-primary-300"}>
               <Icon className="h-5 w-5" />
             </div>
             <div>

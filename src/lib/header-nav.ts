@@ -70,10 +70,10 @@ export const DEFAULT_HEADER_NAV: HeaderNavConfig = {
     },
     {
       id: "works",
-      href: "/works",
-      labelEn: "Portfolio",
-      labelVi: "Dự án",
-      labelJa: "ポートフォリオ",
+      href: "/products",
+      labelEn: "Products",
+      labelVi: "Sản phẩm",
+      labelJa: "製品",
       enabled: true,
     },
     {
@@ -81,7 +81,7 @@ export const DEFAULT_HEADER_NAV: HeaderNavConfig = {
       href: "/team",
       labelEn: "About Us",
       labelVi: "Về chúng tôi",
-      labelJa: "私たちについて",
+      labelJa: "チーム紹介",
       enabled: true,
     },
     {

@@ -27,7 +27,7 @@ export function WorksProjectCards({ works, locale, viewLabel, categoryLabels }: 
         const gradient = WORK_CATEGORY_GRADIENTS[work.category] ?? WORK_CATEGORY_GRADIENTS.other;
 
         return (
-          <Link key={work.id} href={`/works/${work.slug}`} className="works-project-card group" aria-label={`${title} — ${viewLabel}`}>
+          <Link key={work.id} href={`/products/${work.slug}`} className="works-project-card group" aria-label={`${title} — ${viewLabel}`}>
             <div className="works-project-visual" style={{ background: gradient }}>
               <span className="works-project-pill">
                 <CategoryIcon className="h-3.5 w-3.5" aria-hidden />

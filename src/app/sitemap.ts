@@ -41,7 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
       });
     }
-    const worksBase = resolveInternalToPublic("/works", pathMaps);
+    const worksBase = resolveInternalToPublic("/products", pathMaps);
     const blogBase = resolveInternalToPublic("/blog", pathMaps);
     for (const work of works) {
       entries.push({

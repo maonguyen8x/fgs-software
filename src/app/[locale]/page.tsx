@@ -13,7 +13,7 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [{ allServices, allWorks, techStack, settings }, blocks, servicesBlocks] = await Promise.all([
+  const [{ allServices, techStack, settings }, blocks, servicesBlocks] = await Promise.all([
     fetchHomePageData(),
     fetchPageBlockMap("home"),
     fetchPageBlockMap("services"),
@@ -63,7 +63,6 @@ export default async function HomePage({
       <HomeCodeGeneExperience
         services={allServices.filter((service) => service.order < 101)}
         techStack={servicesBlocks.technology_control ? managedTechStack : techStack}
-        products={allWorks.filter((work) => work.category === "ai").slice(0, 3)}
         heroCopy={{
           eyebrow: getPageBlockTitle(blocks, "hero_eyebrow", loc, ""),
           title: getPageBlockTitle(blocks, "hero_section", loc, ""),
@@ -84,11 +83,6 @@ export default async function HomePage({
           blocks.ai_technologies_control ? aiTechnologies : undefined
         }
         aiTechnologiesTitle={getPageBlockTitle(blocks, "ai_technologies_title", loc, "")}
-        productsCopy={{
-          eyebrow: getPageBlockTitle(blocks, "ai_products_eyebrow", loc, ""),
-          title: getPageBlockTitle(blocks, "ai_products_section", loc, ""),
-          subtitle: getPageBlockSubtitle(blocks, "ai_products_section", loc, ""),
-        }}
         companyName={settings.company_name ?? "FGS Software"}
         locale={loc}
       />

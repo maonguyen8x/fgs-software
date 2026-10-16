@@ -1,8 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
-import { ConceptProductsSection } from "@/components/about/ConceptProductsSection";
 import { HomeTechHero } from "@/components/home/codegene/HomeTechHero";
 import { HomeAiTechMarquee, type HomeAiTechnology } from "@/components/home/codegene/HomeAiTechMarquee";
 import { HomeChapterRail } from "@/components/home/codegene/HomeChapterRail";
@@ -18,20 +16,17 @@ import {
   type HomeChapterId,
 } from "@/lib/home-chapters";
 import type { Locale } from "@/i18n/routing";
-import type { TechStack, Work } from "@prisma/client";
-import { getLocalizedField } from "@/lib/i18n-content";
+import type { TechStack } from "@prisma/client";
 
 interface HomeCodeGeneExperienceProps {
   services: HomeServiceItem[];
   techStack: TechStack[];
-  products: Work[];
   heroCopy?: { eyebrow?: string; title?: string; subtitle?: string };
   chapterCopy?: Partial<Record<HomeChapterId, HomeChapterCopy>>;
   outerOrbitTech?: HomeOrbitTechnology[];
   innerOrbitTech?: HomeOrbitTechnology[];
   aiTechnologies?: HomeAiTechnology[];
   aiTechnologiesTitle?: string;
-  productsCopy?: { eyebrow?: string; title?: string; subtitle?: string };
   companyName: string;
   locale: Locale;
 }
@@ -41,19 +36,15 @@ const OBSERVED_IDS = [HOME_HASH_HERO, ...HOME_CHAPTER_IDS] as const;
 export function HomeCodeGeneExperience({
   services,
   techStack,
-  products,
   heroCopy,
   chapterCopy,
   outerOrbitTech,
   innerOrbitTech,
   aiTechnologies,
   aiTechnologiesTitle,
-  productsCopy,
   companyName,
   locale,
 }: HomeCodeGeneExperienceProps) {
-  const t = useTranslations("about.concept_products");
-  const works = useTranslations("works");
   const [activeChapter, setActiveChapter] = useState<HomeChapterId>("chapter-01");
 
   const scrollToChapter = useCallback((id: string) => {
@@ -134,19 +125,6 @@ export function HomeCodeGeneExperience({
           </div>
         </div>
       </div>
-      <ConceptProductsSection
-        eyebrow={productsCopy?.eyebrow || t("eyebrow")}
-        title={productsCopy?.title || t("title")}
-        subtitle={productsCopy?.subtitle || t("subtitle")}
-        productLabel={works("ai_product_label")}
-        products={products.map((product) => ({
-          id: product.id,
-          title: getLocalizedField(product, "title", locale),
-          description: getLocalizedField(product, "summary", locale),
-          features: product.techStack,
-          appUrl: product.demoUrl,
-        }))}
-      />
     </div>
   );
 }

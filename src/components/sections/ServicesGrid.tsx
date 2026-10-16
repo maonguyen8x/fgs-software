@@ -42,15 +42,11 @@ export function ServicesGrid({
   learnMoreLabel,
   formBadgeLabel,
 }: ServicesGridProps) {
-  const [activeKey, setActiveKey] = useState<string | null>(
-    () => services[0]?.id ?? null
-  );
+  const [activeKey, setActiveKey] = useState<string | null>(null);
 
   useEffect(() => {
     setActiveKey((current) =>
-      current && services.some((service) => service.id === current)
-        ? current
-        : services[0]?.id ?? null
+      current && services.some((service) => service.id === current) ? current : null
     );
   }, [services]);
 
@@ -105,7 +101,7 @@ export function ServicesGrid({
               <div className="relative grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-violet-300">
-                    {String(index + 1).padStart(2, "0")} /                     {String(services.length).padStart(2, "0")}
+                    {String(index + 1).padStart(2, "0")} / {String(services.length).padStart(2, "0")}
                   </p>
                   <h3 className="mt-3 text-xl font-semibold tracking-tight text-white md:text-2xl">
                     {title}
