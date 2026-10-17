@@ -4,8 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArrowUpRight, Bot, Cloud, ShieldCheck, Smartphone, Volume2, VolumeX } from "lucide-react";
-import { HeroQuantumNeuralOverlay } from "@/components/home/HeroQuantumNeuralOverlay";
+import dynamic from "next/dynamic";
 import { HOME_HASH_HERO } from "@/lib/home-chapters";
+
+const HeroChip3DNew = dynamic(() => import("@/components/hero/HeroChip3DNew").then(m => ({ default: m.HeroChip3DNew })), {
+  ssr: false,
+});
 
 const HERO_PILLS = [
   { key: "hero_pill_ai", Icon: Bot },
@@ -194,7 +198,7 @@ export function HomeTechHero({
       className="home-tech-hero relative flex min-h-[100svh] flex-col overflow-hidden bg-[linear-gradient(160deg,#05060f_0%,#0b0a24_100%)] text-white"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_74%_44%,rgba(108,77,255,0.24),transparent_66%)]" />
-      <HeroQuantumNeuralOverlay />
+      <HeroChip3DNew />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(5,6,15,0.78)_0%,rgba(5,6,15,0.28)_52%,rgba(5,6,15,0)_100%),linear-gradient(180deg,rgba(5,6,15,0.1)_0%,rgba(5,6,15,0.2)_60%,rgba(5,6,15,0.85)_100%)]" />
 
       <div className="container-narrow relative z-10 flex w-full flex-1 items-center px-4 pb-6 pt-28 sm:px-6 lg:px-8">

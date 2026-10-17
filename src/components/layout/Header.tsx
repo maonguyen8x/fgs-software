@@ -179,7 +179,7 @@ export function Header({
       className={cn(
         "sticky top-0 z-50 border-b transition-[background-color,border-color,color,box-shadow] duration-300",
         transparentHeader
-          ? "home-header-transparent border-transparent bg-[#030508]/90 text-white shadow-none backdrop-blur-md"
+          ? "home-header-transparent border-transparent bg-[#030508] text-white shadow-none backdrop-blur-none"
           : transparentHeaderPage
             ? "home-header-scrolled border-slate-200 bg-[#f3f4f6]/95 text-slate-900 shadow-sm backdrop-blur-md"
             : "border-theme bg-surface text-theme shadow-sm"
