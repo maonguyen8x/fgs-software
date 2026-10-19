@@ -364,12 +364,12 @@
   }
 
   .hero-quantum-overlay {
-    mix-blend-mode: soft-light;
-    opacity: 0.42;
+    mix-blend-mode: normal;
+    opacity: 1;
   }
 
   .hero-quantum-canvas {
-    opacity: 0.72;
+    opacity: 1;
   }
 
   .hero-quantum-vignette {
@@ -1835,8 +1835,8 @@
 }
 
 .home-tech-hero .hero-quantum-overlay {
-  opacity: 0.92;
-  mix-blend-mode: screen;
+  opacity: 1;
+  mix-blend-mode: normal;
 }
 
 .home-tech-hero .hero-quantum-vignette {
@@ -3514,7 +3514,7 @@ button.contact-location-card:hover {
 
 @media (max-width: 640px) {
   .home-tech-hero .hero-quantum-overlay {
-    opacity: 0.46;
+    opacity: 0.6;
   }
 
   .home-ambient-audio {

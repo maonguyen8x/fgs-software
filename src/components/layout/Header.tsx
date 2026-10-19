@@ -49,11 +49,15 @@ export function Header({
       setHeaderScrolled(false);
       return;
     }
-    const onScroll = () => setHeaderScrolled(window.scrollY > 72);
+    // On the home page the header stays purple until Chapter 01 reaches it.
+    const onScroll = () => {
+      const chapter = isHome ? document.getElementById("chapter-01") : null;
+      setHeaderScrolled(chapter ? chapter.getBoundingClientRect().top <= 64 : window.scrollY > 72);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [pathname, transparentHeaderPage]);
+  }, [pathname, transparentHeaderPage, isHome]);
 
   const items = navConfig.items.filter((item) => item.enabled);
 
@@ -179,9 +183,9 @@ export function Header({
       className={cn(
         "sticky top-0 z-50 border-b transition-[background-color,border-color,color,box-shadow] duration-300",
         transparentHeader
-          ? "home-header-transparent border-transparent bg-[#030508]/90 text-white shadow-none backdrop-blur-md"
+          ? "home-header-transparent border-transparent bg-[#0b0a24]/95 text-white shadow-none backdrop-blur-md"
           : transparentHeaderPage
-            ? "home-header-scrolled border-slate-200 bg-[#f3f4f6]/95 text-slate-900 shadow-sm backdrop-blur-md"
+            ? "home-header-scrolled border-slate-200 bg-[#fafafa]/95 text-slate-900 shadow-sm backdrop-blur-md"
             : "border-theme bg-surface text-theme shadow-sm"
       )}
     >
