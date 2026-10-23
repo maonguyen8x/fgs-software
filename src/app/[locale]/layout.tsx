@@ -19,7 +19,7 @@ import { LocaleCookieSync } from "@/components/i18n/LocaleCookieSync";
 import { VisitTracker } from "@/components/analytics/VisitTracker";
 import { SiteExperienceShell } from "@/components/layout/SiteExperienceShell";
 import { HydrationNotice } from "@/components/errors/HydrationNotice";
-import { resolveLogoDisplay } from "@/lib/brand-logo";
+import { resolveLogoDisplay, resolveLogoSize } from "@/lib/brand-logo";
 import { parseChatbotPosition } from "@/lib/chatbot-position";
 import { parsePublicPathMapsFromSettings } from "@/lib/public-paths";
 import { PublicPathsProvider } from "@/components/providers/PublicPathsProvider";
@@ -53,6 +53,7 @@ export default async function LocaleLayout({
     "Nova";
   const fontFamily = settings.font_family ?? "inter";
   const { mode: logoMode, url: logoUrl } = resolveLogoDisplay(settings);
+  const logoSize = resolveLogoSize(settings);
   const fontClass =
     fontFamily === "noto" || locale === "ja"
       ? "font-[family-name:var(--font-noto-jp)]"
@@ -70,7 +71,7 @@ export default async function LocaleLayout({
       <BrandThemeStyle settings={settings} />
       <ThemeShell settings={settings}>
         <SessionProvider>
-          <IntroLogoLoader logoUrl={logoUrl} logoMode={logoMode} />
+          <IntroLogoLoader logoUrl={logoUrl} logoMode={logoMode} logoSize={logoSize} />
           <NavigationProgress />
           <LocaleCookieSync locale={locale as Locale} />
           <VisitTracker />
@@ -81,10 +82,11 @@ export default async function LocaleLayout({
                   companyName={companyName}
                   logoUrl={logoUrl}
                   logoMode={logoMode}
+                  logoSize={logoSize}
                   navConfig={navConfig}
                 />
                 <main className="min-h-screen bg-theme">{children}</main>
-                <Footer companyName={companyName} logoUrl={logoUrl} logoMode={logoMode} navConfig={navConfig} settings={{
+                <Footer companyName={companyName} logoUrl={logoUrl} logoMode={logoMode} logoSize={logoSize} navConfig={navConfig} settings={{
                   linkedin_url: settings.linkedin_url,
                   github_url: settings.github_url,
                   facebook_url: settings.facebook_url,

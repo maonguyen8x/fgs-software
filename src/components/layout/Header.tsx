@@ -22,6 +22,7 @@ interface HeaderProps {
   companyName: string;
   logoUrl?: string | null;
   logoMode?: LogoDisplayMode;
+  logoSize?: number;
   navConfig: HeaderNavConfig;
 }
 
@@ -32,6 +33,7 @@ export function Header({
   companyName,
   logoUrl,
   logoMode = "text",
+  logoSize,
   navConfig,
 }: HeaderProps) {
   const pathname = usePathname();
@@ -190,7 +192,14 @@ export function Header({
       )}
     >
       <div className="container-narrow flex h-16 items-center justify-between px-4 md:px-8">
-        <FgsLogo href="/" companyName={companyName} size="md" logoUrl={logoUrl} logoMode={logoMode} />
+        <FgsLogo
+          href="/"
+          companyName={companyName}
+          size="md"
+          logoUrl={logoUrl}
+          logoMode={logoMode}
+          logoHeight={logoSize}
+        />
 
         <nav className="hidden items-center gap-8 lg:flex">
           {items.map((item) => renderNavLink(item))}

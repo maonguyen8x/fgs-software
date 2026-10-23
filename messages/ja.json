@@ -905,6 +905,8 @@
         "formats": "PNG, WebP, SVG — 最大 5MB",
         "preview": "プレビュー",
         "preview_intro": "起動画面のプレビュー",
+        "display_size": "ロゴの表示サイズ",
+        "display_size_hint": "公開サイトでのロゴの高さを調整します。保存するとヘッダー、フッター、起動画面に反映されます。",
         "preview_text_default": "デフォルト: FGS + Software テキスト",
         "save": "ロゴを保存",
         "saving": "保存中...",

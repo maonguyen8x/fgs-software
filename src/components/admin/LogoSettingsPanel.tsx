@@ -15,9 +15,11 @@ import { BRAND } from "@/config/brand";
 import {
   LOGO_BACKUP_KEY,
   LOGO_MODE_KEY,
+  LOGO_SIZE_KEY,
   LOGO_URL_KEY,
   normalizeLogoUrl,
   resolveLogoDisplay,
+  resolveLogoSize,
   type LogoDisplayMode,
 } from "@/lib/brand-logo";
 
@@ -32,9 +34,11 @@ export function LogoSettingsPanel({ settings: initial }: LogoSettingsPanelProps)
   const savedUrl = normalizeLogoUrl(initial[LOGO_URL_KEY] ?? savedBrand.url) ?? "";
   const savedBackup = normalizeLogoUrl(initial[LOGO_BACKUP_KEY]) ?? "";
   const savedMode: LogoDisplayMode = savedBrand.mode;
+  const savedSize = resolveLogoSize(initial);
 
   const [mode, setMode] = useState<LogoDisplayMode>(savedMode);
   const [logoUrl, setLogoUrl] = useState(savedUrl);
+  const [logoSize, setLogoSize] = useState(savedSize);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [dragOver, setDragOver] = useState(false);
@@ -96,6 +100,7 @@ export function LogoSettingsPanel({ settings: initial }: LogoSettingsPanelProps)
     const patch: Record<string, string> = {
       [LOGO_MODE_KEY]: nextMode,
       [LOGO_URL_KEY]: nextMode === "image" ? nextUrl : "",
+      [LOGO_SIZE_KEY]: String(logoSize),
     };
     const previous = savedUrl.trim();
     if (nextMode === "image" && nextUrl && previous && nextUrl !== previous) {
@@ -111,6 +116,7 @@ export function LogoSettingsPanel({ settings: initial }: LogoSettingsPanelProps)
       [LOGO_MODE_KEY]: "image",
       [LOGO_URL_KEY]: BRAND.logoPath,
       [LOGO_BACKUP_KEY]: savedBackup,
+      [LOGO_SIZE_KEY]: String(logoSize),
     });
   };
 
@@ -125,6 +131,7 @@ export function LogoSettingsPanel({ settings: initial }: LogoSettingsPanelProps)
       [LOGO_MODE_KEY]: "image",
       [LOGO_URL_KEY]: savedBackup,
       [LOGO_BACKUP_KEY]: savedUrl.trim() || savedBackup,
+      [LOGO_SIZE_KEY]: String(logoSize),
     });
   };
 
@@ -165,6 +172,27 @@ export function LogoSettingsPanel({ settings: initial }: LogoSettingsPanelProps)
             {t("restore_default")}
           </Button>
         </div>
+      </div>
+
+      <div className="mb-6 max-w-xl">
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <label htmlFor="site-logo-size" className="text-sm font-medium text-heading">
+            {t("display_size")}
+          </label>
+          <span className="text-sm tabular-nums text-muted-theme">{logoSize}px</span>
+        </div>
+        <input
+          id="site-logo-size"
+          type="range"
+          min={BRAND.logoMinDisplayPx}
+          max={BRAND.logoMaxDisplayPx}
+          step={1}
+          value={logoSize}
+          onChange={(event) => setLogoSize(Number(event.target.value))}
+          className="w-full cursor-pointer accent-primary-600"
+          aria-valuetext={`${logoSize}px`}
+        />
+        <p className="mt-1 text-xs text-muted-theme">{t("display_size_hint")}</p>
       </div>
 
       <BlueRadioGroup
@@ -228,13 +256,13 @@ export function LogoSettingsPanel({ settings: initial }: LogoSettingsPanelProps)
 
         <div className="flex flex-col items-center justify-center rounded-xl border border-theme bg-surface-muted p-8">
           <p className="mb-4 text-xs font-medium uppercase tracking-wide text-muted-theme">{t("preview")}</p>
-          <FgsLogo size="lg" logoUrl={previewUrl} logoMode={previewMode} />
+          <FgsLogo size="lg" logoUrl={previewUrl} logoMode={previewMode} logoHeight={logoSize} />
         </div>
         <div className="flex flex-col items-center justify-center rounded-xl border border-theme bg-surface-muted p-6 md:col-span-2">
           <p className="mb-4 text-xs font-medium uppercase tracking-wide text-muted-theme">
             {t("preview_intro")}
           </p>
-          <IntroLogoPreview logoUrl={previewUrl} logoMode={previewMode} />
+          <IntroLogoPreview logoUrl={previewUrl} logoMode={previewMode} logoSize={logoSize} />
         </div>
       </div>
 

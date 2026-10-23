@@ -869,6 +869,8 @@
         "formats": "PNG, WebP, SVG — max 5MB",
         "preview": "Preview",
         "preview_intro": "Intro screen preview",
+        "display_size": "Logo display size",
+        "display_size_hint": "Adjust the logo height on the public site. Save to apply the change across the header, footer, and intro screen.",
         "save": "Save logo",
         "saving": "Saving...",
         "save_success": "Logo saved",

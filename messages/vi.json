@@ -899,6 +899,8 @@
         "formats": "PNG, WebP, SVG — tối đa 5MB",
         "preview": "Xem trước",
         "preview_intro": "Xem trước màn hình mở đầu",
+        "display_size": "Kích thước hiển thị logo",
+        "display_size_hint": "Điều chỉnh chiều cao logo trên website. Nhấn Lưu để áp dụng ở header, footer và màn hình mở đầu.",
         "save": "Lưu logo",
         "saving": "Đang lưu...",
         "save_success": "Đã lưu logo",

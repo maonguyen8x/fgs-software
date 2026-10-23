@@ -5,6 +5,15 @@ export type LogoDisplayMode = "text" | "image";
 export const LOGO_MODE_KEY = "site_logo_mode";
 export const LOGO_URL_KEY = "site_logo_url";
 export const LOGO_BACKUP_KEY = "site_logo_url_backup";
+export const LOGO_SIZE_KEY = "site_logo_size";
+
+export function resolveLogoSize(settings: Record<string, string>): number {
+  const sizeValue = settings[LOGO_SIZE_KEY]?.trim();
+  if (!sizeValue) return BRAND.logoDisplayPx;
+  const storedSize = Number(sizeValue);
+  if (!Number.isFinite(storedSize)) return BRAND.logoDisplayPx;
+  return Math.min(BRAND.logoMaxDisplayPx, Math.max(BRAND.logoMinDisplayPx, Math.round(storedSize)));
+}
 
 export function normalizeLogoUrl(url: string | null | undefined): string | null {
   const trimmed = url?.trim();

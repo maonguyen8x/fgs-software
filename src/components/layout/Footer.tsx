@@ -12,6 +12,7 @@ interface FooterProps {
   companyName: string;
   logoUrl?: string | null;
   logoMode?: LogoDisplayMode;
+  logoSize?: number;
   navConfig: HeaderNavConfig;
   settings: {
     linkedin_url?: string;
@@ -31,6 +32,7 @@ export function Footer({
   companyName,
   logoUrl,
   logoMode = "text",
+  logoSize,
   navConfig,
   settings,
 }: FooterProps) {
@@ -69,6 +71,7 @@ export function Footer({
                 size="lg"
                 logoUrl={logoUrl}
                 logoMode={logoMode}
+                logoHeight={logoSize}
               />
             </Link>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-slate-600">

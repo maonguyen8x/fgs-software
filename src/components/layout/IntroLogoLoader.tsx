@@ -10,11 +10,12 @@ import type { LogoDisplayMode } from "@/lib/brand-logo";
 interface IntroLogoArtworkProps {
   logoUrl?: string | null;
   logoMode?: LogoDisplayMode;
+  logoSize?: number;
 }
 
-export function IntroLogoArtwork({ logoUrl, logoMode = "image" }: IntroLogoArtworkProps) {
+export function IntroLogoArtwork({ logoUrl, logoMode = "image", logoSize }: IntroLogoArtworkProps) {
   if (logoMode !== "image") {
-    return <FgsLogo size="lg" logoMode="text" />;
+    return <FgsLogo size="lg" logoMode="text" logoHeight={logoSize} />;
   }
 
   const src = logoUrl?.trim() || BRAND.logoPath;
@@ -48,19 +49,21 @@ export function IntroLogoArtwork({ logoUrl, logoMode = "image" }: IntroLogoArtwo
   );
 }
 
-export function IntroLogoPreview({ logoUrl, logoMode }: IntroLogoArtworkProps) {
+export function IntroLogoPreview({ logoUrl, logoMode, logoSize }: IntroLogoArtworkProps) {
+  const scale = logoSize ? logoSize / BRAND.logoDisplayPx : 1;
   return (
     <div className="intro-logo-preview">
-      <div className="intro-logo-lockup">
-        <IntroLogoArtwork logoUrl={logoUrl} logoMode={logoMode} />
+      <div className="intro-logo-lockup" style={{ width: `min(${Math.round(440 * scale)}px, 100%)` }}>
+        <IntroLogoArtwork logoUrl={logoUrl} logoMode={logoMode} logoSize={logoSize} />
       </div>
     </div>
   );
 }
 
-export function IntroLogoLoader({ logoUrl, logoMode }: IntroLogoArtworkProps) {
+export function IntroLogoLoader({ logoUrl, logoMode, logoSize }: IntroLogoArtworkProps) {
   const [visible, setVisible] = useState(true);
   const [leaving, setLeaving] = useState(false);
+  const scale = logoSize ? logoSize / BRAND.logoDisplayPx : 1;
   const leaveAt = 2;
   const hideAt = 2.25;
 
@@ -113,8 +116,8 @@ export function IntroLogoLoader({ logoUrl, logoMode }: IntroLogoArtworkProps) {
       </div>
       <span className="intro-logo-x-comet intro-logo-x-comet--left" />
       <span className="intro-logo-x-comet intro-logo-x-comet--right" />
-      <div className="intro-logo-lockup">
-        <IntroLogoArtwork logoUrl={logoUrl} logoMode={logoMode} />
+      <div className="intro-logo-lockup" style={{ width: `min(${Math.round(620 * scale)}px, 94vw)` }}>
+        <IntroLogoArtwork logoUrl={logoUrl} logoMode={logoMode} logoSize={logoSize} />
       </div>
     </div>
   );
