@@ -70,7 +70,7 @@ export default async function LocaleLayout({
       <BrandThemeStyle settings={settings} />
       <ThemeShell settings={settings}>
         <SessionProvider>
-          <IntroLogoLoader companyName={companyName} />
+          <IntroLogoLoader logoUrl={logoUrl} logoMode={logoMode} />
           <NavigationProgress />
           <LocaleCookieSync locale={locale as Locale} />
           <VisitTracker />
@@ -84,7 +84,7 @@ export default async function LocaleLayout({
                   navConfig={navConfig}
                 />
                 <main className="min-h-screen bg-theme">{children}</main>
-                <Footer companyName={companyName} navConfig={navConfig} settings={{
+                <Footer companyName={companyName} logoUrl={logoUrl} logoMode={logoMode} navConfig={navConfig} settings={{
                   linkedin_url: settings.linkedin_url,
                   github_url: settings.github_url,
                   facebook_url: settings.facebook_url,

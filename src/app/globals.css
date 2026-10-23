@@ -3442,6 +3442,238 @@ button.contact-location-card:hover {
   }
 }
 
+.intro-logo-loader {
+  background:
+    radial-gradient(ellipse at 50% 48%, rgba(22, 48, 89, 0.68), transparent 43%),
+    radial-gradient(ellipse at 50% 52%, #111c31 0%, #080e1b 70%, #04070e 100%);
+  transition: opacity 250ms ease, visibility 250ms ease;
+}
+
+.intro-logo-loader::before,
+.intro-logo-loader::after {
+  display: block;
+}
+
+.intro-logo-loader::before {
+  background-image:
+    radial-gradient(1px 1px at 17% 22%, rgba(255, 255, 255, 0.9) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 70% 18%, rgba(191, 219, 254, 0.9) 50%, transparent 100%),
+    radial-gradient(2px 2px at 83% 71%, rgba(255, 255, 255, 0.85) 50%, transparent 100%),
+    radial-gradient(1px 1px at 25% 79%, rgba(196, 181, 253, 0.9) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 56% 13%, rgba(255, 255, 255, 0.85) 50%, transparent 100%);
+  animation: intro-logo-star-glow 1.8s ease-in-out infinite alternate;
+}
+
+.intro-logo-loader::after {
+  background: radial-gradient(ellipse at center, transparent 22%, rgba(0, 0, 0, 0.42) 100%);
+}
+
+.intro-logo-starfield {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.intro-logo-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 9px 2px rgba(191, 219, 254, 0.75);
+  animation: intro-logo-twinkle 1.7s ease-in-out infinite alternate;
+}
+
+.intro-logo-star:nth-child(7n) {
+  width: 4px;
+  height: 4px;
+  box-shadow: 0 0 15px 3px rgba(196, 181, 253, 0.85);
+}
+
+.intro-logo-star--1 {
+  width: 1px;
+  height: 1px;
+  opacity: 0.62;
+}
+
+.intro-logo-star--2 {
+  width: 3px;
+  height: 3px;
+  background: #c4b5fd;
+}
+
+.intro-logo-star--3 {
+  opacity: 0.4;
+}
+
+.intro-logo-x-comet {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: clamp(16rem, 42vw, 34rem);
+  height: 3px;
+  border-radius: 999px;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(147, 197, 253, 0.2), #fff 48%, rgba(147, 197, 253, 0.9) 58%, transparent);
+  filter: drop-shadow(0 0 8px rgba(147, 197, 253, 0.95));
+  transform-origin: center;
+}
+
+.intro-logo-x-comet--left {
+  left: -18%;
+  animation: intro-logo-x-left-to-right 950ms ease-in-out 380ms both;
+}
+
+.intro-logo-x-comet--right {
+  right: -18%;
+  background: linear-gradient(90deg, transparent, rgba(196, 181, 253, 0.2), #fff 48%, rgba(196, 181, 253, 0.95) 58%, transparent);
+  filter: drop-shadow(0 0 8px rgba(196, 181, 253, 0.95));
+  animation: intro-logo-x-right-to-left 950ms ease-in-out 980ms both;
+}
+
+.intro-logo-lockup {
+  width: min(620px, 94vw);
+  line-height: 1;
+  filter: drop-shadow(0 22px 30px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 28px rgba(105, 170, 245, 0.2));
+  animation: none;
+}
+
+.intro-logo-art-stage {
+  position: relative;
+  display: block;
+  aspect-ratio: 470 / 220;
+  width: 100%;
+  filter: drop-shadow(0 14px 11px rgba(0, 0, 0, 0.42));
+}
+
+.intro-logo-art-image {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.intro-logo-art-stage .intro-logo-art-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.intro-logo-art-image--blue {
+  clip-path: inset(0 66.5% 35% 0);
+  animation: intro-logo-part-arrive 360ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+
+.intro-logo-art-image--orange {
+  clip-path: inset(0 33.2% 35% 33.2%);
+  animation: intro-logo-part-arrive 360ms cubic-bezier(0.2, 0.8, 0.25, 1) 180ms both;
+}
+
+.intro-logo-art-image--green {
+  clip-path: inset(0 0 35% 66.4%);
+  animation: intro-logo-part-arrive 360ms cubic-bezier(0.2, 0.8, 0.25, 1) 360ms both;
+}
+
+.intro-logo-art-image--software {
+  clip-path: inset(62% 0 0);
+  animation: intro-logo-software-arrive 420ms ease-out 600ms both;
+}
+
+.intro-logo-art-image--custom {
+  width: 100%;
+  animation: intro-logo-custom-arrive 800ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+  transform-origin: center;
+  filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.42));
+}
+
+.intro-logo-preview {
+  display: grid;
+  width: min(100%, 440px);
+  min-height: 150px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 12px;
+  background: radial-gradient(ellipse at center, #fff 0%, #f5f9ff 72%, #eef5fc 100%);
+  padding: 24px;
+}
+
+.intro-logo-preview .intro-logo-lockup {
+  width: 100%;
+}
+
+.intro-logo-preview .intro-logo-art-image--blue,
+.intro-logo-preview .intro-logo-art-image--orange,
+.intro-logo-preview .intro-logo-art-image--green,
+.intro-logo-preview .intro-logo-art-image--software {
+  animation-iteration-count: infinite;
+}
+
+.intro-logo-preview .intro-logo-art-image--custom {
+  animation: intro-logo-custom-arrive 1.8s ease-in-out infinite alternate;
+}
+
+.intro-logo-preview .text-lg {
+  font-size: 3rem;
+}
+
+.intro-logo-preview .text-\[10px\] {
+  font-size: 1rem;
+}
+
+@keyframes intro-logo-part-arrive {
+  from { opacity: 0; transform: translateY(9px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes intro-logo-software-arrive {
+  from { opacity: 0; clip-path: inset(62% 0 0 100%); }
+  to { opacity: 1; clip-path: inset(62% 0 0 0); }
+}
+
+@keyframes intro-logo-custom-arrive {
+  from { opacity: 0; transform: perspective(800px) rotateX(12deg) scale(0.88); }
+  to { opacity: 1; transform: perspective(800px) rotateX(0) scale(1); }
+}
+
+@keyframes intro-logo-x-left-to-right {
+  0% { opacity: 0; transform: translate3d(-60vw, -38vh, 0) rotate(28deg); }
+  18% { opacity: 0.95; }
+  75% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate3d(155vw, -38vh, 0) rotate(28deg); }
+}
+
+@keyframes intro-logo-x-right-to-left {
+  0% { opacity: 0; transform: translate3d(60vw, -38vh, 0) rotate(-28deg); }
+  18% { opacity: 0.95; }
+  75% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate3d(-155vw, -38vh, 0) rotate(-28deg); }
+}
+
+@keyframes intro-logo-star-glow {
+  to { opacity: 0.38; }
+}
+
+@keyframes intro-logo-twinkle {
+  to { opacity: 0.28; transform: scale(0.65); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-logo-art-image,
+  .intro-logo-star,
+  .intro-logo-x-comet,
+  .intro-logo-loader::before {
+    animation: none !important;
+  }
+
+  .intro-logo-art-image--blue,
+  .intro-logo-art-image--orange,
+  .intro-logo-art-image--green,
+  .intro-logo-art-image--software {
+    opacity: 1;
+  }
+}
+
 .site-footer .text-primary-600 {
   color: #8052f6;
 }

@@ -6,12 +6,18 @@ export const LOGO_MODE_KEY = "site_logo_mode";
 export const LOGO_URL_KEY = "site_logo_url";
 export const LOGO_BACKUP_KEY = "site_logo_url_backup";
 
+export function normalizeLogoUrl(url: string | null | undefined): string | null {
+  const trimmed = url?.trim();
+  if (!trimmed) return null;
+  return trimmed.split("?")[0] === BRAND.logoPngPath ? BRAND.logoPath : trimmed;
+}
+
 export function resolveLogoDisplay(settings: Record<string, string>): {
   mode: LogoDisplayMode;
   url: string | null;
 } {
   const modeSetting = settings[LOGO_MODE_KEY]?.trim();
-  const customUrl = settings[LOGO_URL_KEY]?.trim();
+  const customUrl = normalizeLogoUrl(settings[LOGO_URL_KEY]);
 
   if (modeSetting === "text") {
     return { mode: "text", url: null };
@@ -21,5 +27,5 @@ export function resolveLogoDisplay(settings: Record<string, string>): {
     return { mode: "image", url: customUrl };
   }
 
-  return { mode: "image", url: BRAND.logoPngPath };
+  return { mode: "image", url: BRAND.logoPath };
 }

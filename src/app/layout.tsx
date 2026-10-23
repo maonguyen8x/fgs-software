@@ -21,11 +21,6 @@ const notoJp = Noto_Sans_JP({
 export const metadata: Metadata = {
   title: BRAND.companyName,
   description: "IT Outsourcing Partner in Vietnam",
-  icons: {
-    icon: [{ url: BRAND.logoPngPath, type: "image/png" }],
-    shortcut: BRAND.logoPngPath,
-    apple: BRAND.logoPngPath,
-  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

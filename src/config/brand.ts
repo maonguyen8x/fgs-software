@@ -3,10 +3,10 @@ export const BRAND = {
   logoPngPath: "/logo.png",
   logoAlt: "FGS Software",
   companyName: "FGS Software",
-  /** Width / height of default PNG logo asset */
-  logoAspectRatio: 602 / 387,
+  /** Width / height of the default FGS Software logo */
+  logoAspectRatio: 470 / 220,
   /** Display height in header (px) */
   logoDisplayPx: 40,
   /** Max processed upload dimension (px) */
-  logoUploadMaxPx: 120,
+  logoUploadMaxPx: 1200,
 } as const;

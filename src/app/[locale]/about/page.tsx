@@ -192,7 +192,7 @@ export default async function AboutPage({
             <p className="about-notebook-chapter">{t("notebook.why_chapter")}</p>
             <h2>{t("notebook.why_title")}</h2>
             <p>{t("notebook.why_copy")}</p>
-            <Link href="/team" className="about-notebook-dark-button">{t("notebook.join_cta")}</Link>
+            <Link href="/about-us" className="about-notebook-dark-button">{t("notebook.join_cta")}</Link>
           </div>
           <div className="about-notebook-join-art" aria-hidden>
             <span className="about-notebook-join-sun" />

@@ -6,9 +6,12 @@ import { Facebook, Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import type { HeaderNavConfig } from "@/lib/header-nav";
 import { NAV_ID_INTERNAL_ROUTES } from "@/lib/public-paths";
 import { FgsLogo } from "@/components/brand/FgsLogo";
+import type { LogoDisplayMode } from "@/lib/brand-logo";
 
 interface FooterProps {
   companyName: string;
+  logoUrl?: string | null;
+  logoMode?: LogoDisplayMode;
   navConfig: HeaderNavConfig;
   settings: {
     linkedin_url?: string;
@@ -24,7 +27,13 @@ function hrefForNavId(navConfig: HeaderNavConfig, id: string): string {
   return item?.href ?? NAV_ID_INTERNAL_ROUTES[id] ?? `/${id}`;
 }
 
-export function Footer({ companyName, navConfig, settings }: FooterProps) {
+export function Footer({
+  companyName,
+  logoUrl,
+  logoMode = "text",
+  navConfig,
+  settings,
+}: FooterProps) {
   const t = useTranslations("nav");
   const ta = useTranslations("about");
   const ts = useTranslations("services");
@@ -55,7 +64,12 @@ export function Footer({ companyName, navConfig, settings }: FooterProps) {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.45fr_0.8fr_0.9fr_1fr] lg:gap-12">
           <div>
             <Link href="/" aria-label={companyName} className="inline-flex">
-              <FgsLogo companyName={companyName} size="lg" logoMode="text" />
+              <FgsLogo
+                companyName={companyName}
+                size="lg"
+                logoUrl={logoUrl}
+                logoMode={logoMode}
+              />
             </Link>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-slate-600">
               {tf("tagline")}

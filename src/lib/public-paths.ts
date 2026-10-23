@@ -7,9 +7,9 @@ import {
 /** Nav item id → internal App Router path (locale-free). */
 export const NAV_ID_INTERNAL_ROUTES: Record<string, string> = {
   home: "/",
-  about: "/about",
+  about: "/company",
   services: "/services",
-  team: "/team",
+  team: "/about-us",
   works: "/products",
   contact: "/contact",
   blog: "/blog",

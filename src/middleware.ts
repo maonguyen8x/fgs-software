@@ -55,6 +55,15 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
+    const legacyPublicPath = pathname.match(/^\/(en|ja|vi)\/(about|team)(\/.*)?$/);
+    if (legacyPublicPath) {
+      const [, locale, oldSlug, suffix = ""] = legacyPublicPath;
+      const newSlug = oldSlug === "about" ? "company" : "about-us";
+      const url = request.nextUrl.clone();
+      url.pathname = `/${locale}/${newSlug}${suffix}`;
+      return NextResponse.redirect(url, 308);
+    }
+
     if (pathname === "/admin/login" && isDefaultAdminLoginDisabled()) {
       return notFoundResponse(request);
     }

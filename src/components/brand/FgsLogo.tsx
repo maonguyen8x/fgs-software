@@ -54,7 +54,7 @@ export function FgsLogo({
 }: FgsLogoProps) {
   const s = sizeMap[size];
   const useImage = logoMode === "image" && Boolean(logoUrl?.trim());
-  const src = logoUrl?.split("?")[0] ?? BRAND.logoPngPath;
+  const src = logoUrl?.split("?")[0] ?? BRAND.logoPath;
   const imageWidth = Math.round(s.height * BRAND.logoAspectRatio);
 
   const content = (
@@ -78,7 +78,7 @@ export function FgsLogo({
             width={imageWidth}
             height={s.height}
             className="h-full w-auto max-w-full object-contain object-left"
-            unoptimized={shouldUseUnoptimizedImage(src) || src === BRAND.logoPngPath}
+            unoptimized={shouldUseUnoptimizedImage(src) || src === BRAND.logoPath}
             priority={size === "md"}
           />
         </span>

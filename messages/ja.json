@@ -894,8 +894,8 @@
       },
       "logo": {
         "title": "サイトロゴ",
-        "subtitle": "透明背景の PNG/WebP/SVG。全公開ページに適用。",
-        "subtitle_choice": "テキストロゴ (FGS + Software) または透明画像をアップロード。",
+        "subtitle": "透過 PNG/WebP/SVG をアップロード。ヘッダー、フッター、起動画面に適用されます。",
+        "subtitle_choice": "デフォルトの FGS Software ロゴ、アップロード画像、またはテキストのみを選択できます。",
         "mode_text": "テキストロゴ (FGS + Software)",
         "mode_image": "画像ロゴをアップロード",
         "mode_text_hint": "FGS と Software のテキスト表示。",
@@ -904,6 +904,7 @@
         "drop_hint": "ここにドラッグ＆ドロップ、またはクリック",
         "formats": "PNG, WebP, SVG — 最大 5MB",
         "preview": "プレビュー",
+        "preview_intro": "起動画面のプレビュー",
         "preview_text_default": "デフォルト: FGS + Software テキスト",
         "save": "ロゴを保存",
         "saving": "保存中...",
@@ -914,10 +915,10 @@
         "error_invalid_type": "無効な形式です。PNG、WebP、JPEG、SVG を使用してください。",
         "error_too_large": "ファイルが大きすぎます。",
         "error_process": "画像を処理できませんでした。",
-        "restore_default": "デフォルトのテキストロゴに戻す",
+        "restore_default": "デフォルトの FGS Software ロゴに戻す",
         "restore_backup": "前のロゴに戻す",
         "no_backup": "バックアップされたロゴがありません。",
-        "size_hint": "アップロード前に最大 120×120px にリサイズされます。"
+        "size_hint": "起動画面でも鮮明に表示するため、ラスター画像は最大 1200px に縮小されます。"
       },
       "hero_slides": {
         "title": "トップヒーロー（ダナン夜景）",

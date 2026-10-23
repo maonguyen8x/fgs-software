@@ -10,10 +10,14 @@ import { processLogoFile } from "@/lib/admin/process-logo-file";
 import { showAdminErrorToast, showAdminSuccessToast } from "@/lib/admin-toast";
 import { publishPublicSiteUpdate } from "@/lib/admin-public-sync";
 import { FgsLogo } from "@/components/brand/FgsLogo";
+import { IntroLogoPreview } from "@/components/layout/IntroLogoLoader";
+import { BRAND } from "@/config/brand";
 import {
   LOGO_BACKUP_KEY,
   LOGO_MODE_KEY,
   LOGO_URL_KEY,
+  normalizeLogoUrl,
+  resolveLogoDisplay,
   type LogoDisplayMode,
 } from "@/lib/brand-logo";
 
@@ -24,10 +28,10 @@ interface LogoSettingsPanelProps {
 export function LogoSettingsPanel({ settings: initial }: LogoSettingsPanelProps) {
   const t = useTranslations("admin.settings.logo");
   const router = useRouter();
-  const savedUrl = initial[LOGO_URL_KEY] ?? "";
-  const savedBackup = initial[LOGO_BACKUP_KEY] ?? "";
-  const savedMode: LogoDisplayMode =
-    initial[LOGO_MODE_KEY] === "image" && savedUrl.trim() ? "image" : "text";
+  const savedBrand = resolveLogoDisplay(initial);
+  const savedUrl = normalizeLogoUrl(initial[LOGO_URL_KEY] ?? savedBrand.url) ?? "";
+  const savedBackup = normalizeLogoUrl(initial[LOGO_BACKUP_KEY]) ?? "";
+  const savedMode: LogoDisplayMode = savedBrand.mode;
 
   const [mode, setMode] = useState<LogoDisplayMode>(savedMode);
   const [logoUrl, setLogoUrl] = useState(savedUrl);
@@ -101,11 +105,11 @@ export function LogoSettingsPanel({ settings: initial }: LogoSettingsPanelProps)
   };
 
   const handleRestoreDefault = async () => {
-    setMode("text");
-    setLogoUrl("");
+    setMode("image");
+    setLogoUrl(BRAND.logoPath);
     await persistSettings({
-      [LOGO_MODE_KEY]: "text",
-      [LOGO_URL_KEY]: "",
+      [LOGO_MODE_KEY]: "image",
+      [LOGO_URL_KEY]: BRAND.logoPath,
       [LOGO_BACKUP_KEY]: savedBackup,
     });
   };
@@ -225,6 +229,12 @@ export function LogoSettingsPanel({ settings: initial }: LogoSettingsPanelProps)
         <div className="flex flex-col items-center justify-center rounded-xl border border-theme bg-surface-muted p-8">
           <p className="mb-4 text-xs font-medium uppercase tracking-wide text-muted-theme">{t("preview")}</p>
           <FgsLogo size="lg" logoUrl={previewUrl} logoMode={previewMode} />
+        </div>
+        <div className="flex flex-col items-center justify-center rounded-xl border border-theme bg-surface-muted p-6 md:col-span-2">
+          <p className="mb-4 text-xs font-medium uppercase tracking-wide text-muted-theme">
+            {t("preview_intro")}
+          </p>
+          <IntroLogoPreview logoUrl={previewUrl} logoMode={previewMode} />
         </div>
       </div>
 

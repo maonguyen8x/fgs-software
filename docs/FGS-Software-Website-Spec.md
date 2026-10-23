@@ -103,9 +103,9 @@ fgs-software/
 /en/                → Trang chủ tiếng Anh
 /ja/                → Trang chủ tiếng Nhật (日本語)
 /vi/                → Trang chủ tiếng Việt
-/en/about           → Giới thiệu công ty
+/en/company         → Giới thiệu công ty
 /en/services        → Dịch vụ & năng lực kỹ thuật
-/en/team            → Đội ngũ thành viên
+/en/about-us        → Đội ngũ / Về chúng tôi
 /en/works           → Dự án / Portfolio
 /en/blog            → Blog kỹ thuật (tùy chọn giai đoạn sau)
 /en/contact         → Liên hệ (form gửi email)
@@ -150,7 +150,7 @@ fgs-software/
    - 4–6 điểm nổi bật: kinh nghiệm Nhật Bản, giao tiếp tốt, chất lượng, linh hoạt...
 
 5. **Featured Team** (3–4 thành viên nổi bật)
-   - Avatar, tên, role, link → `/team`
+   - Avatar, tên, role, link → `/about-us`
 
 6. **Featured Works** (2–3 dự án)
    - Thumbnail, tên, tech stack, link → `/works`
@@ -166,7 +166,7 @@ fgs-software/
 
 ---
 
-### 4.2 Giới thiệu — `/about`
+### 4.2 Giới thiệu công ty — `/company`
 
 **Nội dung:**
 - Lịch sử thành lập và tầm nhìn công ty
@@ -203,7 +203,7 @@ fgs-software/
 
 ---
 
-### 4.4 Đội ngũ — `/team`
+### 4.4 Đội ngũ / Về chúng tôi — `/about-us`
 
 **Hiển thị:**
 - Grid card mỗi thành viên

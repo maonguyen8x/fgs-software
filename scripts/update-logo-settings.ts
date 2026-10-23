@@ -4,8 +4,8 @@ const prisma = new PrismaClient();
 
 async function main() {
   const updates = [
-    { key: "site_logo_url", value: "/logo.png" },
-    { key: "site_logo_url_backup", value: "/logo.png" },
+    { key: "site_logo_url", value: "/logo.svg" },
+    { key: "site_logo_url_backup", value: "/logo.svg" },
     { key: "site_logo_mode", value: "image" },
   ];
 

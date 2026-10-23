@@ -35,7 +35,7 @@ export default async function LeaderDetailPage({
   if (!member) notFound();
 
   const teamListHref = resolveInternalToPublic(
-    "/team",
+    "/about-us",
     parsePublicPathMapsFromSettings(layoutSettings)
   );
 

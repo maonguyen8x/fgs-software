@@ -1,25 +1,68 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import { BRAND } from "@/config/brand";
+import { FgsLogo } from "@/components/brand/FgsLogo";
+import { shouldUseUnoptimizedImage } from "@/lib/upload-url";
+import type { LogoDisplayMode } from "@/lib/brand-logo";
 
-export function IntroLogoLoader({ companyName }: { companyName: string }) {
+interface IntroLogoArtworkProps {
+  logoUrl?: string | null;
+  logoMode?: LogoDisplayMode;
+}
+
+export function IntroLogoArtwork({ logoUrl, logoMode = "image" }: IntroLogoArtworkProps) {
+  if (logoMode !== "image") {
+    return <FgsLogo size="lg" logoMode="text" />;
+  }
+
+  const src = logoUrl?.trim() || BRAND.logoPath;
+  if (src.split("?")[0] === BRAND.logoPath) {
+    return (
+      <span className="intro-logo-art-stage" role="img" aria-label={BRAND.logoAlt}>
+        {["blue", "orange", "green", "software"].map((part) => (
+          <Image
+            key={part}
+            src={src}
+            alt=""
+            width={470}
+            height={220}
+            className={`intro-logo-art-image intro-logo-art-image--${part}`}
+            unoptimized
+          />
+        ))}
+      </span>
+    );
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={BRAND.logoAlt}
+      width={470}
+      height={220}
+      className="intro-logo-art-image intro-logo-art-image--custom"
+      unoptimized={shouldUseUnoptimizedImage(src) || src === BRAND.logoPath}
+    />
+  );
+}
+
+export function IntroLogoPreview({ logoUrl, logoMode }: IntroLogoArtworkProps) {
+  return (
+    <div className="intro-logo-preview">
+      <div className="intro-logo-lockup">
+        <IntroLogoArtwork logoUrl={logoUrl} logoMode={logoMode} />
+      </div>
+    </div>
+  );
+}
+
+export function IntroLogoLoader({ logoUrl, logoMode }: IntroLogoArtworkProps) {
   const [visible, setVisible] = useState(true);
   const [leaving, setLeaving] = useState(false);
-  const [brandMark = "FGS", ...brandNameParts] = companyName.trim().split(/\s+/);
-  const letters = Array.from(brandMark);
-  const software = brandNameParts.join(" ") || "Software";
-  const logoRevealStart = 0.8;
-  const logoStep = 0.42;
-  const logoRevealDuration = 0.95;
-  const logoRevealEnd =
-    logoRevealStart + Math.max(0, letters.length - 1) * logoStep + logoRevealDuration;
-  const softwareRevealStart = logoRevealEnd + 0.12;
-  const softwareStep = 0.045;
-  const softwareRevealDuration = 0.62;
-  const revealEnd =
-    softwareRevealStart + Math.max(0, software.length - 1) * softwareStep + softwareRevealDuration;
-  const leaveAt = revealEnd + 0.04;
-  const hideAt = leaveAt + 0.46;
+  const leaveAt = 2;
+  const hideAt = 2.25;
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -28,11 +71,11 @@ export function IntroLogoLoader({ companyName }: { companyName: string }) {
     }
 
     try {
-      if (window.sessionStorage.getItem("fgs-logo-intro-seen-v2")) {
+      if (window.sessionStorage.getItem("fgs-logo-intro-seen-v4")) {
         setVisible(false);
         return;
       }
-      window.sessionStorage.setItem("fgs-logo-intro-seen-v2", "true");
+      window.sessionStorage.setItem("fgs-logo-intro-seen-v4", "true");
     } catch {
       // The intro can still run when session storage is unavailable.
     }
@@ -54,14 +97,11 @@ export function IntroLogoLoader({ companyName }: { companyName: string }) {
   if (!visible) return null;
 
   return (
-    <div
-      className={`intro-logo-loader ${leaving ? "intro-logo-loader-leaving" : ""}`}
-      aria-hidden="true"
-    >
+    <div className={`intro-logo-loader ${leaving ? "intro-logo-loader-leaving" : ""}`} aria-hidden="true">
       <div className="intro-logo-starfield" aria-hidden>
-        {Array.from({ length: 112 }, (_, index) => (
+        {Array.from({ length: 88 }, (_, index) => (
           <span
-            key={index}
+            key={`star-${index}`}
             className={`intro-logo-star intro-logo-star--${index % 4}`}
             style={{
               left: `${(index * 37 + 11) % 100}%`,
@@ -70,40 +110,11 @@ export function IntroLogoLoader({ companyName }: { companyName: string }) {
             }}
           />
         ))}
-        {Array.from({ length: 8 }, (_, index) => (
-          <span
-            key={`comet-${index}`}
-            className={`intro-logo-comet ${index < 4 ? "intro-logo-comet--left" : "intro-logo-comet--right"}`}
-            style={{
-              left: `${index < 4 ? 8 + index * 6 : 68 + (index - 4) * 6}%`,
-              animationDelay: `${index < 4 ? index * 0.35 : 2.2 + (index - 4) * 0.35}s`,
-            }}
-          />
-        ))}
-        <span className="intro-logo-comet-x intro-logo-comet-x--down" />
-        <span className="intro-logo-comet-x intro-logo-comet-x--up" />
       </div>
+      <span className="intro-logo-x-comet intro-logo-x-comet--left" />
+      <span className="intro-logo-x-comet intro-logo-x-comet--right" />
       <div className="intro-logo-lockup">
-        <span className="intro-logo-outline" aria-hidden>
-          {brandMark || "FGS"}
-        </span>
-        <span className="intro-logo-main">
-          {letters.map((letter, index) => (
-            <span key={`${letter}-${index}`} style={{ animationDelay: `${logoRevealStart + index * logoStep}s` }}>
-              {letter}
-            </span>
-          ))}
-        </span>
-        <span className="intro-logo-sub">
-          {software.split("").map((letter, index, all) => (
-            <span
-              key={`${letter}-${index}`}
-              style={{ animationDelay: `${softwareRevealStart + (all.length - 1 - index) * softwareStep}s` }}
-            >
-              {letter === " " ? "\u00a0" : letter}
-            </span>
-          ))}
-        </span>
+        <IntroLogoArtwork logoUrl={logoUrl} logoMode={logoMode} />
       </div>
     </div>
   );

@@ -54,7 +54,7 @@ export const DEFAULT_HEADER_NAV: HeaderNavConfig = {
   items: [
     {
       id: "about",
-      href: "/about",
+      href: "/company",
       labelEn: "Company",
       labelVi: "Giới thiệu",
       labelJa: "会社概要",
@@ -78,7 +78,7 @@ export const DEFAULT_HEADER_NAV: HeaderNavConfig = {
     },
     {
       id: "team",
-      href: "/team",
+      href: "/about-us",
       labelEn: "About Us",
       labelVi: "Về chúng tôi",
       labelJa: "チーム紹介",
