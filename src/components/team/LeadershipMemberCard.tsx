@@ -22,7 +22,7 @@ export function LeadershipMemberCard({ member }: LeadershipMemberCardProps) {
   const locale = useLocale() as Locale;
   const role = getLocalizedField(member, "role", locale);
   const avatarSrc = member.avatar?.split("?")[0];
-  const detailHref = usePublicPath(`/team/leader/${member.id}`);
+  const detailHref = usePublicPath(`/about-us/leader/${member.id}`);
 
   return (
     <Link
