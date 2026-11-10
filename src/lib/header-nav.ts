@@ -83,6 +83,24 @@ export const DEFAULT_HEADER_NAV: HeaderNavConfig = {
       labelVi: "Về chúng tôi",
       labelJa: "チーム紹介",
       enabled: true,
+      children: [
+        {
+          id: "team-news",
+          href: "/about-us/news",
+          labelEn: "News",
+          labelVi: "Tin tức",
+          labelJa: "ニュース",
+          enabled: true,
+        },
+        {
+          id: "team-ceo-messages",
+          href: "/about-us#ceo-message",
+          labelEn: "CEO Messages",
+          labelVi: "Thông điệp CEO",
+          labelJa: "社長メッセージ",
+          enabled: true,
+        },
+      ],
     },
     {
       id: "contact",

@@ -16,26 +16,19 @@ import { finalizeAdminLogin, validateAdminCredentials } from "@/lib/admin-login"
 const schema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
-  totpCode: z.string().optional(),
   rememberMe: z.boolean().optional(),
   deviceId: z.string().uuid(),
   deviceTrustToken: z.string().optional(),
 });
 
-/** Step 1: verify email/password (+ TOTP). Trusted devices skip captcha. */
+/** Verify email/password. Trusted devices skip captcha. */
 export async function POST(request: Request) {
   resolveDatabaseUrl();
   try {
     const body = schema.parse(await request.json());
-    const result = await validateAdminCredentials(body.email, body.password, body.totpCode);
+    const result = await validateAdminCredentials(body.email, body.password);
 
     if (!result.ok) {
-      if (result.error === "requires_totp") {
-        return NextResponse.json({ error: "requires_totp" });
-      }
-      if (result.error === "invalid_totp") {
-        return NextResponse.json({ error: "invalid_totp" }, { status: 401 });
-      }
       return NextResponse.json({ error: "invalid_credentials" }, { status: 401 });
     }
 

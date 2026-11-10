@@ -97,9 +97,10 @@ export function Header({
             <ChevronDown className="h-4 w-4 opacity-70" />
           </button>
           {openSub === item.id && (
+            <div className="absolute left-0 top-full z-50 pt-6">
             <div
               className={cn(
-                "absolute left-0 top-full z-50 min-w-[180px] rounded-lg border py-1 shadow-lg",
+                "w-max min-w-[160px] max-w-[220px] whitespace-nowrap rounded-lg border py-1 shadow-lg",
                 transparentHeader
                   ? "border-white/10 bg-slate-950/95"
                   : transparentHeaderPage
@@ -107,15 +108,6 @@ export function Header({
                     : "border-theme bg-surface"
               )}
             >
-              <Link
-                href={item.href}
-                prefetch
-                className="block px-4 py-2 text-sm font-medium text-heading hover:bg-surface-muted"
-                style={style}
-                aria-current={active ? "page" : undefined}
-              >
-                {label}
-              </Link>
               {(item.children ?? [])
                 .filter((c) => c.enabled)
                 .map((child) => {
@@ -142,6 +134,7 @@ export function Header({
                     </Link>
                   );
                 })}
+            </div>
             </div>
           )}
         </div>

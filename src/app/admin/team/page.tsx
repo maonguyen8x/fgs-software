@@ -7,8 +7,31 @@ import { Plus } from "lucide-react";
 import { DeleteTeamButton } from "@/components/admin/DeleteTeamButton";
 import { TeamAdminTabs, type TeamAdminTab } from "@/components/admin/TeamAdminTabs";
 import { FoundersAdminTable } from "@/components/admin/FoundersAdminTable";
+import { AboutUsContentPanel, type AboutUsDefaults } from "@/components/admin/AboutUsContentPanel";
+import { getSettingsMap } from "@/lib/settings";
+import enMessages from "../../../../messages/en.json";
+import jaMessages from "../../../../messages/ja.json";
+import viMessages from "../../../../messages/vi.json";
 import { AdminPageShell } from "@/components/admin/AdminPageShell";
 import { AdminContentBlock } from "@/components/admin/AdminContentBlock";
+
+const TEAM_MESSAGES = { en: enMessages.team, ja: jaMessages.team, vi: viMessages.team };
+
+function buildDefaults(): AboutUsDefaults {
+  const pick = (read: (m: typeof enMessages.team) => string) => ({
+    en: read(TEAM_MESSAGES.en),
+    ja: read(TEAM_MESSAGES.ja),
+    vi: read(TEAM_MESSAGES.vi),
+  });
+  return {
+    bubbleTitle: pick((m) => m.ceo.bubble_title),
+    message: pick((m) => m.ceo.message),
+    role: pick((m) => m.ceo.role),
+    name: enMessages.team.ceo.name,
+    signature: enMessages.team.ceo.signature,
+    intro: [1, 2, 3].map((n) => pick((m) => m[`intro_block_${n}` as "intro_block_1"])),
+  };
+}
 
 export default async function AdminTeamPage({
   searchParams,
@@ -16,7 +39,7 @@ export default async function AdminTeamPage({
   searchParams: Promise<{ tab?: string }>;
 }) {
   const { tab: tabParam } = await searchParams;
-  const tab: TeamAdminTab = tabParam === "founders" ? "founders" : "members";
+  const tab: TeamAdminTab = tabParam === "founders" ? "founders" : tabParam === "page" ? "page" : "members";
   const t = await getTranslations("admin.team");
 
   const [members, founders] = await Promise.all([
@@ -29,7 +52,11 @@ export default async function AdminTeamPage({
       <AdminContentBlock>
         <TeamAdminTabs active={tab} />
 
-        {tab === "members" ? (
+        {tab === "page" ? (
+          <div className="mt-6">
+            <AboutUsContentPanel settings={await getSettingsMap()} defaults={buildDefaults()} />
+          </div>
+        ) : tab === "members" ? (
           <>
             <div className="mb-4 mt-6 flex justify-end">
               <Button asChild className="cursor-pointer">
@@ -88,6 +115,8 @@ export default async function AdminTeamPage({
               founders={founders}
               addLabel={t("add_founder")}
               editLabel={t("edit")}
+              deleteLabel={t("delete")}
+              deleteConfirmTemplate={String(t.raw("delete_founder_confirm"))}
               visibleLabel={t("visible")}
               hiddenLabel={t("hidden")}
               nameCol={t("col_name")}

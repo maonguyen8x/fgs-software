@@ -21,6 +21,7 @@ import {
   Camera,
   Gem,
   Handshake,
+  Newspaper,
   ShieldCheck,
 } from "lucide-react";
 import { isSuperAdminRole } from "@/lib/admin-roles";
@@ -41,6 +42,7 @@ const baseLinkKeys = [
   { href: "/admin/works", key: "works", icon: FolderKanban },
   { href: "/admin/partners", key: "partners", icon: Handshake },
   { href: "/admin/blog", key: "blog", icon: FileText },
+  { href: "/admin/news", key: "news", icon: Newspaper },
   { href: "/admin/messages", key: "messages", icon: Mail },
   { href: "/admin/chat", key: "chat", icon: MessageSquare },
   { href: "/admin/pages", key: "pages", icon: Layout },
@@ -48,7 +50,6 @@ const baseLinkKeys = [
   { href: "/admin/settings/homepage", key: "settings_homepage", icon: Layout },
   { href: "/admin/settings/about", key: "settings_about", icon: Building2 },
   { href: "/admin/settings/integrations", key: "settings_integrations", icon: Mail },
-  { href: "/admin/settings/security", key: "settings_security", icon: ShieldCheck },
   { href: "/admin/settings/company", key: "settings_company", icon: Briefcase },
 ] as const;
 

@@ -1,9 +1,8 @@
 import bcrypt from "bcryptjs";
 import type { User } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { verifyTotpCode } from "@/lib/admin-totp";
 
-export type AdminCredentialError = "invalid_credentials" | "requires_totp" | "invalid_totp";
+export type AdminCredentialError = "invalid_credentials";
 
 export type AdminCredentialResult =
   | { ok: true; user: User }
@@ -11,8 +10,7 @@ export type AdminCredentialResult =
 
 export async function validateAdminCredentials(
   email: string,
-  password: string,
-  totpCode?: string
+  password: string
 ): Promise<AdminCredentialResult> {
   const normalizedEmail = email.trim().toLowerCase();
   const user = await prisma.user.findUnique({
@@ -26,16 +24,6 @@ export async function validateAdminCredentials(
   const valid = await bcrypt.compare(password, user.password);
   if (!valid) {
     return { ok: false, error: "invalid_credentials" };
-  }
-
-  if (user.totpEnabled) {
-    const code = totpCode?.trim() ?? "";
-    if (!code) {
-      return { ok: false, error: "requires_totp", user };
-    }
-    if (!user.totpSecret || !verifyTotpCode(user.totpSecret, code)) {
-      return { ok: false, error: "invalid_totp" };
-    }
   }
 
   return { ok: true, user };

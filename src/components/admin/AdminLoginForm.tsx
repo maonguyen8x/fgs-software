@@ -28,8 +28,7 @@ type AdminErrorKey =
   | "session_expired"
   | "network"
   | "unknown"
-  | "captcha_required"
-  | "invalid_totp";
+  | "captcha_required";
 
 interface CheckCredentialsResponse {
   ok?: boolean;
@@ -53,12 +52,10 @@ export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [totpCode, setTotpCode] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [errorKey, setErrorKey] = useState<AdminErrorKey | null>(null);
   const [loading, setLoading] = useState(false);
-  const [showTotpStep, setShowTotpStep] = useState(false);
   const [captchaOpen, setCaptchaOpen] = useState(false);
   const [loginPendingToken, setLoginPendingToken] = useState<string | null>(null);
   const [deviceId, setDeviceId] = useState("");
@@ -66,7 +63,7 @@ export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }
   useEffect(() => {
     if (
       errorCode &&
-      ["invalid_credentials", "session_expired", "network", "unknown", "captcha_required", "invalid_totp"].includes(
+      ["invalid_credentials", "session_expired", "network", "unknown", "captcha_required"].includes(
         errorCode
       )
     ) {
@@ -134,7 +131,6 @@ export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }
         body: JSON.stringify({
           email: email.trim(),
           password,
-          totpCode: totpCode.trim() || undefined,
           rememberMe,
           deviceId: resolvedDeviceId,
           deviceTrustToken: getDeviceTrustToken(email.trim()) ?? undefined,
@@ -143,17 +139,10 @@ export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }
 
       const data = await parseJsonResponse(res);
 
-      if (data.error === "requires_totp") {
-        setShowTotpStep(true);
-        return;
-      }
-
       if (!res.ok) {
         const isJson = (res.headers.get("content-type") ?? "").includes("application/json");
 
-        if (data.error === "invalid_totp") {
-          setErrorKey("invalid_totp");
-        } else if (!isJson || res.status >= 500 || data.error === "server_error") {
+        if (!isJson || res.status >= 500 || data.error === "server_error") {
           setErrorKey("network");
         } else if (data.error === "invalid_credentials") {
           clearDeviceTrustToken(email.trim());
@@ -200,7 +189,7 @@ export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }
     );
   };
 
-  const canSubmit = hydrated && (!showTotpStep || totpCode.length >= 6);
+  const canSubmit = hydrated;
 
   return (
     <>
@@ -262,31 +251,6 @@ export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }
                 </div>
               </div>
 
-              {showTotpStep && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <RequiredLabel htmlFor="totp" required>
-                    {t("totp_label")}
-                  </RequiredLabel>
-                  <p className="mb-1.5 text-xs text-slate-500 dark:text-slate-400">{t("totp_hint")}</p>
-                  <Input
-                    id="totp"
-                    inputMode="numeric"
-                    autoComplete="one-time-code"
-                    placeholder="000000"
-                    maxLength={6}
-                    value={totpCode}
-                    onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, ""))}
-                    required
-                    className="mt-1 h-11 max-w-[220px] tracking-[0.35em]"
-                    suppressHydrationWarning
-                  />
-                </motion.div>
-              )}
-
               <div className="flex flex-wrap items-center justify-between gap-3 pt-0.5">
                 {hydrated ? (
                   <BlueCheckbox
@@ -325,7 +289,7 @@ export function AdminLoginForm({ forgotPasswordHref = "/admin/forgot-password" }
                 className="h-11 w-full cursor-pointer text-[15px] font-semibold shadow-sm shadow-primary-600/15 transition-all hover:shadow-md hover:shadow-primary-600/20"
                 disabled={loading || !canSubmit}
               >
-                {loading ? t("signing_in") : showTotpStep ? t("verify_and_sign_in") : t("sign_in")}
+                {loading ? t("signing_in") : t("sign_in")}
               </Button>
             </form>
           </div>

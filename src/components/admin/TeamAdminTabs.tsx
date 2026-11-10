@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
-export type TeamAdminTab = "members" | "founders";
+export type TeamAdminTab = "members" | "founders" | "page";
 
 export function TeamAdminTabs({ active }: { active: TeamAdminTab }) {
   const t = useTranslations("admin.team");
@@ -12,6 +12,7 @@ export function TeamAdminTabs({ active }: { active: TeamAdminTab }) {
   const tabs: { id: TeamAdminTab; href: string }[] = [
     { id: "members", href: "/admin/team" },
     { id: "founders", href: "/admin/team?tab=founders" },
+    { id: "page", href: "/admin/team?tab=page" },
   ];
 
   return (

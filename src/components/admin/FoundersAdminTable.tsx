@@ -3,11 +3,14 @@ import type { Founder } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
+import { DeleteFounderButton } from "@/components/admin/DeleteFounderButton";
 
 interface FoundersAdminTableProps {
   founders: Founder[];
   addLabel: string;
   editLabel: string;
+  deleteLabel: string;
+  deleteConfirmTemplate: string;
   visibleLabel: string;
   hiddenLabel: string;
   nameCol: string;
@@ -20,6 +23,8 @@ export function FoundersAdminTable({
   founders,
   addLabel,
   editLabel,
+  deleteLabel,
+  deleteConfirmTemplate,
   visibleLabel,
   hiddenLabel,
   nameCol,
@@ -57,11 +62,17 @@ export function FoundersAdminTable({
                     {f.isVisible ? visibleLabel : hiddenLabel}
                   </Badge>
                 </td>
-                <td className="px-4 py-3 text-right">
+                <td className="space-x-2 px-4 py-3 text-right">
                   <Button asChild variant="outline" size="sm" className="cursor-pointer">
                     <Link href={`/admin/founders/${f.id}`}>{editLabel}</Link>
                   </Button>
+                  <DeleteFounderButton
+                    id={f.id}
+                    label={deleteLabel}
+                    confirmMessage={deleteConfirmTemplate.replace("{name}", f.name)}
+                  />
                 </td>
+
               </tr>
             ))}
           </tbody>

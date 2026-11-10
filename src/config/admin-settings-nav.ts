@@ -26,11 +26,6 @@ export const ADMIN_SETTINGS_PAGES: AdminSettingsPageDef[] = [
     descriptionKey: "settings_integrations_desc",
   },
   {
-    href: "/admin/settings/security",
-    labelKey: "settings_security",
-    descriptionKey: "settings_security_desc",
-  },
-  {
     href: "/admin/settings/company",
     labelKey: "settings_company",
     descriptionKey: "settings_company_desc",

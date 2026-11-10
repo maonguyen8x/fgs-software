@@ -4,11 +4,12 @@ import { CoreValuesGrid } from "@/components/about/CoreValuesGrid";
 import { getLocalizedField } from "@/lib/i18n-content";
 import type { Locale } from "@/i18n/routing";
 import { getSettingsMapSafe } from "@/lib/settings-safe";
-import { TEAM_PAGE_HERO_IMAGE_KEY } from "@/lib/team-page-settings";
+import { CEO_IMAGE_KEY, CEO_IMAGE_POS_X_KEY, CEO_IMAGE_POS_Y_KEY, CEO_IMAGE_ZOOM_KEY, TEAM_PAGE_HERO_IMAGE_KEY } from "@/lib/team-page-settings";
+import { ABOUT_US_CONTENT_KEY, parseAboutUsContent, pickLocalized } from "@/lib/about-us-content";
 import { TeamPageHero } from "@/components/team/TeamPageHero";
+import { CeoMessageSection } from "@/components/team/CeoMessageSection";
 import { TeamIntroBlocks } from "@/components/team/TeamIntroBlocks";
 import { TeamCultureSection } from "@/components/team/TeamCultureSection";
-import { LeadershipSection } from "@/components/team/LeadershipSection";
 import { ScrollToTopButton } from "@/components/layout/ScrollToTopButton";
 import { fetchPageBlockMap } from "@/lib/cache/safe-page-blocks";
 import { getPageBlockBody, getPageBlockSubtitle, getPageBlockTitle } from "@/lib/page-content";
@@ -24,7 +25,7 @@ export default async function AboutUsPage({
   const tAbout = await getTranslations("about");
   const loc = locale as Locale;
 
-  const [{ aboutSections, coreValues, founders }, settings, blocks] = await Promise.all([
+  const [{ aboutSections, coreValues }, settings, blocks] = await Promise.all([
     fetchAboutPageData(),
     getSettingsMapSafe(),
     fetchPageBlockMap("about"),
@@ -33,6 +34,11 @@ export default async function AboutUsPage({
   const mission = aboutSections.find((s) => s.section === "mission");
   const vision = aboutSections.find((s) => s.section === "vision");
   const heroImage = settings[TEAM_PAGE_HERO_IMAGE_KEY];
+  const content = parseAboutUsContent(settings[ABOUT_US_CONTENT_KEY]);
+  const introDefaults = [t("intro_block_1"), t("intro_block_2"), t("intro_block_3")];
+  const introCopy = content.intro
+    ? content.intro.map((item) => pickLocalized(item, loc, ""))
+    : introDefaults;
   const managedTeamCopy = Boolean(blocks.team_content_control);
   const contentFallback = managedTeamCopy ? "" : undefined;
   const culture = {
@@ -50,17 +56,20 @@ export default async function AboutUsPage({
   return (
     <div className="bg-linear-to-b from-sky-50/50 via-white to-indigo-50/30 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900">
       <TeamPageHero imageUrl={heroImage} />
-      <LeadershipSection
-        title={getPageBlockTitle(blocks, "team_leadership", loc, t("leadership_title"))}
-        founders={founders}
+      <CeoMessageSection
+        sectionTitle={t("ceo.section_title")}
+        bubbleTitle={pickLocalized(content.ceo.bubbleTitle, loc, t("ceo.bubble_title"))}
+        message={pickLocalized(content.ceo.message, loc, t("ceo.message"))}
+        name={content.ceo.name?.trim() || t("ceo.name")}
+        role={pickLocalized(content.ceo.role, loc, t("ceo.role"))}
+        signature={content.ceo.signature?.trim() || t("ceo.signature")}
+        imageAlt={t("ceo.image_alt")}
+        imageUrl={settings[CEO_IMAGE_KEY] || null}
+        imageZoom={Math.min(2.5, Math.max(1, Number(settings[CEO_IMAGE_ZOOM_KEY]) || 1))}
+        imagePosX={Math.min(100, Math.max(0, Number(settings[CEO_IMAGE_POS_X_KEY] ?? 50)))}
+        imagePosY={Math.min(100, Math.max(0, Number(settings[CEO_IMAGE_POS_Y_KEY] ?? 20)))}
       />
-      <TeamIntroBlocks
-        copy={[
-          getPageBlockBody(blocks, "team_intro_1", loc, managedTeamCopy ? "" : t("intro_block_1")),
-          getPageBlockBody(blocks, "team_intro_2", loc, managedTeamCopy ? "" : t("intro_block_2")),
-          getPageBlockBody(blocks, "team_intro_3", loc, managedTeamCopy ? "" : t("intro_block_3")),
-        ]}
-      />
+      <TeamIntroBlocks copy={introCopy} />
       <TeamCultureSection copy={culture} />
 
       {(mission || vision) && (
