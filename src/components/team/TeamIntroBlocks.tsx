@@ -1,23 +1,27 @@
 import { NewsArticleContent } from "@/components/news/NewsArticleContent";
+import { ChevronDown } from "lucide-react";
 
-export function TeamIntroBlocks({ copy }: { copy: string[] }) {
+export function TeamIntroBlocks({ copy, pageLabel }: { copy: string[]; pageLabel: string }) {
   const items = copy.filter((text) => text.trim().length > 0);
   if (items.length === 0) return null;
 
   return (
-    <section className="team-flow-section">
+    <section className="team-intro-section">
       <div className="team-page-inner">
-        <div className="divide-y divide-slate-100 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-md shadow-slate-200/60 dark:divide-slate-800 dark:border-slate-800 dark:bg-slate-900">
+        <div className="team-notebook-grid">
           {items.map((text, index) => (
-            <article
-              key={`${index}-${text.slice(0, 24)}`}
-              className="whitespace-pre-line px-6 py-5 text-base leading-relaxed text-slate-700 md:px-8 dark:text-slate-300"
-            >
-              <NewsArticleContent
-                content={text}
-                className="!mt-0 !text-base !leading-relaxed !text-slate-700 dark:!text-slate-300 [&>p]:!mt-0 [&>p+p]:!mt-3"
-              />
-            </article>
+            <details key={`${index}-${text.slice(0, 24)}`} className="team-notebook-page">
+              <summary className="team-notebook-page-summary">
+                <span>{`${pageLabel} ${String(index + 1).padStart(2, "0")}`}</span>
+                <ChevronDown aria-hidden="true" className="team-notebook-page-chevron h-5 w-5" />
+              </summary>
+              <div className="team-notebook-page-body">
+                <NewsArticleContent
+                  content={text}
+                  className="!mt-0 !text-base !leading-relaxed !text-slate-700 [&>p]:!mt-0 [&>p+p]:!mt-3 dark:!text-slate-300"
+                />
+              </div>
+            </details>
           ))}
         </div>
       </div>

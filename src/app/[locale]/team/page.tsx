@@ -69,7 +69,7 @@ export default async function AboutUsPage({
         imagePosX={Math.min(100, Math.max(0, Number(settings[CEO_IMAGE_POS_X_KEY] ?? 50)))}
         imagePosY={Math.min(100, Math.max(0, Number(settings[CEO_IMAGE_POS_Y_KEY] ?? 20)))}
       />
-      <TeamIntroBlocks copy={introCopy} />
+      <TeamIntroBlocks copy={introCopy} pageLabel={t("intro_page_label")} />
       <TeamCultureSection copy={culture} />
 
       {(mission || vision) && (

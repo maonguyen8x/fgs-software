@@ -31,16 +31,16 @@ export function CeoMessageSection({
   return (
     <section
       id="ceo-message"
-      className="relative isolate scroll-mt-28 overflow-hidden px-4 py-10 md:py-14"
+      className="relative isolate scroll-mt-28 overflow-hidden px-4 pt-8 pb-0 md:px-8 md:pt-10"
     >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_18%_40%,rgba(59,130,246,0.12),transparent_48%),radial-gradient(ellipse_at_82%_60%,rgba(99,102,241,0.09),transparent_42%)]"
       />
       <div className="mx-auto max-w-6xl rounded-[2rem] border border-white/80 bg-white/55 p-4 shadow-[0_24px_70px_rgba(30,64,175,0.08)] backdrop-blur-xl md:p-8">
-        <h2 className="mb-6 text-center text-2xl font-bold text-heading md:text-3xl">{sectionTitle}</h2>
+        <h2 className="mb-4 text-center text-2xl font-bold text-heading md:text-3xl">{sectionTitle}</h2>
 
-        <div className="grid items-center gap-5 md:grid-cols-[minmax(0,1fr)_300px] md:gap-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6">
+        <div className="grid items-start gap-5 md:grid-cols-[minmax(0,1fr)_300px] md:gap-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6">
           <div className="order-2 md:order-1">
             <div className="relative">
               <span

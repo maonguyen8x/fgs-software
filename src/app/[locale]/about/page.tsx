@@ -83,14 +83,26 @@ export default async function AboutPage({
     loc,
     t("notebook.hero_description")
   );
-  const companyHeroHeading = getPageBlockTitle(
+  const defaultCompanyHeroHeading: Record<Locale, string> = {
+    en: "We Build the Future Through Technology, Creating Value for People and Society.",
+    ja: "テクノロジーで未来を築き、人々と社会に価値を創造します。",
+    vi: "Chúng tôi kiến tạo tương lai bằng công nghệ, tạo ra giá trị cho con người và xã hội.",
+  };
+  const storedCompanyHeroHeading = getPageBlockTitle(
     blocks,
     "company_hero_heading",
     loc,
-    loc === "ja"
-      ? t("notebook.hero_prefix")
-      : `${headingParts.prefix} ${headingParts.crossed} ${headingParts.highlight} ${headingParts.suffix}`
+    defaultCompanyHeroHeading[loc]
   );
+  const previousCompanyHeroHeadings = [
+    "We code craft reliable software for Japan.",
+    "We code with care to build trusted software for Japan.",
+    "Chúng tôi viết code chỉn chu để tạo phần mềm đáng tin cậy cho Nhật Bản.",
+    "私たちは、テクノロジーで未来を創り、人と社会に新たな価値を届けます。",
+  ];
+  const companyHeroHeading = previousCompanyHeroHeadings.includes(storedCompanyHeroHeading)
+    ? defaultCompanyHeroHeading[loc]
+    : storedCompanyHeroHeading;
   const companyHeroBody = getPageBlockBody(
     blocks,
     "company_hero_body",

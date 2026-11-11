@@ -61,7 +61,7 @@ export function Footer({
     "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/15 text-slate-300 transition-colors hover:border-sky-300/60 hover:text-sky-300";
 
   return (
-    <footer className="site-footer mt-auto border-t border-white/10 bg-[#0b0a24] text-white">
+    <footer className="site-footer mt-11 border-t border-white/10 bg-[#0b0a24] text-white">
       <div className="container-narrow px-4 py-12 md:px-8 md:py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.45fr_0.8fr_0.9fr_1fr] lg:gap-12">
           <div>
