@@ -56,9 +56,15 @@ function rehypeNewsInlineStyles() {
   };
 }
 
-export function NewsArticleContent({ content }: { content: string }) {
+export function NewsArticleContent({
+  content,
+  className,
+}: {
+  content: string;
+  className?: string;
+}) {
   return (
-    <div className="news-article-content">
+    <div className={["news-article-content", className].filter(Boolean).join(" ")}>
       <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeNewsInlineStyles]}>
         {content}
       </ReactMarkdown>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -66,6 +66,7 @@ const emptyForm = {
 
 export function NewsAdminPanel({ items, pageSize }: NewsAdminPanelProps) {
   const router = useRouter();
+  const articleFormRef = useRef<HTMLFormElement>(null);
   const [form, setForm] = useState(emptyForm);
   const [topic, setTopic] = useState("");
   const [aiAuthor, setAiAuthor] = useState("");
@@ -132,7 +133,7 @@ export function NewsAdminPanel({ items, pageSize }: NewsAdminPanelProps) {
       title: form.title || primaryFields.title,
       summary: form.summary || primaryFields.summary,
       content: form.content || primaryFields.content,
-      imageUrl: form.imageUrl || undefined,
+      imageUrl: editingId ? form.imageUrl : form.imageUrl || undefined,
     };
     const ok = editingId
       ? await request(`/api/admin/news/${editingId}`, { method: "PATCH", body: JSON.stringify(payload) }, "Article updated")
@@ -166,7 +167,10 @@ export function NewsAdminPanel({ items, pageSize }: NewsAdminPanelProps) {
       ...(item.titleVi || item.summaryVi || item.contentVi ? ["vi" as const] : []),
     ]);
     setContentLocale("en");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    toast.info(`Editing: ${item.title}`);
+    requestAnimationFrame(() =>
+      articleFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+    );
   };
 
   const ensureGenerationLocales = () => {
@@ -316,12 +320,18 @@ export function NewsAdminPanel({ items, pageSize }: NewsAdminPanelProps) {
         </div>
       </form>
 
-      <form onSubmit={createArticle} className="grid gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:grid-cols-2">
+      <form
+        ref={articleFormRef}
+        id="news-article-form"
+        onSubmit={createArticle}
+        className="scroll-mt-24 grid gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:grid-cols-2"
+      >
         <div className="md:col-span-2">
           <h3 className="font-semibold text-heading">{editingId ? "Edit article" : "New article"}</h3>
         </div>
         <div className="md:col-span-2">
           <LocaleTabs
+            key={`${editingId ?? "new"}-title`}
             prefix="title"
             labels={{ en: "English", ja: "日本語", vi: "Tiếng Việt" }}
             values={form}
@@ -335,6 +345,7 @@ export function NewsAdminPanel({ items, pageSize }: NewsAdminPanelProps) {
         </div>
         <div className="md:col-span-2">
           <LocaleTabs
+            key={`${editingId ?? "new"}-summary`}
             prefix="summary"
             labels={{ en: "English", ja: "日本語", vi: "Tiếng Việt" }}
             values={form}
@@ -445,19 +456,19 @@ export function NewsAdminPanel({ items, pageSize }: NewsAdminPanelProps) {
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 text-right"><div className="inline-flex items-center gap-1.5">
                   {item.status !== "active" && (
-                    <Button size="sm" disabled={busy} onClick={() => setStatus(item.id, "active")} className="h-8 cursor-pointer rounded-lg border-0 bg-emerald-600 px-3 text-xs font-semibold text-white shadow-sm hover:bg-emerald-700">
+                    <Button type="button" size="sm" disabled={busy} onClick={() => setStatus(item.id, "active")} className="h-8 cursor-pointer rounded-lg border-0 bg-emerald-600 px-3 text-xs font-semibold text-white shadow-sm hover:bg-emerald-700">
                       Approve
                     </Button>
                   )}
                   {item.status === "active" && (
-                    <Button size="sm" disabled={busy} onClick={() => setStatus(item.id, "inactive")} className="h-8 cursor-pointer rounded-lg border-0 bg-slate-600 px-3 text-xs font-semibold text-white shadow-sm hover:bg-slate-700">
+                    <Button type="button" size="sm" disabled={busy} onClick={() => setStatus(item.id, "inactive")} className="h-8 cursor-pointer rounded-lg border-0 bg-slate-600 px-3 text-xs font-semibold text-white shadow-sm hover:bg-slate-700">
                       Deactivate
                     </Button>
                   )}
-                  <Button size="sm" disabled={busy} onClick={() => startEdit(item)} className="h-8 cursor-pointer rounded-lg border-0 bg-blue-600 px-3 text-xs font-semibold text-white shadow-sm hover:bg-blue-700">
+                  <Button type="button" size="sm" disabled={busy} onClick={() => startEdit(item)} className="h-8 cursor-pointer rounded-lg border-0 bg-blue-600 px-3 text-xs font-semibold text-white shadow-sm hover:bg-blue-700">
                     Edit
                   </Button>
-                  <Button size="sm" variant="outline" disabled={busy} onClick={() => remove(item.id)} className="h-8 cursor-pointer rounded-lg border-red-200 px-3 text-xs font-semibold text-red-600 hover:border-red-300 hover:bg-red-50 hover:text-red-700">
+                  <Button type="button" size="sm" variant="outline" disabled={busy} onClick={() => remove(item.id)} className="h-8 cursor-pointer rounded-lg border-red-200 px-3 text-xs font-semibold text-red-600 hover:border-red-300 hover:bg-red-50 hover:text-red-700">
                     Delete
                   </Button>
                 </div></td>

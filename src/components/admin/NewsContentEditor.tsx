@@ -11,9 +11,10 @@ interface NewsContentEditorProps {
   id: string;
   value: string;
   onChange: (value: string) => void;
+  height?: number;
 }
 
-export function NewsContentEditor({ id, value, onChange }: NewsContentEditorProps) {
+export function NewsContentEditor({ id, value, onChange, height = 320 }: NewsContentEditorProps) {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const selectionRef = useRef({ start: 0, end: 0 });
 
@@ -98,7 +99,7 @@ export function NewsContentEditor({ id, value, onChange }: NewsContentEditorProp
       <div className="overflow-hidden rounded-b-lg border border-slate-200" id={id}>
         <MarkdownEditor
           value={value}
-          height={320}
+          height={height}
           preview="live"
           components={{
             preview: (source) => <NewsArticleContent content={source} />,

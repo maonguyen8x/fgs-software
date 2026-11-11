@@ -1,11 +1,12 @@
 import Image, { type ImageProps } from "next/image";
-import { shouldUseUnoptimizedImage } from "@/lib/upload-url";
+import { resolveUploadImageSrc, shouldUseUnoptimizedImage } from "@/lib/upload-url";
 
 type UploadImageProps = Omit<ImageProps, "unoptimized"> & {
   src: string;
 };
 
-/** next/image wrapper for admin uploads (local, Vercel Blob, Cloudinary). */
+/** next/image wrapper for uploads and user-provided remote image URLs. */
 export function UploadImage({ src, ...props }: UploadImageProps) {
-  return <Image src={src} unoptimized={shouldUseUnoptimizedImage(src)} {...props} />;
+  const resolvedSrc = resolveUploadImageSrc(src);
+  return <Image src={resolvedSrc} unoptimized={shouldUseUnoptimizedImage(resolvedSrc)} {...props} />;
 }

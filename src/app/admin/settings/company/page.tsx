@@ -40,6 +40,9 @@ export default async function AdminSettingsCompanyPage() {
               <Link href="/admin/pages">{t("page_content_link")}</Link>
             </Button>
             <Button asChild className="cursor-pointer" variant="outline">
+              <Link href="/admin/pages?page=services">Manage services page text</Link>
+            </Button>
+            <Button asChild className="cursor-pointer" variant="outline">
               <Link href="/admin/timeline">{t("timeline_content_link")}</Link>
             </Button>
           </div>

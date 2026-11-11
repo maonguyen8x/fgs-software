@@ -769,7 +769,7 @@ async function main() {
     { page: "about", key: "branches_section", title: "Branches", titleVi: "Chi nhánh", titleJa: "拠点", order: 4 },
     { page: "services", key: "page_header", title: "Services & Capabilities", titleVi: "Dịch vụ & Năng lực", subtitle: "End-to-end IT outsourcing solutions", subtitleVi: "Giải pháp outsourcing IT toàn diện", order: 1 },
     { page: "services", key: "overview_eyebrow", title: "CAPABILITY INDEX · 01—10", titleJa: "対応領域 · 01—10", titleVi: "DANH MỤC NĂNG LỰC · 01—10", order: 2 },
-    { page: "services", key: "overview_section", title: "Engineering the next generation of digital products.", titleJa: "次世代のデジタルプロダクトをエンジニアリング。", titleVi: "Kiến tạo thế hệ sản phẩm số tiếp theo.", subtitle: "From financial platforms and connected products to intelligent automation, our capabilities adapt to the problems your team needs to solve.", subtitleJa: "金融プラットフォームから連携プロダクト、業務自動化まで、チームの課題に合わせた開発を支援します。", subtitleVi: "Từ nền tảng tài chính, sản phẩm kết nối đến tự động hóa thông minh, năng lực của chúng tôi thích ứng với bài toán của bạn.", order: 3 },
+    { page: "services", key: "overview_section", title: "Turning Ideas into Technology That Creates Value", titleJa: "アイデアを、価値あるテクノロジーへ。", titleVi: "Biến ý tưởng thành công nghệ tạo ra giá trị", subtitle: "We combine advanced technologies, including AI, with engineering excellence to solve business challenges and unlock new possibilities.\n\nThrough software development, AI solutions, and digital product innovation, we work alongside our customers to create sustainable growth and a better future.", subtitleJa: "AIをはじめとする先進技術と確かなエンジニアリングで、ビジネスの課題を解決し、新たな可能性を切り拓きます。\nソフトウェア開発、AIソリューション、デジタルプロダクトの創造を通じて、お客様とともに持続可能な成長とより良い未来を実現します。", subtitleVi: "Chúng tôi kết hợp các công nghệ tiên tiến, đặc biệt là AI, cùng năng lực kỹ thuật để giải quyết những thách thức trong kinh doanh và mở ra những cơ hội mới.\n\nThông qua phát triển phần mềm, giải pháp AI và sáng tạo sản phẩm số, chúng tôi đồng hành cùng khách hàng để kiến tạo tăng trưởng bền vững và một tương lai tốt đẹp hơn.", order: 3 },
     { page: "services", key: "overview_panel", title: "WAYS WE HELP TEAMS SHIP", titleJa: "チームの開発を支える領域", titleVi: "CÁC HƯỚNG ĐỒNG HÀNH", order: 4 },
     { page: "services", key: "overview_item_product", title: "Product design and engineering", titleJa: "プロダクトの設計・開発", titleVi: "Thiết kế và phát triển sản phẩm", order: 5 },
     { page: "services", key: "overview_item_platform", title: "Secure, scalable platforms", titleJa: "安全で拡張性の高いプラットフォーム", titleVi: "Nền tảng an toàn, sẵn sàng mở rộng", order: 6 },
@@ -825,6 +825,30 @@ async function main() {
       },
     });
   }
+
+  await prisma.pageContentBlock.updateMany({
+    where: {
+      page: "services",
+      key: "overview_section",
+      title: "Engineering the next generation of digital products.",
+      titleJa: "次世代のデジタルプロダクトをエンジニアリング。",
+      titleVi: "Kiến tạo thế hệ sản phẩm số tiếp theo.",
+      subtitle: "From financial platforms and connected products to intelligent automation, our capabilities adapt to the problems your team needs to solve.",
+      subtitleJa: "金融プラットフォームから連携プロダクト、業務自動化まで、チームの課題に合わせた開発を支援します。",
+      subtitleVi: "Từ nền tảng tài chính, sản phẩm kết nối đến tự động hóa thông minh, năng lực của chúng tôi thích ứng với bài toán của bạn.",
+    },
+    data: {
+      title: "Turning Ideas into Technology That Creates Value",
+      titleJa: "アイデアを、価値あるテクノロジーへ。",
+      titleVi: "Biến ý tưởng thành công nghệ tạo ra giá trị",
+      subtitle:
+        "We combine advanced technologies, including AI, with engineering excellence to solve business challenges and unlock new possibilities.\n\nThrough software development, AI solutions, and digital product innovation, we work alongside our customers to create sustainable growth and a better future.",
+      subtitleJa:
+        "AIをはじめとする先進技術と確かなエンジニアリングで、ビジネスの課題を解決し、新たな可能性を切り拓きます。\nソフトウェア開発、AIソリューション、デジタルプロダクトの創造を通じて、お客様とともに持続可能な成長とより良い未来を実現します。",
+      subtitleVi:
+        "Chúng tôi kết hợp các công nghệ tiên tiến, đặc biệt là AI, cùng năng lực kỹ thuật để giải quyết những thách thức trong kinh doanh và mở ra những cơ hội mới.\n\nThông qua phát triển phần mềm, giải pháp AI và sáng tạo sản phẩm số, chúng tôi đồng hành cùng khách hàng để kiến tạo tăng trưởng bền vững và một tương lai tốt đẹp hơn.",
+    },
+  });
 
   await prisma.pageContentBlock.updateMany({
     where: {

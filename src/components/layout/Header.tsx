@@ -116,10 +116,22 @@ export function Header({
             <ChevronDown className="h-4 w-4 opacity-70" />
           </button>
           {openSub === item.id && (
-            <div className="absolute left-0 top-full z-50 pt-6">
+            <>
+            <span
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute left-1/2 top-[calc(100%+0.875rem)] z-[51] h-3 w-3 -translate-x-1/2 rotate-45 border-l border-t",
+                transparentHeader
+                  ? "border-white/10 bg-slate-950"
+                  : transparentHeaderPage
+                    ? "border-slate-200 bg-white"
+                    : "border-theme bg-surface"
+              )}
+            />
+            <div className="absolute left-0 top-full z-50 pt-5">
             <div
               className={cn(
-                "w-max min-w-[160px] max-w-[220px] whitespace-nowrap rounded-lg border py-1 shadow-lg",
+                "relative w-max min-w-[160px] max-w-[220px] whitespace-nowrap rounded-lg border py-1 shadow-lg",
                 transparentHeader
                   ? "border-white/10 bg-slate-950/95"
                   : transparentHeaderPage
@@ -140,13 +152,13 @@ export function Header({
                         "block px-4 py-2 text-sm transition-colors",
                         childActive
                           ? transparentHeader
-                            ? "bg-white/10 font-semibold text-sky-300"
-                            : "bg-blue-50 font-semibold text-primary-600"
+                            ? "bg-white/10 font-semibold text-sky-300 hover:text-emerald-300"
+                            : "bg-blue-50 font-semibold text-primary-600 hover:text-emerald-600"
                           : transparentHeader
-                            ? "text-slate-300 hover:bg-white/10 hover:text-sky-300"
+                            ? "text-slate-300 hover:bg-white/10 hover:text-emerald-300"
                             : transparentHeaderPage
-                              ? "text-slate-700 hover:bg-blue-50 hover:text-blue-600"
-                              : "text-muted-theme hover:bg-blue-50 hover:text-blue-600"
+                              ? "text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                              : "text-muted-theme hover:bg-emerald-50 hover:text-emerald-600"
                       )}
                       aria-current={childActive ? "page" : undefined}
                       onClick={() => setOpenSub(null)}
@@ -157,6 +169,7 @@ export function Header({
                 })}
             </div>
             </div>
+            </>
           )}
         </div>
       );

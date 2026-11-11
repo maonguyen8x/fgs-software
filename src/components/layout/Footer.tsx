@@ -56,12 +56,12 @@ export function Footer({
     { label: ta("tech_stack.title"), href: hrefForNavId(navConfig, "about") },
   ];
   const linkClass =
-    "text-sm text-slate-600 transition-colors hover:text-violet-700 focus-visible:text-violet-700";
+    "text-sm text-slate-300 transition-colors hover:text-sky-300 focus-visible:text-sky-300";
   const iconBtnClass =
-    "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-slate-200 text-slate-600 transition-colors hover:border-violet-300 hover:text-violet-700";
+    "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/15 text-slate-300 transition-colors hover:border-sky-300/60 hover:text-sky-300";
 
   return (
-    <footer className="site-footer mt-auto border-t border-slate-200 bg-[#f8f9fc] text-slate-900">
+    <footer className="site-footer mt-auto border-t border-white/10 bg-[#0b0a24] text-white">
       <div className="container-narrow px-4 py-12 md:px-8 md:py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.45fr_0.8fr_0.9fr_1fr] lg:gap-12">
           <div>
@@ -74,12 +74,12 @@ export function Footer({
                 logoHeight={logoSize}
               />
             </Link>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-slate-600">
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-slate-300">
               {tf("tagline")}
             </p>
             <a
               href="mailto:contact@fgs-software.com"
-              className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-slate-700 transition hover:text-violet-700"
+              className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-slate-200 transition hover:text-sky-300"
             >
               <Mail className="h-4 w-4" aria-hidden />
               contact@fgs-software.com
@@ -109,8 +109,8 @@ export function Footer({
           />
         </div>
 
-        <div className="mt-12 flex flex-col gap-5 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-slate-500" suppressHydrationWarning>
+        <div className="mt-12 flex flex-col gap-5 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-slate-400" suppressHydrationWarning>
             © {year} {companyName}. {tf("rights")}
           </p>
           <div className="flex items-center gap-2">
@@ -131,7 +131,7 @@ export function Footer({
             )}
           </div>
           {(settings.phone || settings.address) && (
-            <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-slate-500">
+            <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-slate-400">
               {settings.phone && (
                 <span className="inline-flex items-center gap-1.5">
                   <Phone className="h-3.5 w-3.5" aria-hidden />
@@ -163,7 +163,7 @@ function FooterLinkColumn({
 }) {
   return (
     <div>
-      <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-900">
+      <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-white">
         {title}
       </h2>
       <ul className="space-y-3">

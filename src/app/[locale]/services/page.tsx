@@ -39,6 +39,36 @@ export default async function ServicesPage({
     }))
     .filter((item) => item.name && categories.includes(item.category as (typeof categories)[number]));
   const visibleTechStack = managedTechStack.length > 0 ? managedTechStack : techStack;
+  const storedOverviewTitle = getPageBlockTitle(blocks, "overview_section", loc, t("overview_title"));
+  const storedOverviewDescription = getPageBlockSubtitle(
+    blocks,
+    "overview_section",
+    loc,
+    t("overview_description")
+  );
+  const legacyOverviewTitle: Record<Locale, string> = {
+    en: "Engineering the next generation of digital products.",
+    ja: "次世代のデジタルプロダクトをエンジニアリング。",
+    vi: "Kiến tạo thế hệ sản phẩm số tiếp theo.",
+  };
+  const legacyOverviewDescription: Record<Locale, string[]> = {
+    en: [
+      "From financial platforms and connected products to intelligent automation, our capabilities adapt to the problems your team needs to solve.",
+    ],
+    ja: [
+      "金融プラットフォームから連携プロダクト、業務自動化まで、チームの課題に合わせた開発を支援します。",
+      "金融プラットフォームやコネクテッドプロダクトから、AIによる業務自動化まで。お客様の課題に合わせて技術力を提供します。",
+    ],
+    vi: [
+      "Từ nền tảng tài chính, sản phẩm kết nối đến tự động hóa thông minh, năng lực của chúng tôi thích ứng với bài toán của bạn.",
+    ],
+  };
+  const overviewTitle =
+    storedOverviewTitle === legacyOverviewTitle[loc] ? t("overview_title") : storedOverviewTitle;
+  const overviewDescription =
+    legacyOverviewDescription[loc].includes(storedOverviewDescription)
+      ? t("overview_description")
+      : storedOverviewDescription;
 
   return (
     <div className="bg-linear-to-b from-emerald-50/50 via-white to-sky-50/40">
@@ -48,11 +78,11 @@ export default async function ServicesPage({
             <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-violet-600 dark:text-violet-300">
               {getPageBlockTitle(blocks, "overview_eyebrow", loc, t("overview_eyebrow"))}
             </p>
-            <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 md:text-5xl dark:text-white">
-              {getPageBlockTitle(blocks, "overview_section", loc, t("overview_title"))}
-            </h1>
+            <h3 className="max-w-2xl text-2xl font-semibold tracking-tight text-slate-950 md:text-4xl dark:text-white">
+              {overviewTitle}
+            </h3>
             <p className="mt-5 max-w-xl text-sm leading-relaxed text-slate-600 md:text-base dark:text-slate-300">
-              {getPageBlockSubtitle(blocks, "overview_section", loc, t("overview_description"))}
+              {overviewDescription}
             </p>
           </div>
           <div className="services-overview-panel">
