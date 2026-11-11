@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_JP } from "next/font/google";
+import "@uiw/react-md-editor/markdown-editor.css";
 import "./globals.css";
 import { Providers } from "@/components/providers/Providers";
 import { ThemeScript } from "@/components/theme/ThemeScript";

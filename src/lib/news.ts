@@ -1,5 +1,11 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { resolveAiProviderCandidates, type ResolvedAiProvider } from "@/lib/ai/resolve-provider";
+import type { ChatTurn } from "@/lib/chat/ai";
+import { generateAnthropicReply } from "@/lib/chat/providers/anthropic";
+import { generateGeminiReply } from "@/lib/chat/providers/gemini";
+import { generateOpenAIReply } from "@/lib/chat/providers/openai";
+import { logger } from "@/lib/logger";
 
 export const NEWS_PAGE_SIZE_SETTING_KEY = "news_page_size";
 export const NEWS_PAGE_SIZE_OPTIONS = [10, 15, 30] as const;
@@ -41,31 +47,165 @@ const generatedArticleSchema = z.object({
 
 export type GeneratedArticle = z.infer<typeof generatedArticleSchema>;
 
-const OLLAMA_TIMEOUT_MS = 120_000;
+export const NEWS_LOCALES = ["en", "ja", "vi"] as const;
+export const newsLocaleSchema = z.enum(NEWS_LOCALES);
+type NewsLocale = (typeof NEWS_LOCALES)[number];
+type GeneratedLocalizedArticle = GeneratedArticle &
+  Partial<
+    Record<
+      "titleJa" | "titleVi" | "summaryJa" | "summaryVi" | "contentJa" | "contentVi",
+      string
+    >
+  >;
 
-/** Calls a local Ollama server and returns a validated article, or throws. */
-export async function generateArticleWithOllama(topic: string): Promise<GeneratedArticle> {
-  const baseUrl = process.env.OLLAMA_BASE_URL ?? "http://127.0.0.1:11434";
-  const model = process.env.OLLAMA_MODEL ?? "qwen2.5:3b";
+async function callAiProvider(
+  provider: ResolvedAiProvider,
+  systemPrompt: string,
+  messages: ChatTurn[]
+): Promise<string> {
+  if (provider.type === "openai") {
+    return generateOpenAIReply(provider.apiKey, systemPrompt, messages, provider.model);
+  }
+  if (provider.type === "gemini") {
+    return generateGeminiReply(provider.apiKey, systemPrompt, messages, provider.model);
+  }
+  return generateAnthropicReply(provider.apiKey, systemPrompt, messages, provider.model);
+}
 
+const LOCALE_NAMES: Record<(typeof NEWS_LOCALES)[number], string> = {
+  en: "English",
+  ja: "Japanese",
+  vi: "Vietnamese",
+};
+
+function getOllamaBaseUrl(): string | null {
+  const configuredUrl = process.env.OLLAMA_BASE_URL?.trim();
+  if (configuredUrl) return configuredUrl.replace(/\/+$/, "");
+  return process.env.NODE_ENV === "production" ? null : "http://127.0.0.1:11434";
+}
+
+async function generateArticleWithOllama(
+  baseUrl: string,
+  topic: string,
+  locale: (typeof NEWS_LOCALES)[number]
+): Promise<GeneratedArticle> {
+  const language = LOCALE_NAMES[locale];
   const prompt = [
-    "You are a technology journalist for a Japanese-focused IT company.",
-    `Write one short, factual news article about: ${topic}.`,
-    "Do not invent company names, statistics, quotes or dates. If unsure, stay general.",
-    "For legal or insurance topics give general information only, not legal advice, and say the reader should check official sources.",
-    'Reply ONLY with JSON: {"title": string, "summary": string (max 2 sentences), "content": string (3 short paragraphs)}.',
+    "You are a careful technology journalist for an IT company serving Japan and Vietnam.",
+    `Write one concise, factual article in ${language} about: ${topic}.`,
+    "Do not invent company names, statistics, quotes, sources, or dates. Avoid unsupported current claims.",
+    "For legal or insurance topics provide general information only, not legal advice, and advise readers to verify official sources.",
+    `Return only JSON with title, summary (at most two sentences), and content (three short paragraphs). Write all fields in ${language}.`,
   ].join("\n");
-
-  const res = await fetch(`${baseUrl}/api/generate`, {
+  const response = await fetch(`${baseUrl}/api/generate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ model, prompt, stream: false, format: "json" }),
-    signal: AbortSignal.timeout(OLLAMA_TIMEOUT_MS),
+    body: JSON.stringify({
+      model: process.env.OLLAMA_MODEL ?? "qwen2.5:3b",
+      prompt,
+      stream: false,
+      format: "json",
+    }),
+    signal: AbortSignal.timeout(120_000),
   });
-  if (!res.ok) throw new Error(`Ollama responded with ${res.status}`);
+  if (!response.ok) throw new Error(`Ollama responded with ${response.status}`);
+  const body = (await response.json()) as { response?: string };
+  const json = body.response?.match(/\{[\s\S]*\}/)?.[0];
+  if (!json) throw new Error("Ollama returned an invalid response.");
+  return generatedArticleSchema.parse(JSON.parse(json));
+}
 
-  const body = (await res.json()) as { response?: string };
-  const parsed = generatedArticleSchema.safeParse(JSON.parse(body.response ?? "{}"));
-  if (!parsed.success) throw new Error("Ollama output failed validation");
-  return parsed.data;
+function parseGeneratedArticle(response: string): GeneratedArticle {
+ const json = response.match(/\{[\s\S]*\}/)?.[0];
+ if (!json) throw new Error("The AI provider returned an invalid response.");
+ return generatedArticleSchema.parse(JSON.parse(json));
+}
+
+async function generateArticleForLocale(
+ topic: string,
+ locale: NewsLocale,
+ candidates: ResolvedAiProvider[],
+ ollamaBaseUrl: string | null
+): Promise<GeneratedArticle> {
+ const language = LOCALE_NAMES[locale];
+ const systemPrompt = [
+   "You are a careful technology journalist for an IT company serving Japan and Vietnam.",
+   `Write one concise, factual article in ${language} about the topic supplied by the user.`,
+   "Do not invent company names, statistics, quotes, sources, or dates. Avoid unsupported current claims.",
+   "For legal or insurance topics provide general information only, not legal advice, and advise readers to verify official sources.",
+   `Write naturally for native ${language} readers and do not mix languages.`,
+   `Return only valid JSON with title, summary (at most two sentences), and content (three short paragraphs). Write all fields in ${language}.`,
+ ].join("\n");
+ const messages: ChatTurn[] = [{ role: "user", content: `Topic: ${topic}` }];
+
+ for (const provider of candidates) {
+   try {
+     const response = await callAiProvider(provider, systemPrompt, messages);
+     return parseGeneratedArticle(response);
+   } catch (error) {
+     const message = error instanceof Error ? error.message : String(error);
+     logger.warn("News generation provider failed", {
+       provider: provider.type,
+       model: provider.model,
+       locale,
+       message,
+     });
+   }
+ }
+
+ if (ollamaBaseUrl) {
+   try {
+     return await generateArticleWithOllama(ollamaBaseUrl, topic, locale);
+   } catch (error) {
+     const message = error instanceof Error ? error.message : String(error);
+     logger.warn("Local Ollama news generation failed", { locale, message });
+   }
+ }
+
+ throw new Error(`Could not generate the ${language} version of this article.`);
+}
+
+export async function generateLocalizedNewsArticle(
+ topic: string,
+ locales: NewsLocale[]
+): Promise<GeneratedLocalizedArticle> {
+ const candidates = await resolveAiProviderCandidates();
+ const ollamaBaseUrl = getOllamaBaseUrl();
+ if (candidates.length === 0 && !ollamaBaseUrl) {
+   throw new Error("No AI provider is configured. Add an API key in Admin → Settings → AI providers.");
+ }
+
+ const articles: Partial<Record<NewsLocale, GeneratedArticle>> = {};
+ try {
+   for (const locale of locales) {
+     articles[locale] = await generateArticleForLocale(
+       topic,
+       locale,
+       candidates,
+       ollamaBaseUrl
+     );
+   }
+ } catch (error) {
+   logger.error("News article generation failed", {
+     message: error instanceof Error ? error.message : String(error),
+     locales,
+   });
+   throw new Error("Article generation failed. Check the AI provider settings and try again.");
+ }
+
+ const primary = articles.en ?? articles[locales[0]];
+ if (!primary) throw new Error("The AI provider returned no article.");
+ return {
+   ...primary,
+   ...(articles.ja && {
+     titleJa: articles.ja.title,
+     summaryJa: articles.ja.summary,
+     contentJa: articles.ja.content,
+   }),
+   ...(articles.vi && {
+     titleVi: articles.vi.title,
+     summaryVi: articles.vi.summary,
+     contentVi: articles.vi.content,
+   }),
+ };
 }

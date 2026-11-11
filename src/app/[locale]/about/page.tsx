@@ -83,6 +83,20 @@ export default async function AboutPage({
     loc,
     t("notebook.hero_description")
   );
+  const companyHeroHeading = getPageBlockTitle(
+    blocks,
+    "company_hero_heading",
+    loc,
+    loc === "ja"
+      ? t("notebook.hero_prefix")
+      : `${headingParts.prefix} ${headingParts.crossed} ${headingParts.highlight} ${headingParts.suffix}`
+  );
+  const companyHeroBody = getPageBlockBody(
+    blocks,
+    "company_hero_body",
+    loc,
+    loc === "ja" ? t("notebook.hero_description") : heroDescription
+  );
 
   return (
     <main className="about-notebook-page">
@@ -95,11 +109,8 @@ export default async function AboutPage({
           <div className="about-notebook-hero-copy">
             <p className="about-notebook-script">{t("notebook.eyebrow")}</p>
             <span className="about-notebook-page-title">{getPageBlockTitle(blocks, "page_header", loc, t("title"))}</span>
-            <h1>
-              {headingParts.prefix} <del>{headingParts.crossed}</del>{" "}
-              <mark>{headingParts.highlight}</mark> {headingParts.suffix}
-            </h1>
-            <p className="about-notebook-hero-description">{heroDescription}</p>
+            <h3 className="about-notebook-hero-heading">{companyHeroHeading}</h3>
+            <p className="about-notebook-hero-description whitespace-pre-line">{companyHeroBody}</p>
             <span className="about-notebook-underline" aria-hidden />
           </div>
 

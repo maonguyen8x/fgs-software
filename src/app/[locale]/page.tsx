@@ -57,6 +57,8 @@ export default async function HomePage({
       .sort((left, right) => left.order - right.order)
       .map((block) => ({ name: block.title || "", icon: block.subtitle || "Sparkles" }))
       .filter((item) => item.name);
+  const heroTitle = getPageBlockTitle(blocks, "hero_section", loc, "");
+  const heroSubtitle = getPageBlockSubtitle(blocks, "hero_section", loc, "");
 
   return (
     <div className="bg-theme">
@@ -65,8 +67,16 @@ export default async function HomePage({
         techStack={servicesBlocks.technology_control ? managedTechStack : techStack}
         heroCopy={{
           eyebrow: getPageBlockTitle(blocks, "hero_eyebrow", loc, ""),
-          title: getPageBlockTitle(blocks, "hero_section", loc, ""),
-          subtitle: getPageBlockSubtitle(blocks, "hero_section", loc, ""),
+          title:
+            loc === "ja" && heroTitle === "意味あるアイデアを前進させるテクノロジー。"
+              ? "AIをはじめとする先進技術の可能性を追求し、人々の暮らしや社会、ビジネスに新たな価値を創造します。"
+              : heroTitle,
+          subtitle:
+            loc === "ja" &&
+            heroSubtitle ===
+              "変化を生み出すチームとともに、使いやすいデジタルプロダクトと信頼できるプラットフォームを開発します。"
+              ? "アイデアを革新的なソフトウェアやデジタルソリューションへと形にし、テクノロジーの力で、より豊かで持続可能な未来を目指します。"
+              : heroSubtitle,
         }}
         chapterCopy={chapterCopy}
         outerOrbitTech={

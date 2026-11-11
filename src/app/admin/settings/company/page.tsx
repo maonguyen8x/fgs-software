@@ -19,6 +19,17 @@ export default async function AdminSettingsCompanyPage() {
   return (
     <AdminPageShell title={t("pages.company_title")} description={t("pages.company_desc")} unboxed>
       <div className="space-y-6">
+        <AdminContentBlock sectionId="settings-company-introduction-copy">
+          <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-blue-100 bg-blue-50/60 p-5">
+            <div>
+              <h2 className="font-semibold text-slate-900">Company introduction text</h2>
+              <p className="mt-1 text-sm text-slate-600">Edit the company page heading and description in English, Japanese, and Vietnamese.</p>
+            </div>
+            <Button asChild variant="outline" className="cursor-pointer border-blue-200 bg-white text-blue-700 hover:bg-blue-100">
+              <Link href="/admin/pages?page=about">Manage company introduction</Link>
+            </Button>
+          </div>
+        </AdminContentBlock>
         <AdminContentBlock
           sectionId="settings-page-content"
           className="border-primary-100/80 bg-linear-to-br from-white to-primary-50/30"

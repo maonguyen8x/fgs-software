@@ -203,10 +203,10 @@ export function HomeTechHero({
             <span aria-hidden />
             {copy?.eyebrow || t("hero_eyebrow")}
           </p>
-          <h1 className="home-hero-title">
+          <h3 className="home-hero-title">
             {headline.lead}
             {headline.accent ? <span className="home-hero-title-accent">{headline.accent}</span> : null}
-          </h1>
+          </h3>
           <p className="home-hero-subtitle">{copy?.subtitle || t("hero_subtitle")}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/contact" className="home-hero-cta home-hero-cta--primary">

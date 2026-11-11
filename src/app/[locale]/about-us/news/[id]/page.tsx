@@ -6,6 +6,7 @@ import { prisma } from "@/lib/db";
 import { getLocalizedField } from "@/lib/i18n-content";
 import type { Locale } from "@/i18n/routing";
 import { UploadImage } from "@/components/ui/UploadImage";
+import { NewsArticleContent } from "@/components/news/NewsArticleContent";
 
 export const dynamic = "force-dynamic";
 
@@ -55,7 +56,7 @@ export default async function NewsDetailPage({
             <span>{t("by", { name: item.authorName })}</span>
           </p>
           <p className="mt-6 text-lg font-medium leading-relaxed text-slate-700">{summary}</p>
-          <div className="mt-6 space-y-4 whitespace-pre-line text-base leading-relaxed text-slate-700">{content}</div>
+          <NewsArticleContent content={content} />
         </div>
       </div>
     </article>

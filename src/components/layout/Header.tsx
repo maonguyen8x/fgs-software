@@ -40,6 +40,7 @@ export function Header({
   const locale = useLocale() as Locale;
   const [open, setOpen] = useState(false);
   const [openSub, setOpenSub] = useState<string | null>(null);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [headerScrolled, setHeaderScrolled] = useState(false);
 
   const isHome = pathname === "/";
@@ -69,9 +70,21 @@ export function Header({
   const renderNavLink = (item: HeaderNavItem, mobile?: boolean) => {
     const active = isNavHrefActive(pathname, item.href, item.exact);
     const configuredStyle = navItemStyle(item, navConfig.global, active);
+    const hovered = hoveredItem === item.id && !active;
     const style = transparentHeaderPage
-      ? { ...configuredStyle, color: transparentHeader ? "#fff" : "#111827" }
-      : configuredStyle;
+      ? {
+          ...configuredStyle,
+          color: active
+            ? configuredStyle.color
+            : hovered
+              ? "#60a5fa"
+              : transparentHeader
+                ? "#fff"
+                : "#111827",
+        }
+      : hovered
+        ? { ...configuredStyle, color: "#60a5fa" }
+        : configuredStyle;
     const label = labelForNavItem(item, locale);
     const hasChildren = (item.children ?? []).filter((c) => c.enabled).length > 0;
 
@@ -80,8 +93,14 @@ export function Header({
         <div
           key={item.id}
           className="relative"
-          onMouseEnter={() => setOpenSub(item.id)}
-          onMouseLeave={() => setOpenSub(null)}
+          onMouseEnter={() => {
+            setOpenSub(item.id);
+            setHoveredItem(item.id);
+          }}
+          onMouseLeave={() => {
+            setOpenSub(null);
+            setHoveredItem(null);
+          }}
         >
           <button
             type="button"
@@ -118,14 +137,16 @@ export function Header({
                       href={child.href}
                       prefetch
                       className={cn(
-                        "block px-4 py-2 text-sm hover:bg-surface-muted",
+                        "block px-4 py-2 text-sm transition-colors",
                         childActive
-                          ? "font-semibold text-primary-600"
+                          ? transparentHeader
+                            ? "bg-white/10 font-semibold text-sky-300"
+                            : "bg-blue-50 font-semibold text-primary-600"
                           : transparentHeader
-                            ? "text-slate-300"
+                            ? "text-slate-300 hover:bg-white/10 hover:text-sky-300"
                             : transparentHeaderPage
-                              ? "text-slate-700"
-                              : "text-muted-theme"
+                              ? "text-slate-700 hover:bg-blue-50 hover:text-blue-600"
+                              : "text-muted-theme hover:bg-blue-50 hover:text-blue-600"
                       )}
                       aria-current={childActive ? "page" : undefined}
                       onClick={() => setOpenSub(null)}
@@ -164,6 +185,8 @@ export function Header({
         )}
         style={style}
         aria-current={active ? "page" : undefined}
+        onMouseEnter={() => setHoveredItem(item.id)}
+        onMouseLeave={() => setHoveredItem(null)}
         onClick={() => {
           if (mobile) setOpen(false);
         }}

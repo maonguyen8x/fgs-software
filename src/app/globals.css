@@ -4672,6 +4672,16 @@ button.contact-location-card:hover {
   text-wrap: balance;
 }
 
+.about-notebook-hero-heading {
+  max-width: 32ch;
+  margin-top: 0.75rem;
+  font-size: clamp(1.65rem, 3vw, 2.5rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
 .about-notebook-hero h1 del {
   color: #827e79;
   font-size: 0.82em;
@@ -5246,10 +5256,10 @@ button.contact-location-card:hover {
 
 .home-hero-title {
   margin-top: 15px;
-  font-size: clamp(2.1rem, 4.2vw, 4rem);
+  font-size: clamp(1.7rem, 3.2vw, 2.85rem);
   font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.1;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
   text-wrap: balance;
   animation: home-hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
 }
@@ -5268,6 +5278,40 @@ button.contact-location-card:hover {
   line-height: 1.7;
   color: #b6bdd3;
   animation: home-hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+.news-article-content {
+  margin-top: 1.5rem;
+  color: #334155;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.news-article-content > * + * {
+  margin-top: 1rem;
+}
+
+.news-article-content h2,
+.news-article-content h3 {
+  margin-top: 1.5rem;
+  color: #0f172a;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.news-article-content ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+
+.news-article-content ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+
+.news-article-content a {
+  color: #2563eb;
+  text-decoration: underline;
 }
 
 .home-hero-cta {

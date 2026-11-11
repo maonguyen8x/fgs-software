@@ -6,6 +6,7 @@ import { Plus } from "lucide-react";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { PUBLIC_PAGES, type PublicPageId } from "@/lib/page-content";
 import { cn } from "@/lib/utils";
+import { DeletePageBlockButton } from "@/components/admin/DeletePageBlockButton";
 
 const PAGE_LABELS: Record<PublicPageId, string> = {
   home: "Home",
@@ -87,9 +88,12 @@ export default async function AdminPagesPage({
                   </Badge>
                 </td>
                 <td className="px-4 py-3 text-right">
+                  <div className="inline-flex items-center gap-2">
                   <Button asChild variant="outline" size="sm" className="cursor-pointer">
                     <Link href={`/admin/pages/${activePage}/${b.id}`}>Edit</Link>
                   </Button>
+                  <DeletePageBlockButton id={b.id} label={b.key} />
+                  </div>
                 </td>
               </tr>
             ))}

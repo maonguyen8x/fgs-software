@@ -721,7 +721,7 @@ async function main() {
 
   const pageBlocks = [
     { page: "home", key: "hero_eyebrow", title: "FGS SOFTWARE · ENGINEERING PARTNER", titleJa: "FGS SOFTWARE · エンジニアリングパートナー", titleVi: "FGS SOFTWARE · ĐỐI TÁC KỸ THUẬT", order: 0 },
-    { page: "home", key: "hero_section", title: "Technology that moves meaningful ideas forward.", titleJa: "意味あるアイデアを前進させるテクノロジー。", titleVi: "Công nghệ đưa những ý tưởng ý nghĩa tiến xa hơn.", subtitle: "We build thoughtful digital products and dependable platforms with teams ready to make a difference.", subtitleJa: "変化を生み出すチームとともに、使いやすいデジタルプロダクトと信頼できるプラットフォームを開発します。", subtitleVi: "Chúng tôi cùng các đội ngũ tạo nên sản phẩm số hữu ích và nền tảng đáng tin cậy.", order: 0 },
+    { page: "home", key: "hero_section", title: "Technology that moves meaningful ideas forward.", titleJa: "AIをはじめとする先進技術の可能性を追求し、人々の暮らしや社会、ビジネスに新たな価値を創造します。", titleVi: "Công nghệ đưa những ý tưởng ý nghĩa tiến xa hơn.", subtitle: "We build thoughtful digital products and dependable platforms with teams ready to make a difference.", subtitleJa: "アイデアを革新的なソフトウェアやデジタルソリューションへと形にし、テクノロジーの力で、より豊かで持続可能な未来を目指します。", subtitleVi: "Chúng tôi cùng các đội ngũ tạo nên sản phẩm số hữu ích và nền tảng đáng tin cậy.", order: 0 },
     { page: "home", key: "ai_technologies_control", order: 0 },
     { page: "home", key: "ai_technologies_title", title: "AI technologies we use", titleJa: "活用しているAIテクノロジー", titleVi: "Công nghệ AI đang sử dụng", order: 0 },
     { page: "home", key: "tech_orbit_control", order: 0 },
@@ -759,6 +759,8 @@ async function main() {
     { page: "home", key: "partners_section", title: "Clients & Partners", titleVi: "Khách hàng & Đối tác", subtitle: "Trusted by teams in Japan and worldwide", subtitleVi: "Được tin tưởng bởi các đội ngũ tại Nhật Bản và quốc tế", order: 6 },
     { page: "home", key: "cta_section", title: "Ready to start your project?", titleVi: "Sẵn sàng bắt đầu dự án?", subtitle: "Let's discuss how we can help your business grow", subtitleVi: "Hãy trao đổi cách chúng tôi giúp doanh nghiệp bạn phát triển", order: 7 },
     { page: "about", key: "page_header", title: "About Us", titleVi: "Giới thiệu", titleJa: "会社概要", subtitle: "Building trust through quality software", subtitleVi: "Xây dựng niềm tin qua phần mềm chất lượng", subtitleJa: "品質の高いソフトウェアで信頼を築く", order: 1 },
+    { page: "about", key: "company_hero_heading", title: "We code with care to build trusted software for Japan.", titleVi: "Chúng tôi viết code chỉn chu để tạo phần mềm đáng tin cậy cho Nhật Bản.", titleJa: "私たちは、テクノロジーで未来を創り、人と社会に新たな価値を届けます。", order: 1 },
+    { page: "about", key: "company_hero_body", body: "Thoughtful engineering, clear communication, and reliable delivery — built together with our partners.", bodyVi: "Cùng đối tác xây dựng bằng kỹ thuật chỉn chu, giao tiếp rõ ràng và cam kết bàn giao đáng tin cậy.", bodyJa: "AIをはじめとする先進技術と創造力を融合し、革新的なソフトウェア、プロダクト、デジタルソリューションを生み出します。\nお客様やパートナーとともに、ビジネスの可能性を広げ、人々の暮らしと社会をより豊かにする未来を目指します。", order: 1 },
     { page: "about", key: "identity_section", title: "Future, Global, Software", titleJa: "Future, Global, Software", titleVi: "Future, Global, Software", subtitle: "FGS brings a forward-looking mindset, a global perspective, and thoughtful software engineering together.", subtitleJa: "未来を見据える姿勢、グローバルな視点、そして丁寧なソフトウェア開発を一つに。", subtitleVi: "FGS kết hợp tư duy hướng tới tương lai, góc nhìn toàn cầu và kỹ thuật phần mềm chỉn chu.", order: 2 },
     { page: "about", key: "concept_products_eyebrow", title: "AI PRODUCT STUDIO", titleJa: "AIプロダクトスタジオ", titleVi: "AI PRODUCT STUDIO", order: 2 },
     { page: "about", key: "concept_products_section", title: "AI products for better everyday work", titleJa: "日々の仕事をより良くするAIプロダクト", titleVi: "Sản phẩm AI hỗ trợ công việc mỗi ngày", subtitle: "Thoughtful tools that help people focus on the work that matters.", subtitleJa: "大切な仕事に集中できるよう支援する、使いやすいツール。", subtitleVi: "Những công cụ thiết thực giúp mọi người tập trung vào công việc quan trọng.", order: 3 },
@@ -823,6 +825,29 @@ async function main() {
       },
     });
   }
+
+  await prisma.pageContentBlock.updateMany({
+    where: {
+      page: "home",
+      key: "hero_section",
+      titleJa: "意味あるアイデアを前進させるテクノロジー。",
+    },
+    data: {
+      titleJa: "AIをはじめとする先進技術の可能性を追求し、人々の暮らしや社会、ビジネスに新たな価値を創造します。",
+    },
+  });
+  await prisma.pageContentBlock.updateMany({
+    where: {
+      page: "home",
+      key: "hero_section",
+      subtitleJa:
+        "変化を生み出すチームとともに、使いやすいデジタルプロダクトと信頼できるプラットフォームを開発します。",
+    },
+    data: {
+      subtitleJa:
+        "アイデアを革新的なソフトウェアやデジタルソリューションへと形にし、テクノロジーの力で、より豊かで持続可能な未来を目指します。",
+    },
+  });
 
   const aboutContentRows = await prisma.aboutContent.findMany();
   for (const section of aboutContentRows) {
