@@ -8,11 +8,30 @@ import { generateOpenAIReply } from "@/lib/chat/providers/openai";
 import { logger } from "@/lib/logger";
 
 export const NEWS_PAGE_SIZE_SETTING_KEY = "news_page_size";
+export const NEWS_RSS_FEEDS_SETTING_KEY = "news_rss_feeds";
 export const NEWS_PAGE_SIZE_OPTIONS = [10, 15, 30] as const;
 export const NEWS_DEFAULT_PAGE_SIZE = 10;
 export const NEWS_STATUSES = ["pending", "active", "inactive"] as const;
 
 export const newsStatusSchema = z.enum(NEWS_STATUSES);
+export const newsRssFeedsSchema = z
+  .array(
+    z
+      .string()
+      .trim()
+      .url()
+      .max(2048)
+      .refine((value) => {
+        try {
+          const url = new URL(value);
+          return url.protocol === "https:" && !url.username && !url.password && !url.port;
+        } catch {
+          return false;
+        }
+      }, "RSS feed URLs must use HTTPS and cannot include credentials or custom ports.")
+  )
+  .max(10)
+  .refine((feeds) => new Set(feeds).size === feeds.length, "RSS feed URLs must be unique.");
 
 export const newsInputSchema = z.object({
   title: z.string().trim().min(1).max(200),
@@ -37,6 +56,18 @@ export async function getNewsPageSize(): Promise<number> {
   const row = await prisma.setting.findUnique({ where: { key: NEWS_PAGE_SIZE_SETTING_KEY } });
   const parsed = Number(row?.value);
   return (NEWS_PAGE_SIZE_OPTIONS as readonly number[]).includes(parsed) ? parsed : NEWS_DEFAULT_PAGE_SIZE;
+}
+
+export async function getNewsRssFeeds(): Promise<string[]> {
+  const row = await prisma.setting.findUnique({ where: { key: NEWS_RSS_FEEDS_SETTING_KEY } });
+  if (!row) return [];
+  let value: unknown;
+  try {
+    value = JSON.parse(row.value);
+  } catch {
+    throw new Error("Stored RSS feed settings contain invalid JSON.");
+  }
+  return newsRssFeedsSchema.parse(value);
 }
 
 const generatedArticleSchema = z.object({

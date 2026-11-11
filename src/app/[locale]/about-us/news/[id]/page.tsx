@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { prisma } from "@/lib/db";
 import { getLocalizedField } from "@/lib/i18n-content";
 import type { Locale } from "@/i18n/routing";
@@ -9,6 +9,15 @@ import { UploadImage } from "@/components/ui/UploadImage";
 import { NewsArticleContent } from "@/components/news/NewsArticleContent";
 
 export const dynamic = "force-dynamic";
+
+function getExternalSourceUrl(source: string): string | null {
+  try {
+    const url = new URL(source);
+    return url.protocol === "https:" ? url.href : null;
+  } catch {
+    return null;
+  }
+}
 
 export default async function NewsDetailPage({
   params,
@@ -26,6 +35,7 @@ export default async function NewsDetailPage({
   const title = getLocalizedField(item, "title", loc);
   const summary = getLocalizedField(item, "summary", loc);
   const content = getLocalizedField(item, "content", loc);
+  const sourceUrl = getExternalSourceUrl(item.source);
   const date = new Intl.DateTimeFormat(locale === "ja" ? "ja-JP" : locale === "vi" ? "vi-VN" : "en-US", {
     year: "numeric",
     month: "long",
@@ -55,6 +65,17 @@ export default async function NewsDetailPage({
             <span aria-hidden>•</span>
             <span>{t("by", { name: item.authorName })}</span>
           </p>
+          {sourceUrl && (
+            <a
+              href={sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700"
+            >
+              {t("original_source")}
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+            </a>
+          )}
           <p className="mt-6 text-lg font-medium leading-relaxed text-slate-700">{summary}</p>
           <NewsArticleContent content={content} />
         </div>

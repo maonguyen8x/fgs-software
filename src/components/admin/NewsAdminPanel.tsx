@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { RefreshCw, Rss } from "lucide-react";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { LocaleTabs } from "@/components/admin/LocaleTabs";
 import { NewsContentEditor } from "@/components/admin/NewsContentEditor";
@@ -39,6 +40,7 @@ export interface AdminNewsItem {
 interface NewsAdminPanelProps {
   items: AdminNewsItem[];
   pageSize: number;
+  rssFeeds: string[];
 }
 
 const AI_TOPIC_PRESETS = [
@@ -64,7 +66,17 @@ const emptyForm = {
   authorName: "",
 };
 
-export function NewsAdminPanel({ items, pageSize }: NewsAdminPanelProps) {
+function sourceLabel(source: string): string {
+  try {
+    const url = new URL(source);
+    if (url.protocol === "https:") return url.hostname;
+  } catch {
+    // Manual articles use a source label rather than a URL.
+  }
+  return source;
+}
+
+export function NewsAdminPanel({ items, pageSize, rssFeeds: initialRssFeeds }: NewsAdminPanelProps) {
   const router = useRouter();
   const articleFormRef = useRef<HTMLFormElement>(null);
   const [form, setForm] = useState(emptyForm);
@@ -75,6 +87,7 @@ export function NewsAdminPanel({ items, pageSize }: NewsAdminPanelProps) {
   const [busy, setBusy] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [size, setSize] = useState(String(pageSize));
+  const [rssFeeds, setRssFeeds] = useState(initialRssFeeds.join("\n"));
 
   const request = async (url: string, init: RequestInit, okMessage: string) => {
     setBusy(true);
@@ -218,6 +231,53 @@ export function NewsAdminPanel({ items, pageSize }: NewsAdminPanelProps) {
     await request("/api/admin/news/settings", { method: "PUT", body: JSON.stringify({ pageSize: Number(size) }) }, "Page size saved");
   };
 
+  const saveRssFeeds = async () => {
+    const feeds = rssFeeds
+      .split(/\r?\n/)
+      .map((feed) => feed.trim())
+      .filter(Boolean);
+    await request(
+      "/api/admin/news/settings",
+      { method: "PUT", body: JSON.stringify({ rssFeeds: feeds }) },
+      "RSS feeds saved"
+    );
+  };
+
+  const syncRssFeeds = async () => {
+    setBusy(true);
+    try {
+      const response = await fetch("/api/admin/news/sync", { method: "POST" });
+      const result = (await response.json()) as {
+        error?: string;
+        imported?: number;
+        duplicates?: number;
+        rejectedMissingImage?: number;
+        failedFeeds?: Array<{ feedUrl: string; error: string }>;
+      };
+      if (!response.ok) {
+        toast.error(result.error || `RSS sync failed (${response.status}).`);
+        return;
+      }
+
+      const imported = result.imported ?? 0;
+      const details = [
+        `${imported} imported to pending review`,
+        result.duplicates ? `${result.duplicates} duplicate${result.duplicates === 1 ? "" : "s"} skipped` : "",
+        result.rejectedMissingImage ? `${result.rejectedMissingImage} without images skipped` : "",
+        result.failedFeeds?.length ? `${result.failedFeeds.length} feed${result.failedFeeds.length === 1 ? "" : "s"} failed` : "",
+      ].filter(Boolean);
+      toast.success(details.join(" · "));
+      if (result.failedFeeds?.length) {
+        toast.error(result.failedFeeds.map((feed) => `${sourceLabel(feed.feedUrl)}: ${feed.error}`).join("\n"));
+      }
+      router.refresh();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to reach the server.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <div className="space-y-8">
       <section className="grid gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm md:grid-cols-[1fr_auto] md:items-end">
@@ -238,6 +298,35 @@ export function NewsAdminPanel({ items, pageSize }: NewsAdminPanelProps) {
         <Button onClick={savePageSize} disabled={busy} className="cursor-pointer">
           Save page size
         </Button>
+      </section>
+
+      <section className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:grid-cols-[1fr_auto] md:items-end">
+        <div>
+          <div className="mb-2 flex items-center gap-2">
+            <Rss className="h-4 w-4 text-orange-600" aria-hidden />
+            <Label htmlFor="news-rss-feeds">RSS feed URLs</Label>
+          </div>
+          <textarea
+            id="news-rss-feeds"
+            className="min-h-28 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 font-mono text-sm text-slate-700 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+            value={rssFeeds}
+            onChange={(event) => setRssFeeds(event.target.value)}
+            placeholder={"https://example.com/feed.xml\nhttps://another-source.com/rss"}
+            spellCheck={false}
+          />
+          <p className="mt-2 max-w-3xl text-xs leading-relaxed text-slate-500">
+            Add up to 10 public HTTPS feeds, one URL per line. Sync imports only entries with an image, keeps a short feed excerpt with source attribution, and saves every entry as pending until an admin approves it. Only use feeds whose terms allow reusing their excerpts and images.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Button type="button" onClick={saveRssFeeds} disabled={busy} variant="outline" className="cursor-pointer">
+            Save feeds
+          </Button>
+          <Button type="button" onClick={syncRssFeeds} disabled={busy} className="cursor-pointer">
+            <RefreshCw className={`mr-2 h-4 w-4 ${busy ? "animate-spin" : ""}`} aria-hidden />
+            Sync RSS now
+          </Button>
+        </div>
       </section>
 
       <form onSubmit={generateArticle} className="grid gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:grid-cols-2">
@@ -447,7 +536,7 @@ export function NewsAdminPanel({ items, pageSize }: NewsAdminPanelProps) {
               <tr key={item.id} className="border-t border-slate-100">
                 <td className="px-4 py-3">
                   {item.title}
-                  <span className="ml-2 text-xs text-muted-theme">({item.source})</span>
+                  <span className="ml-2 text-xs text-muted-theme">({sourceLabel(item.source)})</span>
                 </td>
                 <td className="px-4 py-3">{item.authorName}</td>
                 <td className="px-4 py-3">{new Date(item.createdAt).toLocaleString()}</td>

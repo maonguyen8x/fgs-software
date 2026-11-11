@@ -363,6 +363,7 @@
     "view_grid": "グリッド",
     "empty": "記事はまだありません。",
     "by": "執筆: {name}", "back": "ニュース一覧へ戻る",
+    "original_source": "元の記事を読む",
     "pagination": "ページ送り",
     "prev": "前へ",
     "next": "次へ"

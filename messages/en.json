@@ -331,6 +331,7 @@
     "view_grid": "Grid",
     "empty": "No articles yet.",
     "by": "By {name}", "back": "Back to News",
+    "original_source": "Read the original source",
     "pagination": "Pagination",
     "prev": "Previous",
     "next": "Next"

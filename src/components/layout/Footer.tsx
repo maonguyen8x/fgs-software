@@ -2,7 +2,7 @@
 
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { Facebook, Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { Facebook, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import type { HeaderNavConfig } from "@/lib/header-nav";
 import { NAV_ID_INTERNAL_ROUTES } from "@/lib/public-paths";
 import { FgsLogo } from "@/components/brand/FgsLogo";
@@ -19,7 +19,6 @@ interface FooterProps {
     github_url?: string;
     facebook_url?: string;
     address?: string;
-    phone?: string;
   };
 }
 
@@ -61,7 +60,7 @@ export function Footer({
     "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/15 text-slate-300 transition-colors hover:border-sky-300/60 hover:text-sky-300";
 
   return (
-    <footer className="site-footer mt-11 border-t border-white/10 bg-[#0b0a24] text-white">
+    <footer className="site-footer mt-16 bg-[#0b0a24] text-white">
       <div className="container-narrow px-4 py-12 md:px-8 md:py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.45fr_0.8fr_0.9fr_1fr] lg:gap-12">
           <div>
@@ -130,20 +129,12 @@ export function Footer({
               </a>
             )}
           </div>
-          {(settings.phone || settings.address) && (
+          {settings.address && (
             <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-slate-400">
-              {settings.phone && (
-                <span className="inline-flex items-center gap-1.5">
-                  <Phone className="h-3.5 w-3.5" aria-hidden />
-                  {settings.phone}
-                </span>
-              )}
-              {settings.address && (
-                <span className="inline-flex items-center gap-1.5">
-                  <MapPin className="h-3.5 w-3.5" aria-hidden />
-                  {settings.address}
-                </span>
-              )}
+              <span className="inline-flex items-center gap-1.5">
+                <MapPin className="h-3.5 w-3.5" aria-hidden />
+                {settings.address}
+              </span>
             </div>
           )}
         </div>

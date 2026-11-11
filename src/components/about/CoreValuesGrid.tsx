@@ -37,7 +37,7 @@ export function CoreValuesGrid({ title, items, locale, variant = "default" }: Co
     >
       <div className={isNotebook ? "" : isTeam ? "team-page-inner" : "container-narrow"}>
         {isTeam ? (
-          <TeamSectionHeading icon={Gem} title={title} className="team-section-heading max-w-none" />
+          <TeamSectionHeading icon={Gem} title={title} className="team-section-heading team-values-heading max-w-none" />
         ) : isNotebook ? (
           <h2 className="about-notebook-ring-heading">{title}</h2>
         ) : (

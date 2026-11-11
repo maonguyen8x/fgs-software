@@ -25,8 +25,11 @@ export function WorksProductsPanel({
   return (
     <div className="works-products-panel">
       <WorksFilter locale={locale} currentCategory={currentCategory} items={filterItems} />
-      <div className="container-narrow px-4 pb-20 pt-12 sm:px-6 md:pt-16 lg:px-8">
+      <div className="container-narrow px-4 pb-10 pt-12 sm:px-6 md:pt-16 lg:px-8">
         <WorksProjectCards works={works} locale={loc} viewLabel={viewLabel} categoryLabels={categoryLabels} />
+      </div>
+      <div className="works-products-endcap" aria-hidden="true">
+        <span />
       </div>
     </div>
   );

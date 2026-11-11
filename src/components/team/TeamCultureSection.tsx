@@ -21,7 +21,7 @@ export function TeamCultureSection({ copy }: { copy?: TeamCultureCopy }) {
   const t = useTranslations("team.culture");
 
   return (
-    <section className="team-flow-section team-flow-section--balanced">
+    <section className="team-flow-section team-flow-section--balanced team-culture-section">
       <div className="team-page-inner">
         <article className="team-page-panel px-6 py-6 md:px-8 md:py-8">
           <TeamSectionHeading icon={Heart} title={copy?.sectionTitle ?? t("section_title")} className="team-section-heading max-w-none" />

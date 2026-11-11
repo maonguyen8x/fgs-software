@@ -363,6 +363,7 @@
     "view_grid": "Lưới",
     "empty": "Chưa có bài viết nào.",
     "by": "Tác giả: {name}", "back": "Quay lại Tin tức",
+    "original_source": "Đọc bài viết gốc",
     "pagination": "Phân trang",
     "prev": "Trước",
     "next": "Sau"

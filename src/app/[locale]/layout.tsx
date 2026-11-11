@@ -91,7 +91,6 @@ export default async function LocaleLayout({
                   github_url: settings.github_url,
                   facebook_url: settings.facebook_url,
                   address: settings.address,
-                  phone: settings.phone,
                 }} />
               </PublicPathsProvider>
             <Toaster position="top-right" richColors />

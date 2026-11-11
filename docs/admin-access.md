@@ -38,3 +38,9 @@ NEXT_PUBLIC_ADMIN_LOGIN_PATH="your-private-secret-slug"
 ## After login
 
 Dashboard: `/admin/dashboard`
+
+## News RSS imports
+
+Open **Admin → News**, add up to 10 public HTTPS RSS/Atom feed URLs (one per line), and select **Save feeds**. Use **Sync RSS now** to import new entries. The importer keeps a short excerpt and the original source link, skips entries without an image, and saves every imported article as **pending**; it will not appear publicly until an administrator approves it. Only configure feeds whose terms permit reusing their excerpts and images.
+
+RSS imports are on-demand. This project does not configure a recurring scheduler or a machine-token endpoint; scheduled imports need a hosting-specific cron integration.
