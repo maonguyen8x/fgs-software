@@ -116,7 +116,7 @@ export function IntroLogoLoader({ logoUrl, logoMode, logoSize }: IntroLogoArtwor
       </div>
       <span className="intro-logo-x-comet intro-logo-x-comet--left" />
       <span className="intro-logo-x-comet intro-logo-x-comet--right" />
-      <div className="intro-logo-lockup" style={{ width: `min(${Math.round(620 * scale)}px, 94vw)` }}>
+      <div className="intro-logo-lockup" style={{ width: `min(${Math.round(760 * scale)}px, 94vw)` }}>
         <IntroLogoArtwork logoUrl={logoUrl} logoMode={logoMode} logoSize={logoSize} />
       </div>
     </div>

@@ -3774,7 +3774,7 @@ button.contact-location-card:hover {
 }
 
 .intro-logo-lockup {
-  width: min(620px, 94vw);
+  width: min(760px, 94vw);
   line-height: 1;
   filter: drop-shadow(0 22px 30px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 28px rgba(105, 170, 245, 0.2));
   animation: none;
@@ -3818,7 +3818,7 @@ button.contact-location-card:hover {
 }
 
 .intro-logo-art-image--software {
-  clip-path: inset(62% 0 0);
+  clip-path: inset(55% 0 0);
   animation: intro-logo-software-arrive 420ms ease-out 600ms both;
 }
 
@@ -3869,8 +3869,8 @@ button.contact-location-card:hover {
 }
 
 @keyframes intro-logo-software-arrive {
-  from { opacity: 0; clip-path: inset(62% 0 0 100%); }
-  to { opacity: 1; clip-path: inset(62% 0 0 0); }
+  from { opacity: 0; clip-path: inset(55% 0 0 100%); }
+  to { opacity: 1; clip-path: inset(55% 0 0 0); }
 }
 
 @keyframes intro-logo-custom-arrive {
