@@ -45,7 +45,7 @@ export default async function LeaderDetailPage({
   const avatarSrc = member.avatar?.split("?")[0];
 
   return (
-    <div className="bg-linear-to-b from-sky-50/40 via-white to-white dark:from-slate-950 dark:to-slate-900">
+    <div className="bg-linear-to-b from-sky-50/40 via-white to-white dark:from-slate-950 dark:via-slate-950 dark:to-slate-900">
       <section className="team-flow-section">
         <div className="team-page-inner">
           <Link
@@ -89,11 +89,11 @@ export default async function LeaderDetailPage({
             </div>
 
             {bio && (
-              <div className="mt-8 rounded-2xl border border-slate-200/80 bg-white p-5 md:p-6 dark:border-slate-600/80 dark:bg-white">
-                <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+              <div className="mt-8 rounded-2xl border border-slate-200/80 bg-white p-5 md:p-6 dark:border-slate-600/80 dark:bg-slate-800">
+                <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-300">
                   {t("bio_heading")}
                 </h2>
-                <p className="mt-3 whitespace-pre-line text-base leading-relaxed text-slate-700 md:text-lg dark:text-slate-700">
+                <p className="mt-3 whitespace-pre-line text-base leading-relaxed text-slate-700 md:text-lg dark:text-slate-300">
                   {bio}
                 </p>
               </div>
@@ -101,14 +101,14 @@ export default async function LeaderDetailPage({
 
             {member.skills.length > 0 && (
               <div className="mt-8 text-left">
-                <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+                <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-300">
                   {t("skills_heading")}
                 </h2>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {member.skills.map((skill) => (
                     <span
                       key={skill}
-                      className="rounded-full bg-primary-50 px-3 py-1.5 text-sm font-medium text-primary-800 dark:bg-primary-100 dark:text-primary-900"
+                      className="rounded-full bg-primary-50 px-3 py-1.5 text-sm font-medium text-primary-800 dark:bg-primary-950 dark:text-primary-200"
                     >
                       {skill}
                     </span>

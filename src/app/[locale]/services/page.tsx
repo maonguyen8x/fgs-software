@@ -71,7 +71,7 @@ export default async function ServicesPage({
       : storedOverviewDescription;
 
   return (
-    <div className="bg-linear-to-b from-emerald-50/50 via-white to-sky-50/40">
+    <div className="bg-linear-to-b from-emerald-50/50 via-white to-sky-50/40 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900">
       <section className="services-overview">
         <div className="container-narrow grid gap-8 px-4 py-14 sm:px-6 md:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] md:items-center md:py-20 lg:px-8">
           <div>

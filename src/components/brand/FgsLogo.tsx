@@ -61,6 +61,7 @@ export function FgsLogo({
   const height = logoHeight ?? s.height;
   const useImage = logoMode === "image" && Boolean(logoUrl?.trim());
   const src = logoUrl?.split("?")[0] ?? BRAND.logoPath;
+  const imageSrc = src === BRAND.logoPath ? BRAND.logoAssetPath : src;
   const imageWidth = Math.round(height * BRAND.logoAspectRatio);
   const maxWidth = Math.min(s.maxW * (height / s.height), 300);
 
@@ -80,7 +81,7 @@ export function FgsLogo({
           }}
         >
           <Image
-            src={src}
+            src={imageSrc}
             alt={BRAND.logoAlt}
             width={imageWidth}
             height={height}

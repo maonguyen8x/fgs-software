@@ -25,7 +25,7 @@ export function IntroLogoArtwork({ logoUrl, logoMode = "image", logoSize }: Intr
         {["blue", "orange", "green", "software"].map((part) => (
           <Image
             key={part}
-            src={src}
+            src={BRAND.logoAssetPath}
             alt=""
             width={470}
             height={220}

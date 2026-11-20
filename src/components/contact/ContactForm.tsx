@@ -87,8 +87,8 @@ export function ContactForm() {
 
   const inputClass = (field: keyof ContactFormData) =>
     cn(
-      "mt-2 h-12 rounded-full border-slate-200 bg-white/80 px-5 placeholder:text-slate-400 focus:border-violet-500 focus:ring-violet-500/20",
-      errors[field] && "border-red-500 focus-visible:ring-red-500"
+      "mt-2 h-12 rounded-full border-slate-200 bg-white/80 px-5 placeholder:text-slate-400 focus:border-violet-500 focus:ring-violet-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-400",
+      errors[field] && "border-red-500 focus-visible:ring-red-500 dark:border-red-500"
     );
 
   const onSubmit = async (data: ContactFormData) => {
@@ -151,7 +151,7 @@ export function ContactForm() {
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <RequiredLabel htmlFor="firstName" required className="text-xs font-semibold uppercase tracking-wide text-slate-600">
+          <RequiredLabel htmlFor="firstName" required className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
             {t("first_name")}
           </RequiredLabel>
           <Input
@@ -165,7 +165,7 @@ export function ContactForm() {
           {fieldError("firstName")}
         </div>
         <div>
-          <RequiredLabel htmlFor="lastName" required className="text-xs font-semibold uppercase tracking-wide text-slate-600">
+          <RequiredLabel htmlFor="lastName" required className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
             {t("last_name")}
           </RequiredLabel>
           <Input
@@ -181,7 +181,7 @@ export function ContactForm() {
       </div>
 
       <div>
-        <RequiredLabel htmlFor="email" required className="text-xs font-semibold uppercase tracking-wide text-slate-600">
+        <RequiredLabel htmlFor="email" required className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
           {t("work_email")}
         </RequiredLabel>
         <Input
@@ -197,7 +197,7 @@ export function ContactForm() {
       </div>
 
       <div>
-        <RequiredLabel htmlFor="phone" required className="text-xs font-semibold uppercase tracking-wide text-slate-600">
+        <RequiredLabel htmlFor="phone" required className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
           {t("phone")}
         </RequiredLabel>
         <div className="mt-2 flex gap-2">
@@ -205,7 +205,7 @@ export function ContactForm() {
             aria-label={t("country_selector")}
             value={country}
             onChange={(event) => setCountry(event.target.value as CountryCode)}
-            className="h-12 w-[42%] min-w-0 rounded-full border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 sm:w-[38%]"
+            className="h-12 w-[42%] min-w-0 rounded-full border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 sm:w-[38%] dark:border-slate-600 dark:bg-slate-800 dark:text-white"
           >
             {countries.map(({ code, name, callingCode }) => (
               <option key={code} value={code}>
@@ -227,7 +227,7 @@ export function ContactForm() {
       </div>
 
       <div>
-        <RequiredLabel htmlFor="message" required className="text-xs font-semibold uppercase tracking-wide text-slate-600">
+        <RequiredLabel htmlFor="message" required className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
           {t("message")}
         </RequiredLabel>
         <Textarea
@@ -237,15 +237,15 @@ export function ContactForm() {
           aria-invalid={!!errors.message}
           {...register("message")}
           className={cn(
-            "mt-2 min-h-32 rounded-3xl border-slate-200 bg-white/80 px-5 py-4 placeholder:text-slate-400 focus:border-violet-500 focus:ring-violet-500/20",
-            errors.message && "border-red-500 focus-visible:ring-red-500"
+            "mt-2 min-h-32 rounded-3xl border-slate-200 bg-white/80 px-5 py-4 placeholder:text-slate-400 focus:border-violet-500 focus:ring-violet-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-400",
+            errors.message && "border-red-500 focus-visible:ring-red-500 dark:border-red-500"
           )}
         />
         {fieldError("message")}
       </div>
 
       <div className="flex flex-col gap-4 pt-1 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-xs leading-relaxed text-slate-500">{t("reply_note")}</p>
+        <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-300">{t("reply_note")}</p>
         <button
           type="submit"
           disabled={loading}

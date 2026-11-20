@@ -660,15 +660,15 @@
   }
 
   .work-detail-prose {
-    @apply text-base leading-relaxed text-slate-700 md:text-[1.0625rem] md:leading-[1.75];
+    @apply text-base leading-relaxed text-slate-700 md:text-[1.0625rem] md:leading-[1.75] dark:text-slate-300;
   }
 
   .work-detail-prose h2 {
-    @apply mt-8 mb-3 text-2xl font-bold text-slate-900 first:mt-0;
+    @apply mt-8 mb-3 text-2xl font-bold text-slate-900 first:mt-0 dark:text-white;
   }
 
   .work-detail-prose h3 {
-    @apply mt-6 mb-2 text-xl font-bold text-slate-900;
+    @apply mt-6 mb-2 text-xl font-bold text-slate-900 dark:text-white;
   }
 
   .work-detail-prose p {
@@ -693,15 +693,15 @@
   }
 
   .work-detail-prose a {
-    @apply font-medium text-primary-600 underline decoration-primary-300 underline-offset-2 hover:text-primary-800;
+    @apply font-medium text-primary-600 underline decoration-primary-300 underline-offset-2 hover:text-primary-800 dark:text-primary-300 dark:hover:text-primary-200;
   }
 
   .work-detail-prose blockquote {
-    @apply my-6 border-l-4 border-primary-300 bg-primary-50/50 py-3 pl-5 text-slate-600 italic dark:bg-primary-950/30;
+    @apply my-6 border-l-4 border-primary-300 bg-primary-50/50 py-3 pl-5 text-slate-600 italic dark:bg-primary-950/30 dark:text-slate-300;
   }
 
   .work-detail-prose code {
-    @apply rounded-md bg-slate-100 px-1.5 py-0.5 text-sm text-slate-800;
+    @apply rounded-md bg-slate-100 px-1.5 py-0.5 text-sm text-slate-800 dark:bg-slate-800 dark:text-slate-100;
   }
 
   .work-detail-prose pre {
@@ -808,7 +808,7 @@
   }
 
   .team-page-panel {
-    @apply w-full rounded-2xl border border-slate-200/90 bg-white text-left shadow-[0_4px_24px_-8px_rgba(15,23,42,0.08)] ring-1 ring-slate-100/80 md:rounded-3xl dark:border-slate-700/90 dark:bg-white dark:ring-slate-200/10;
+    @apply w-full rounded-2xl border border-slate-200/90 bg-white text-left shadow-[0_4px_24px_-8px_rgba(15,23,42,0.08)] ring-1 ring-slate-100/80 md:rounded-3xl dark:border-slate-700/90 dark:bg-slate-900 dark:ring-slate-200/10;
   }
 
 
@@ -2129,6 +2129,33 @@
   color: #111827;
 }
 
+.dark .site-header .header-nav-link {
+  color: #f1f5f9 !important;
+}
+
+.dark .site-header .header-nav-link:hover,
+.dark .site-header .header-nav-link[aria-current="page"] {
+  color: #93c5fd !important;
+}
+
+.dark .home-header-scrolled .text-theme,
+.dark .home-header-scrolled .text-primary-600,
+.dark .home-header-scrolled .dark\:text-primary-400 {
+  color: #f8fafc !important;
+}
+
+.dark .home-header-scrolled .text-slate-600,
+.dark .home-header-scrolled .dark\:text-slate-400 {
+  color: #cbd5e1 !important;
+}
+
+.dark .home-header-scrolled button.border-theme,
+.dark .home-header-scrolled button.bg-surface-muted {
+  border-color: #475569;
+  background: #1e293b;
+  color: #f8fafc;
+}
+
 .home-chapters-grid {
   background-image:
     linear-gradient(to right, rgba(148, 163, 184, 0.09) 1px, transparent 1px),
@@ -2784,6 +2811,10 @@
   background: linear-gradient(110deg, #6d43c4 8%, #9b6aff 62%, #7359c9 100%);
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.dark .contact-headline-accent {
+  background-image: linear-gradient(110deg, #c4b5fd 8%, #a78bfa 62%, #c4b5fd 100%);
 }
 
 .service-detail-panel {
@@ -3803,17 +3834,17 @@ button.contact-location-card:hover {
 }
 
 .intro-logo-art-image--blue {
-  clip-path: inset(0 66.5% 35% 0);
+  clip-path: inset(0 65.3% 35% 0);
   animation: intro-logo-part-arrive 360ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
 }
 
 .intro-logo-art-image--orange {
-  clip-path: inset(0 33.2% 35% 33.2%);
+  clip-path: inset(0 35.1% 35% 34.7%);
   animation: intro-logo-part-arrive 360ms cubic-bezier(0.2, 0.8, 0.25, 1) 180ms both;
 }
 
 .intro-logo-art-image--green {
-  clip-path: inset(0 0 35% 66.4%);
+  clip-path: inset(0 0 35% 64.9%);
   animation: intro-logo-part-arrive 360ms cubic-bezier(0.2, 0.8, 0.25, 1) 360ms both;
 }
 
@@ -5443,6 +5474,89 @@ button.contact-location-card:hover {
 .about-notebook-page .about-identity-center { box-shadow: 0 0 0 1px rgba(124, 92, 255, 0.24), 0 20px 48px rgba(78, 60, 124, 0.12); }
 .about-notebook-page .about-identity-point { background: #fffefa; }
 
+.dark .about-notebook-page {
+  color: #f1f5f9;
+  background: #020617;
+}
+
+.dark .about-notebook-hero {
+  background: radial-gradient(ellipse at 85% 15%, rgba(124, 92, 255, 0.18), transparent 34%), #0f172a;
+}
+
+.dark .about-notebook-page .about-identity-section,
+.dark .about-notebook-workflow {
+  background: #0b1222;
+}
+
+.dark .about-notebook-closing {
+  background: #0f172a;
+}
+
+.dark .about-notebook-polaroid,
+.dark .about-notebook-team-polaroid,
+.dark .about-notebook-timeline .container-narrow > div,
+.dark .about-notebook-join-panel,
+.dark .about-notebook-step-circle,
+.dark .about-notebook-page .about-identity-point {
+  border-color: #334155;
+  background: #1e293b;
+}
+
+.dark .about-notebook-value-card,
+.dark .about-notebook-why-card {
+  border-color: #475569;
+  color: #f8fafc;
+  background: #1e293b;
+  box-shadow: 0 15px 28px rgba(0, 0, 0, 0.25);
+}
+
+.dark .about-notebook-value-icon,
+.dark .about-notebook-why-icon {
+  border-color: #475569;
+  color: #c4b5fd;
+  background: #334155;
+}
+
+.dark .about-notebook-section-head h2,
+.dark .about-notebook-timeline .about-section-title,
+.dark .about-notebook-join-panel h2,
+.dark .about-notebook-closing h2,
+.dark .about-notebook-page .about-identity-title,
+.dark .about-notebook-value-title,
+.dark .about-notebook-why-card h3,
+.dark .about-notebook-step-circle {
+  color: #f8fafc;
+}
+
+.dark .about-notebook-hero-description,
+.dark .about-notebook-page-title,
+.dark .about-notebook-story-copy > p,
+.dark .about-notebook-polaroid figcaption,
+.dark .about-notebook-team-polaroid figcaption,
+.dark .about-notebook-value-description,
+.dark .about-notebook-why-card p,
+.dark .about-notebook-step-label,
+.dark .about-notebook-join-panel > div:first-child > p:not(.about-notebook-chapter),
+.dark .about-notebook-closing .container-narrow > p:not(.about-notebook-last-page),
+.dark .about-notebook-closing-actions a:not(.about-notebook-dark-button),
+.dark .about-notebook-page .about-identity-subtitle {
+  color: #cbd5e1;
+}
+
+.dark .about-notebook-script,
+.dark .about-notebook-margin-note,
+.dark .about-notebook-section-head > p:last-child,
+.dark .about-notebook-chapter,
+.dark .about-notebook-last-page,
+.dark .about-notebook-repeat,
+.dark .about-notebook-page .about-identity-eyebrow {
+  color: #c4b5fd;
+}
+
+.dark .about-notebook-path > svg {
+  color: #94a3b8;
+}
+
 @media (max-width: 760px) {
   .about-notebook-hero-inner,
   .about-notebook-story-grid,
@@ -5624,6 +5738,19 @@ button.contact-location-card:hover {
 .news-article-content a {
   color: #2563eb;
   text-decoration: underline;
+}
+
+.dark .news-article-content {
+  color: #cbd5e1;
+}
+
+.dark .news-article-content h2,
+.dark .news-article-content h3 {
+  color: #f8fafc;
+}
+
+.dark .news-article-content a {
+  color: #93c5fd;
 }
 
 .ceo-image-slider {

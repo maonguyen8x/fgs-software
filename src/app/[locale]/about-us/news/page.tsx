@@ -52,12 +52,12 @@ export default async function NewsPage({
           <h1 className="text-3xl font-bold text-heading md:text-4xl">{t("title")}</h1>
           <p className="mt-2 text-sm text-muted-theme">{t("subtitle")}</p>
         </div>
-        <div className="inline-flex overflow-hidden rounded-full border border-slate-200 bg-white p-1 text-sm">
+        <div className="inline-flex overflow-hidden rounded-full border border-slate-200 bg-white p-1 text-sm dark:border-slate-700 dark:bg-slate-900">
           <Link
             href={`?view=list&page=${currentPage}`}
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 transition-colors",
-              layout === "list" ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-slate-100"
+              layout === "list" ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
             )}
           >
             <List className="h-4 w-4" aria-hidden />
@@ -67,7 +67,7 @@ export default async function NewsPage({
             href={`?view=grid&page=${currentPage}`}
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 transition-colors",
-              layout === "grid" ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-slate-100"
+              layout === "grid" ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
             )}
           >
             <LayoutGrid className="h-4 w-4" aria-hidden />
@@ -90,7 +90,7 @@ export default async function NewsPage({
               <Link
                 href={`/about-us/news/${item.id}`}
                 className={cn(
-                  "group block h-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg",
+                  "group block h-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900 dark:hover:border-slate-500",
                   layout === "list" && "sm:flex"
                 )}
               >
@@ -106,7 +106,7 @@ export default async function NewsPage({
                 </div>
                 <div className="flex flex-1 flex-col gap-3 p-6">
                   <h2 className="text-lg font-bold leading-snug text-heading transition-colors group-hover:text-blue-600">{title}</h2>
-                  <p className="line-clamp-3 text-sm leading-relaxed text-slate-600">{summary}</p>
+                  <p className="line-clamp-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{summary}</p>
                   <p className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-theme">
                     <span>{dateFormatter.format(item.createdAt)}</span>
                     <span aria-hidden>•</span>
@@ -123,7 +123,7 @@ export default async function NewsPage({
       {totalPages > 1 && (
         <nav aria-label={t("pagination")} className="mt-12 flex items-center justify-center gap-2 text-sm">
           {currentPage > 1 && (
-            <Link href={pageHref(currentPage - 1)} className="rounded-full border px-4 py-2 hover:bg-slate-50">
+            <Link href={pageHref(currentPage - 1)} className="rounded-full border px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-800">
               {t("prev")}
             </Link>
           )}
@@ -134,14 +134,14 @@ export default async function NewsPage({
               aria-current={p === currentPage ? "page" : undefined}
               className={cn(
                 "h-9 w-9 rounded-full text-center leading-9",
-                p === currentPage ? "bg-blue-600 font-semibold text-white" : "border hover:bg-slate-50"
+                p === currentPage ? "bg-blue-600 font-semibold text-white" : "border hover:bg-slate-50 dark:hover:bg-slate-800"
               )}
             >
               {p}
             </Link>
           ))}
           {currentPage < totalPages && (
-            <Link href={pageHref(currentPage + 1)} className="rounded-full border px-4 py-2 hover:bg-slate-50">
+            <Link href={pageHref(currentPage + 1)} className="rounded-full border px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-800">
               {t("next")}
             </Link>
           )}

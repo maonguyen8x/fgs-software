@@ -22,10 +22,10 @@ export default async function BlogPage({
 
   return (
     <div>
-      <section className="bg-gradient-to-br from-primary-50 to-white section-padding">
+      <section className="bg-gradient-to-br from-primary-50 to-white section-padding dark:from-slate-900 dark:to-slate-950">
         <div className="container-narrow text-center">
-          <h1 className="text-4xl font-bold text-slate-900">{t("title")}</h1>
-          <p className="mt-4 text-lg text-slate-600">{t("subtitle")}</p>
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white">{t("title")}</h1>
+          <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">{t("subtitle")}</p>
         </div>
       </section>
       <section className="section-padding">

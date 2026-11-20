@@ -60,14 +60,14 @@ export function WorkDetailContent({ work, locale, images, labels }: WorkDetailCo
         {labels.back}
       </Link>
 
-      <article className="work-detail-panel rounded-2xl border border-slate-200/90 bg-white p-6 shadow-[0_4px_28px_-8px_rgba(15,23,42,0.1)] ring-1 ring-slate-100/90 md:rounded-3xl md:p-8 lg:p-10 dark:border-slate-700/90 dark:bg-white dark:ring-slate-200/10">
+      <article className="work-detail-panel rounded-2xl border border-slate-200/90 bg-white p-6 shadow-[0_4px_28px_-8px_rgba(15,23,42,0.1)] ring-1 ring-slate-100/90 md:rounded-3xl md:p-8 lg:p-10 dark:border-slate-700/90 dark:bg-slate-900 dark:ring-slate-200/10">
         <span className="inline-flex rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700 dark:bg-primary-950 dark:text-primary-300">
           {categoryLabel}
         </span>
-        <h1 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-slate-900 md:text-4xl lg:text-[2.5rem] lg:leading-tight">
+        <h1 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-slate-900 md:text-4xl lg:text-[2.5rem] lg:leading-tight dark:text-white">
           {title}
         </h1>
-        <p className="mt-4 text-lg leading-relaxed text-slate-600 md:text-xl md:leading-relaxed">
+        <p className="mt-4 text-lg leading-relaxed text-slate-600 md:text-xl md:leading-relaxed dark:text-slate-300">
           {summary}
         </p>
 
@@ -76,7 +76,7 @@ export function WorkDetailContent({ work, locale, images, labels }: WorkDetailCo
             {work.techStack.map((tech) => (
               <span
                 key={tech}
-                className="rounded-lg bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700"
+                className="rounded-lg bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200"
               >
                 {tech}
               </span>
@@ -85,15 +85,15 @@ export function WorkDetailContent({ work, locale, images, labels }: WorkDetailCo
         )}
 
         {work.duration && (
-          <p className="mt-5 text-base text-slate-500">
-            <span className="font-semibold text-slate-700">{labels.duration}:</span> {work.duration}
+          <p className="mt-5 text-base text-slate-500 dark:text-slate-300">
+            <span className="font-semibold text-slate-700 dark:text-slate-200">{labels.duration}:</span> {work.duration}
           </p>
         )}
 
         {work.videoUrl && (
           <>
             <SectionDivider />
-            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-primary-600">
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-300">
               {labels.video}
             </h2>
             <WorkVideoPlayer work={work} title={title} />
@@ -103,7 +103,7 @@ export function WorkDetailContent({ work, locale, images, labels }: WorkDetailCo
         {images.length > 0 && (
           <>
             <SectionDivider />
-            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-primary-600">
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-300">
               {labels.gallery}
             </h2>
             <WorkDetailGallery images={images} title={title} />
@@ -139,7 +139,7 @@ export function WorkDetailContent({ work, locale, images, labels }: WorkDetailCo
                   href={work.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:border-primary-200 hover:bg-primary-50 hover:text-primary-800"
+                  className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:border-primary-200 hover:bg-primary-50 hover:text-primary-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 dark:hover:text-white"
                 >
                   {labels.github}
                 </a>

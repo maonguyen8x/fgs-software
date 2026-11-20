@@ -46,13 +46,13 @@ export default async function NewsDetailPage({
     <article className="mx-auto max-w-3xl px-4 py-12 md:py-16">
       <Link
         href="/about-us/news"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-200"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden />
         {t("back")}
       </Link>
 
-      <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
         {item.imageUrl && (
           <div className="relative aspect-[16/8] bg-slate-100">
             <UploadImage src={item.imageUrl} alt={title} fill priority className="object-cover" sizes="768px" />
@@ -70,13 +70,13 @@ export default async function NewsDetailPage({
               href={sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700"
+              className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-200"
             >
               {t("original_source")}
               <ExternalLink className="h-3.5 w-3.5" aria-hidden />
             </a>
           )}
-          <p className="mt-6 text-lg font-medium leading-relaxed text-slate-700">{summary}</p>
+          <p className="mt-6 text-lg font-medium leading-relaxed text-slate-700 dark:text-slate-300">{summary}</p>
           <NewsArticleContent content={content} />
         </div>
       </div>

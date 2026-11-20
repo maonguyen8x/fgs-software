@@ -65,7 +65,7 @@ export function Header({
   const items = navConfig.items.filter((item) => item.enabled);
 
   const baseLinkClass =
-    "relative inline-block font-semibold tracking-wide transition-colors duration-150";
+    "header-nav-link relative inline-block font-semibold tracking-wide transition-colors duration-150";
 
   const renderNavLink = (item: HeaderNavItem, mobile?: boolean) => {
     const active = isNavHrefActive(pathname, item.href, item.exact);
@@ -124,7 +124,7 @@ export function Header({
                 transparentHeader
                   ? "border-white/10 bg-slate-950"
                   : transparentHeaderPage
-                    ? "border-slate-200 bg-white"
+                    ? "border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900"
                     : "border-theme bg-surface"
               )}
             />
@@ -135,7 +135,7 @@ export function Header({
                 transparentHeader
                   ? "border-white/10 bg-slate-950/95"
                   : transparentHeaderPage
-                    ? "border-slate-200 bg-white"
+                    ? "border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900"
                     : "border-theme bg-surface"
               )}
             >
@@ -153,12 +153,12 @@ export function Header({
                         childActive
                           ? transparentHeader
                             ? "bg-white/10 font-semibold text-sky-300 hover:text-emerald-300"
-                            : "bg-blue-50 font-semibold text-primary-600 hover:text-emerald-600"
+                            : "bg-blue-50 font-semibold text-primary-600 hover:text-emerald-600 dark:bg-slate-800 dark:text-primary-300"
                           : transparentHeader
                             ? "text-slate-300 hover:bg-white/10 hover:text-emerald-300"
                             : transparentHeaderPage
-                              ? "text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
-                              : "text-muted-theme hover:bg-emerald-50 hover:text-emerald-600"
+                              ? "text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 dark:text-slate-200 dark:hover:bg-slate-800"
+                              : "text-muted-theme hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-slate-800"
                       )}
                       aria-current={childActive ? "page" : undefined}
                       onClick={() => setOpenSub(null)}
@@ -189,7 +189,7 @@ export function Header({
             (transparentHeader
               ? "bg-white/10 font-semibold"
               : transparentHeaderPage
-                ? "bg-violet-100 font-semibold text-slate-900"
+                ? "bg-violet-100 font-semibold text-slate-900 dark:bg-slate-800"
                 : "bg-primary-50 font-semibold text-primary-600 dark:bg-primary-950/50"),
           mobile &&
             !active &&
@@ -212,11 +212,11 @@ export function Header({
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b transition-[background-color,border-color,color,box-shadow] duration-300",
+        "site-header sticky top-0 z-50 border-b transition-[background-color,border-color,color,box-shadow] duration-300",
         transparentHeader
           ? "home-header-transparent border-transparent bg-[#0b0a24]/95 text-white shadow-none backdrop-blur-md"
           : transparentHeaderPage
-            ? "home-header-scrolled border-slate-200 bg-[#fafafa]/95 text-slate-900 shadow-sm backdrop-blur-md"
+            ? "home-header-scrolled border-slate-200 bg-[#fafafa]/95 text-slate-900 shadow-sm backdrop-blur-md dark:border-slate-700 dark:bg-slate-900/95 dark:text-white"
             : "border-theme bg-surface text-theme shadow-sm"
       )}
     >

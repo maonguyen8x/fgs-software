@@ -1,5 +1,6 @@
 export const BRAND = {
   logoPath: "/logo.svg",
+  logoAssetPath: "/logo.svg?v=2",
   logoPngPath: "/logo.png",
   logoAlt: "FGS Software",
   companyName: "FGS Software",
